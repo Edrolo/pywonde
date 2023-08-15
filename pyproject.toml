@@ -8,7 +8,7 @@ authors = [
 ]
 license = "NoLicense"
 readme = "README.md"
-repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
+repository = "https://github.com/Edrolo/pywonde"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Wonde API"]
 
 [tool.poetry.dependencies]

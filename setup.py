@@ -18,8 +18,8 @@ from setuptools import find_packages, setup
 #
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
-NAME = 'wonde'
-VERSION = '1.0.0'
+NAME = 'pywonde'
+VERSION = '0.1.0'
 PYTHON_REQUIRES = '>=3.7'
 REQUIRES = ['urllib3 >= 1.25.3', 'python-dateutil', 'pydantic >= 1.10.5, < 2', 'aenum']
 
@@ -29,7 +29,7 @@ setup(
     description='Wonde API',
     author='OpenAPI Generator community',
     author_email='team@openapitools.org',
-    url='',
+    url='https://github.com/Edrolo/pywonde',
     keywords=['OpenAPI', 'OpenAPI-Generator', 'Wonde API'],
     install_requires=REQUIRES,
     packages=find_packages(exclude=['test', 'tests']),

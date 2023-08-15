@@ -1,3 +1,6 @@
 {
-  "packageName": "wonde"
+  "projectName": "pywonde",
+  "packageName": "wonde",
+  "packageUrl": "https://github.com/Edrolo/pywonde",
+  "packageVersion": "0.1.0"
 }
