@@ -23,7 +23,7 @@ from typing_extensions import Annotated
 from wonde.api_client import ApiClient
 from wonde.api_response import ApiResponse
 from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
-from wonde.models.get_subjects200_response import GetSubjects200Response
+from wonde.models.list_school_subjects200_response import ListSchoolSubjects200Response
 from wonde.models.subject import Subject
 
 
@@ -40,7 +40,7 @@ class SubjectsApi:
         self.api_client = api_client
 
     @validate_arguments
-    def get_subject(
+    def get_school_subject(
         self,
         school_id: Annotated[
             StrictStr, Field(..., description='ID of the school to retrieve the subject from')
@@ -56,7 +56,7 @@ class SubjectsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_subject(school_id, subject_id, include, async_req=True)
+        >>> thread = api.get_school_subject(school_id, subject_id, include, async_req=True)
         >>> result = thread.get()
 
         :param school_id: ID of the school to retrieve the subject from (required)
@@ -79,12 +79,12 @@ class SubjectsApi:
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the get_subject_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the get_school_subject_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.get_subject_with_http_info(school_id, subject_id, include, **kwargs)
+        return self.get_school_subject_with_http_info(school_id, subject_id, include, **kwargs)
 
     @validate_arguments
-    def get_subject_with_http_info(
+    def get_school_subject_with_http_info(
         self,
         school_id: Annotated[
             StrictStr, Field(..., description='ID of the school to retrieve the subject from')
@@ -100,7 +100,7 @@ class SubjectsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_subject_with_http_info(school_id, subject_id, include, async_req=True)
+        >>> thread = api.get_school_subject_with_http_info(school_id, subject_id, include, async_req=True)
         >>> result = thread.get()
 
         :param school_id: ID of the school to retrieve the subject from (required)
@@ -153,7 +153,7 @@ class SubjectsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method get_subject' % _key
+                    "Got an unexpected keyword argument '%s'" ' to method get_school_subject' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -210,7 +210,7 @@ class SubjectsApi:
         )
 
     @validate_arguments
-    def get_subjects(
+    def list_school_subjects(
         self,
         school_id: Annotated[
             StrictStr, Field(..., description='ID of the school to retrieve subjects for')
@@ -234,13 +234,13 @@ class SubjectsApi:
             Optional[StrictStr], Field(description='Return results with the provided subject name.')
         ] = None,
         **kwargs
-    ) -> GetSubjects200Response:
+    ) -> ListSchoolSubjects200Response:
         """Retrieve subjects for a school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_subjects(school_id, updated_after, updated_before, per_page, include, subject_code, subject_name, async_req=True)
+        >>> thread = api.list_school_subjects(school_id, updated_after, updated_before, per_page, include, subject_code, subject_name, async_req=True)
         >>> result = thread.get()
 
         :param school_id: ID of the school to retrieve subjects for (required)
@@ -266,14 +266,14 @@ class SubjectsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: GetSubjects200Response
+        :rtype: ListSchoolSubjects200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the get_subjects_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_school_subjects_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.get_subjects_with_http_info(
+        return self.list_school_subjects_with_http_info(
             school_id,
             updated_after,
             updated_before,
@@ -285,7 +285,7 @@ class SubjectsApi:
         )
 
     @validate_arguments
-    def get_subjects_with_http_info(
+    def list_school_subjects_with_http_info(
         self,
         school_id: Annotated[
             StrictStr, Field(..., description='ID of the school to retrieve subjects for')
@@ -315,7 +315,7 @@ class SubjectsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_subjects_with_http_info(school_id, updated_after, updated_before, per_page, include, subject_code, subject_name, async_req=True)
+        >>> thread = api.list_school_subjects_with_http_info(school_id, updated_after, updated_before, per_page, include, subject_code, subject_name, async_req=True)
         >>> result = thread.get()
 
         :param school_id: ID of the school to retrieve subjects for (required)
@@ -354,7 +354,7 @@ class SubjectsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(GetSubjects200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchoolSubjects200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -384,7 +384,8 @@ class SubjectsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method get_subjects' % _key
+                    "Got an unexpected keyword argument '%s'"
+                    ' to method list_school_subjects' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -450,7 +451,7 @@ class SubjectsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'GetSubjects200Response',
+            '200': 'ListSchoolSubjects200Response',
         }
 
         return self.api_client.call_api(

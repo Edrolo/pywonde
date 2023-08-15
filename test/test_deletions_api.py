@@ -24,8 +24,8 @@ class TestDeletionsApi(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_schools_school_id_deletions_get(self):
-        """Test case for schools_school_id_deletions_get
+    def test_list_school_deletions(self):
+        """Test case for list_school_deletions
 
         Get deletions for a school  # noqa: E501
         """

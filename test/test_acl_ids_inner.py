@@ -32,6 +32,8 @@ class TestACLIdsInner(unittest.TestCase):
         model = wonde.models.acl_ids_inner.ACLIdsInner()  # noqa: E501
         if include_optional :
             return ACLIdsInner(
+                id = '', 
+                type = ''
             )
         else :
             return ACLIdsInner(

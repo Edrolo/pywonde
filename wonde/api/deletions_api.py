@@ -23,9 +23,7 @@ from typing_extensions import Annotated
 from wonde.api_client import ApiClient
 from wonde.api_response import ApiResponse
 from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
-from wonde.models.schools_school_id_deletions_get200_response import (
-    SchoolsSchoolIdDeletionsGet200Response,
-)
+from wonde.models.list_school_deletions200_response import ListSchoolDeletions200Response
 
 
 class DeletionsApi:
@@ -41,7 +39,7 @@ class DeletionsApi:
         self.api_client = api_client
 
     @validate_arguments
-    def schools_school_id_deletions_get(
+    def list_school_deletions(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         updated_after: Annotated[
@@ -58,14 +56,14 @@ class DeletionsApi:
             Field(description='Only return records that have the provided type'),
         ] = None,
         **kwargs
-    ) -> SchoolsSchoolIdDeletionsGet200Response:
+    ) -> ListSchoolDeletions200Response:
         """Get deletions for a school  # noqa: E501
 
         It's recommended that you use the updated_after url parameter to efficiently sync updates  to datasets. The deletions endpoint exists to provide a record of when an item is deleted.  The deletions endpoint will have an entry for every top level item (student, contact,  employee, group...) unless the object is deleted due to a parent being removed. An example of this would be when a class is removed the associated lessons would be deleted without an entry in the deletions endpoint. A `restored_at` value will be returned for the deletions of students, student pre-admissions,  student leavers, contacts, employees, groups and classes when a record that was previously  deleted has been restored (it became available in the MIS data again with the same MIS ID). It's recommended that applications perform frequent full syncs to make sure data remains accurate.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_deletions_get(school_id, updated_after, updated_before, per_page, type, async_req=True)
+        >>> thread = api.list_school_deletions(school_id, updated_after, updated_before, per_page, type, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -87,19 +85,19 @@ class DeletionsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsSchoolIdDeletionsGet200Response
+        :rtype: ListSchoolDeletions200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_school_id_deletions_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_school_deletions_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_school_id_deletions_get_with_http_info(
+        return self.list_school_deletions_with_http_info(
             school_id, updated_after, updated_before, per_page, type, **kwargs
         )
 
     @validate_arguments
-    def schools_school_id_deletions_get_with_http_info(
+    def list_school_deletions_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         updated_after: Annotated[
@@ -123,7 +121,7 @@ class DeletionsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_deletions_get_with_http_info(school_id, updated_after, updated_before, per_page, type, async_req=True)
+        >>> thread = api.list_school_deletions_with_http_info(school_id, updated_after, updated_before, per_page, type, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -158,7 +156,7 @@ class DeletionsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsSchoolIdDeletionsGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchoolDeletions200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -181,7 +179,7 @@ class DeletionsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_school_id_deletions_get' % _key
+                    ' to method list_school_deletions' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -241,7 +239,7 @@ class DeletionsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsSchoolIdDeletionsGet200Response',
+            '200': 'ListSchoolDeletions200Response',
         }
 
         return self.api_client.call_api(

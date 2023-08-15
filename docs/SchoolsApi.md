@@ -5,18 +5,18 @@ All URIs are relative to *https://api.wonde.com/v1.0*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**get_school**](SchoolsApi.md#get_school) | **GET** /schools/{school_id} | Retrieve a specific school
-[**meta_schools_school_id_acl_get**](SchoolsApi.md#meta_schools_school_id_acl_get) | **GET** /meta/schools/{school_id}/acl | Retrieve the access control list applied to a school
-[**meta_schools_school_id_get**](SchoolsApi.md#meta_schools_school_id_get) | **GET** /meta/schools/{school_id} | Retrieve meta data for a school
-[**meta_schools_school_id_permissions_get**](SchoolsApi.md#meta_schools_school_id_permissions_get) | **GET** /meta/schools/{school_id}/permissions | Retrieve the permissions applied to a school
-[**schools_all_get**](SchoolsApi.md#schools_all_get) | **GET** /schools/all | Retrieve all schools
-[**schools_approved_get**](SchoolsApi.md#schools_approved_get) | **GET** /schools/approved | Retrieve all approved schools
-[**schools_audited_get**](SchoolsApi.md#schools_audited_get) | **GET** /schools/audited | Retrieve all audited schools
-[**schools_declined_get**](SchoolsApi.md#schools_declined_get) | **GET** /schools/declined | Retrieve all schools with declined access
-[**schools_offline_get**](SchoolsApi.md#schools_offline_get) | **GET** /schools/offline | Retrieve all offline schools
-[**schools_pending_get**](SchoolsApi.md#schools_pending_get) | **GET** /schools/pending | Retrieve all schools with pending access request
-[**schools_revoked_get**](SchoolsApi.md#schools_revoked_get) | **GET** /schools/revoked | Retrieve all schools with revoked access
-[**schools_school_id_request_access_post**](SchoolsApi.md#schools_school_id_request_access_post) | **POST** /schools/{school_id}/request-access | Request access to a school
-[**schools_school_id_revoke_access_delete**](SchoolsApi.md#schools_school_id_revoke_access_delete) | **DELETE** /schools/{school_id}/revoke-access | Revoke access to a school
+[**get_school_acl**](SchoolsApi.md#get_school_acl) | **GET** /meta/schools/{school_id}/acl | Retrieve the access control list applied to a school
+[**get_school_meta**](SchoolsApi.md#get_school_meta) | **GET** /meta/schools/{school_id} | Retrieve meta data for a school
+[**get_school_permissions**](SchoolsApi.md#get_school_permissions) | **GET** /meta/schools/{school_id}/permissions | Retrieve the permissions applied to a school
+[**list_schools**](SchoolsApi.md#list_schools) | **GET** /schools/all | Retrieve all schools
+[**list_schools_approved**](SchoolsApi.md#list_schools_approved) | **GET** /schools/approved | Retrieve all approved schools
+[**list_schools_audited**](SchoolsApi.md#list_schools_audited) | **GET** /schools/audited | Retrieve all audited schools
+[**list_schools_declined**](SchoolsApi.md#list_schools_declined) | **GET** /schools/declined | Retrieve all schools with declined access
+[**list_schools_offline**](SchoolsApi.md#list_schools_offline) | **GET** /schools/offline | Retrieve all offline schools
+[**list_schools_pending**](SchoolsApi.md#list_schools_pending) | **GET** /schools/pending | Retrieve all schools with pending access request
+[**list_schools_revoked**](SchoolsApi.md#list_schools_revoked) | **GET** /schools/revoked | Retrieve all schools with revoked access
+[**request_school_access**](SchoolsApi.md#request_school_access) | **POST** /schools/{school_id}/request-access | Request access to a school
+[**revoke_school_access**](SchoolsApi.md#revoke_school_access) | **DELETE** /schools/{school_id}/revoke-access | Revoke access to a school
 
 
 # **get_school**
@@ -100,8 +100,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **meta_schools_school_id_acl_get**
-> MetaSchoolsSchoolIdAclGet200Response meta_schools_school_id_acl_get(school_id, with_user_type=with_user_type)
+# **get_school_acl**
+> GetSchoolAcl200Response get_school_acl(school_id, with_user_type=with_user_type)
 
 Retrieve the access control list applied to a school
 
@@ -113,7 +113,7 @@ Retrieve the access control list applied to a school
 import time
 import os
 import wonde
-from wonde.models.meta_schools_school_id_acl_get200_response import MetaSchoolsSchoolIdAclGet200Response
+from wonde.models.get_school_acl200_response import GetSchoolAcl200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -148,11 +148,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve the access control list applied to a school
-        api_response = api_instance.meta_schools_school_id_acl_get(school_id, with_user_type=with_user_type)
-        print("The response of SchoolsApi->meta_schools_school_id_acl_get:\n")
+        api_response = api_instance.get_school_acl(school_id, with_user_type=with_user_type)
+        print("The response of SchoolsApi->get_school_acl:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->meta_schools_school_id_acl_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->get_school_acl: %s\n" % e)
 ```
 
 
@@ -165,7 +165,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**MetaSchoolsSchoolIdAclGet200Response**](MetaSchoolsSchoolIdAclGet200Response.md)
+[**GetSchoolAcl200Response**](GetSchoolAcl200Response.md)
 
 ### Authorization
 
@@ -183,8 +183,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **meta_schools_school_id_get**
-> MetaSchoolsSchoolIdGet200Response meta_schools_school_id_get(school_id)
+# **get_school_meta**
+> GetSchoolMeta200Response get_school_meta(school_id)
 
 Retrieve meta data for a school
 
@@ -196,7 +196,7 @@ Retrieve meta data for a school
 import time
 import os
 import wonde
-from wonde.models.meta_schools_school_id_get200_response import MetaSchoolsSchoolIdGet200Response
+from wonde.models.get_school_meta200_response import GetSchoolMeta200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -230,11 +230,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve meta data for a school
-        api_response = api_instance.meta_schools_school_id_get(school_id)
-        print("The response of SchoolsApi->meta_schools_school_id_get:\n")
+        api_response = api_instance.get_school_meta(school_id)
+        print("The response of SchoolsApi->get_school_meta:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->meta_schools_school_id_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->get_school_meta: %s\n" % e)
 ```
 
 
@@ -246,7 +246,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**MetaSchoolsSchoolIdGet200Response**](MetaSchoolsSchoolIdGet200Response.md)
+[**GetSchoolMeta200Response**](GetSchoolMeta200Response.md)
 
 ### Authorization
 
@@ -264,8 +264,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **meta_schools_school_id_permissions_get**
-> MetaSchoolsSchoolIdPermissionsGet200Response meta_schools_school_id_permissions_get(school_id)
+# **get_school_permissions**
+> GetSchoolPermissions200Response get_school_permissions(school_id)
 
 Retrieve the permissions applied to a school
 
@@ -277,7 +277,7 @@ Retrieve the permissions applied to a school
 import time
 import os
 import wonde
-from wonde.models.meta_schools_school_id_permissions_get200_response import MetaSchoolsSchoolIdPermissionsGet200Response
+from wonde.models.get_school_permissions200_response import GetSchoolPermissions200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -311,11 +311,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve the permissions applied to a school
-        api_response = api_instance.meta_schools_school_id_permissions_get(school_id)
-        print("The response of SchoolsApi->meta_schools_school_id_permissions_get:\n")
+        api_response = api_instance.get_school_permissions(school_id)
+        print("The response of SchoolsApi->get_school_permissions:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->meta_schools_school_id_permissions_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->get_school_permissions: %s\n" % e)
 ```
 
 
@@ -327,7 +327,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**MetaSchoolsSchoolIdPermissionsGet200Response**](MetaSchoolsSchoolIdPermissionsGet200Response.md)
+[**GetSchoolPermissions200Response**](GetSchoolPermissions200Response.md)
 
 ### Authorization
 
@@ -345,8 +345,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_all_get**
-> SchoolsAllGet200Response schools_all_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+# **list_schools**
+> ListSchools200Response list_schools(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
 
 Retrieve all schools
 
@@ -358,7 +358,7 @@ Retrieve all schools
 import time
 import os
 import wonde
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -398,11 +398,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all schools
-        api_response = api_instance.schools_all_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
-        print("The response of SchoolsApi->schools_all_get:\n")
+        api_response = api_instance.list_schools(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+        print("The response of SchoolsApi->list_schools:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_all_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->list_schools: %s\n" % e)
 ```
 
 
@@ -420,7 +420,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsAllGet200Response**](SchoolsAllGet200Response.md)
+[**ListSchools200Response**](ListSchools200Response.md)
 
 ### Authorization
 
@@ -438,8 +438,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_approved_get**
-> SchoolsAllGet200Response schools_approved_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+# **list_schools_approved**
+> ListSchools200Response list_schools_approved(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
 
 Retrieve all approved schools
 
@@ -451,7 +451,7 @@ Retrieve all approved schools
 import time
 import os
 import wonde
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -491,11 +491,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all approved schools
-        api_response = api_instance.schools_approved_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
-        print("The response of SchoolsApi->schools_approved_get:\n")
+        api_response = api_instance.list_schools_approved(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+        print("The response of SchoolsApi->list_schools_approved:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_approved_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->list_schools_approved: %s\n" % e)
 ```
 
 
@@ -513,7 +513,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsAllGet200Response**](SchoolsAllGet200Response.md)
+[**ListSchools200Response**](ListSchools200Response.md)
 
 ### Authorization
 
@@ -531,8 +531,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_audited_get**
-> SchoolsAllGet200Response schools_audited_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+# **list_schools_audited**
+> ListSchools200Response list_schools_audited(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
 
 Retrieve all audited schools
 
@@ -544,7 +544,7 @@ Retrieve all audited schools
 import time
 import os
 import wonde
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -584,11 +584,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all audited schools
-        api_response = api_instance.schools_audited_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
-        print("The response of SchoolsApi->schools_audited_get:\n")
+        api_response = api_instance.list_schools_audited(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+        print("The response of SchoolsApi->list_schools_audited:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_audited_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->list_schools_audited: %s\n" % e)
 ```
 
 
@@ -606,7 +606,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsAllGet200Response**](SchoolsAllGet200Response.md)
+[**ListSchools200Response**](ListSchools200Response.md)
 
 ### Authorization
 
@@ -624,8 +624,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_declined_get**
-> SchoolsAllGet200Response schools_declined_get(per_page=per_page)
+# **list_schools_declined**
+> ListSchools200Response list_schools_declined(per_page=per_page)
 
 Retrieve all schools with declined access
 
@@ -637,7 +637,7 @@ Retrieve all schools with declined access
 import time
 import os
 import wonde
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -671,11 +671,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all schools with declined access
-        api_response = api_instance.schools_declined_get(per_page=per_page)
-        print("The response of SchoolsApi->schools_declined_get:\n")
+        api_response = api_instance.list_schools_declined(per_page=per_page)
+        print("The response of SchoolsApi->list_schools_declined:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_declined_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->list_schools_declined: %s\n" % e)
 ```
 
 
@@ -687,7 +687,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsAllGet200Response**](SchoolsAllGet200Response.md)
+[**ListSchools200Response**](ListSchools200Response.md)
 
 ### Authorization
 
@@ -705,8 +705,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_offline_get**
-> SchoolsAllGet200Response schools_offline_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+# **list_schools_offline**
+> ListSchools200Response list_schools_offline(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
 
 Retrieve all offline schools
 
@@ -718,7 +718,7 @@ Retrieve all offline schools
 import time
 import os
 import wonde
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -758,11 +758,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all offline schools
-        api_response = api_instance.schools_offline_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
-        print("The response of SchoolsApi->schools_offline_get:\n")
+        api_response = api_instance.list_schools_offline(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+        print("The response of SchoolsApi->list_schools_offline:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_offline_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->list_schools_offline: %s\n" % e)
 ```
 
 
@@ -780,7 +780,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsAllGet200Response**](SchoolsAllGet200Response.md)
+[**ListSchools200Response**](ListSchools200Response.md)
 
 ### Authorization
 
@@ -798,8 +798,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_pending_get**
-> SchoolsAllGet200Response schools_pending_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+# **list_schools_pending**
+> ListSchools200Response list_schools_pending(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
 
 Retrieve all schools with pending access request
 
@@ -811,7 +811,7 @@ Retrieve all schools with pending access request
 import time
 import os
 import wonde
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -851,11 +851,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all schools with pending access request
-        api_response = api_instance.schools_pending_get(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
-        print("The response of SchoolsApi->schools_pending_get:\n")
+        api_response = api_instance.list_schools_pending(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+        print("The response of SchoolsApi->list_schools_pending:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_pending_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->list_schools_pending: %s\n" % e)
 ```
 
 
@@ -873,7 +873,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsAllGet200Response**](SchoolsAllGet200Response.md)
+[**ListSchools200Response**](ListSchools200Response.md)
 
 ### Authorization
 
@@ -891,8 +891,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_revoked_get**
-> SchoolsAllGet200Response schools_revoked_get(per_page=per_page)
+# **list_schools_revoked**
+> ListSchools200Response list_schools_revoked(per_page=per_page)
 
 Retrieve all schools with revoked access
 
@@ -904,7 +904,7 @@ Retrieve all schools with revoked access
 import time
 import os
 import wonde
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -938,11 +938,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all schools with revoked access
-        api_response = api_instance.schools_revoked_get(per_page=per_page)
-        print("The response of SchoolsApi->schools_revoked_get:\n")
+        api_response = api_instance.list_schools_revoked(per_page=per_page)
+        print("The response of SchoolsApi->list_schools_revoked:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_revoked_get: %s\n" % e)
+        print("Exception when calling SchoolsApi->list_schools_revoked: %s\n" % e)
 ```
 
 
@@ -954,7 +954,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsAllGet200Response**](SchoolsAllGet200Response.md)
+[**ListSchools200Response**](ListSchools200Response.md)
 
 ### Authorization
 
@@ -972,8 +972,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_school_id_request_access_post**
-> SchoolsSchoolIdRequestAccessPost200Response schools_school_id_request_access_post(school_id, schools_school_id_request_access_post_request=schools_school_id_request_access_post_request)
+# **request_school_access**
+> RequestSchoolAccess200Response request_school_access(school_id, request_school_access_request=request_school_access_request)
 
 Request access to a school
 
@@ -987,8 +987,8 @@ When requesting access to a school it is recommended that you provide details of
 import time
 import os
 import wonde
-from wonde.models.schools_school_id_request_access_post200_response import SchoolsSchoolIdRequestAccessPost200Response
-from wonde.models.schools_school_id_request_access_post_request import SchoolsSchoolIdRequestAccessPostRequest
+from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
+from wonde.models.request_school_access_request import RequestSchoolAccessRequest
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -1019,15 +1019,15 @@ with wonde.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = wonde.SchoolsApi(api_client)
     school_id = 'school_id_example' # str | The ID of the school
-    schools_school_id_request_access_post_request = wonde.SchoolsSchoolIdRequestAccessPostRequest() # SchoolsSchoolIdRequestAccessPostRequest | Contacts to add for the request (optional)
+    request_school_access_request = wonde.RequestSchoolAccessRequest() # RequestSchoolAccessRequest | Contacts to add for the request (optional)
 
     try:
         # Request access to a school
-        api_response = api_instance.schools_school_id_request_access_post(school_id, schools_school_id_request_access_post_request=schools_school_id_request_access_post_request)
-        print("The response of SchoolsApi->schools_school_id_request_access_post:\n")
+        api_response = api_instance.request_school_access(school_id, request_school_access_request=request_school_access_request)
+        print("The response of SchoolsApi->request_school_access:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_school_id_request_access_post: %s\n" % e)
+        print("Exception when calling SchoolsApi->request_school_access: %s\n" % e)
 ```
 
 
@@ -1036,11 +1036,11 @@ with wonde.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
- **schools_school_id_request_access_post_request** | [**SchoolsSchoolIdRequestAccessPostRequest**](SchoolsSchoolIdRequestAccessPostRequest.md)| Contacts to add for the request | [optional] 
+ **request_school_access_request** | [**RequestSchoolAccessRequest**](RequestSchoolAccessRequest.md)| Contacts to add for the request | [optional] 
 
 ### Return type
 
-[**SchoolsSchoolIdRequestAccessPost200Response**](SchoolsSchoolIdRequestAccessPost200Response.md)
+[**RequestSchoolAccess200Response**](RequestSchoolAccess200Response.md)
 
 ### Authorization
 
@@ -1058,8 +1058,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_school_id_revoke_access_delete**
-> SchoolsSchoolIdRequestAccessPost200Response schools_school_id_revoke_access_delete(school_id)
+# **revoke_school_access**
+> RequestSchoolAccess200Response revoke_school_access(school_id)
 
 Revoke access to a school
 
@@ -1071,7 +1071,7 @@ Revoke access to a school
 import time
 import os
 import wonde
-from wonde.models.schools_school_id_request_access_post200_response import SchoolsSchoolIdRequestAccessPost200Response
+from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -1105,11 +1105,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Revoke access to a school
-        api_response = api_instance.schools_school_id_revoke_access_delete(school_id)
-        print("The response of SchoolsApi->schools_school_id_revoke_access_delete:\n")
+        api_response = api_instance.revoke_school_access(school_id)
+        print("The response of SchoolsApi->revoke_school_access:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SchoolsApi->schools_school_id_revoke_access_delete: %s\n" % e)
+        print("Exception when calling SchoolsApi->revoke_school_access: %s\n" % e)
 ```
 
 
@@ -1121,7 +1121,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsSchoolIdRequestAccessPost200Response**](SchoolsSchoolIdRequestAccessPost200Response.md)
+[**RequestSchoolAccess200Response**](RequestSchoolAccess200Response.md)
 
 ### Authorization
 

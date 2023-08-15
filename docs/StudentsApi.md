@@ -4,12 +4,12 @@ All URIs are relative to *https://api.wonde.com/v1.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_student**](StudentsApi.md#get_student) | **GET** /schools/{school_id}/students/{student_id} | Retrieve a specific student in a specific school
-[**list_students**](StudentsApi.md#list_students) | **GET** /schools/{school_id}/students | Retrieve a list of students for a specific school
+[**get_school_student**](StudentsApi.md#get_school_student) | **GET** /schools/{school_id}/students/{student_id} | Retrieve a specific student in a specific school
+[**list_school_students**](StudentsApi.md#list_school_students) | **GET** /schools/{school_id}/students | Retrieve a list of students for a specific school
 
 
-# **get_student**
-> Student get_student(school_id, student_id)
+# **get_school_student**
+> Student get_school_student(school_id, student_id)
 
 Retrieve a specific student in a specific school
 
@@ -56,11 +56,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve a specific student in a specific school
-        api_response = api_instance.get_student(school_id, student_id)
-        print("The response of StudentsApi->get_student:\n")
+        api_response = api_instance.get_school_student(school_id, student_id)
+        print("The response of StudentsApi->get_school_student:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling StudentsApi->get_student: %s\n" % e)
+        print("Exception when calling StudentsApi->get_school_student: %s\n" % e)
 ```
 
 
@@ -91,8 +91,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **list_students**
-> ListStudents200Response list_students(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, aspect_id=aspect_id, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_upns=only_upns, only_mis_ids=only_mis_ids)
+# **list_school_students**
+> ListSchoolStudents200Response list_school_students(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, aspect_id=aspect_id, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_upns=only_upns, only_mis_ids=only_mis_ids)
 
 Retrieve a list of students for a specific school
 
@@ -104,7 +104,7 @@ Retrieve a list of students for a specific school
 import time
 import os
 import wonde
-from wonde.models.list_students200_response import ListStudents200Response
+from wonde.models.list_school_students200_response import ListSchoolStudents200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -147,11 +147,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve a list of students for a specific school
-        api_response = api_instance.list_students(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, aspect_id=aspect_id, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_upns=only_upns, only_mis_ids=only_mis_ids)
-        print("The response of StudentsApi->list_students:\n")
+        api_response = api_instance.list_school_students(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, aspect_id=aspect_id, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_upns=only_upns, only_mis_ids=only_mis_ids)
+        print("The response of StudentsApi->list_school_students:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling StudentsApi->list_students: %s\n" % e)
+        print("Exception when calling StudentsApi->list_school_students: %s\n" % e)
 ```
 
 
@@ -172,7 +172,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ListStudents200Response**](ListStudents200Response.md)
+[**ListSchoolStudents200Response**](ListSchoolStudents200Response.md)
 
 ### Authorization
 

@@ -23,8 +23,8 @@ from typing_extensions import Annotated
 from wonde.api_client import ApiClient
 from wonde.api_response import ApiResponse
 from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
-from wonde.models.get_school_lessons200_response import GetSchoolLessons200Response
 from wonde.models.lesson import Lesson
+from wonde.models.list_school_lessons200_response import ListSchoolLessons200Response
 
 
 class LessonsApi:
@@ -40,7 +40,7 @@ class LessonsApi:
         self.api_client = api_client
 
     @validate_arguments
-    def get_school_lesson_by_id(
+    def get_school_lesson(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school.')],
         lesson_id: Annotated[StrictStr, Field(..., description='The ID of the lesson.')],
@@ -51,7 +51,7 @@ class LessonsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_school_lesson_by_id(school_id, lesson_id, async_req=True)
+        >>> thread = api.get_school_lesson(school_id, lesson_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school. (required)
@@ -72,12 +72,12 @@ class LessonsApi:
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the get_school_lesson_by_id_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the get_school_lesson_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.get_school_lesson_by_id_with_http_info(school_id, lesson_id, **kwargs)
+        return self.get_school_lesson_with_http_info(school_id, lesson_id, **kwargs)
 
     @validate_arguments
-    def get_school_lesson_by_id_with_http_info(
+    def get_school_lesson_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school.')],
         lesson_id: Annotated[StrictStr, Field(..., description='The ID of the lesson.')],
@@ -88,7 +88,7 @@ class LessonsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_school_lesson_by_id_with_http_info(school_id, lesson_id, async_req=True)
+        >>> thread = api.get_school_lesson_with_http_info(school_id, lesson_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school. (required)
@@ -139,8 +139,7 @@ class LessonsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method get_school_lesson_by_id' % _key
+                    "Got an unexpected keyword argument '%s'" ' to method get_school_lesson' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -194,7 +193,7 @@ class LessonsApi:
         )
 
     @validate_arguments
-    def get_school_lessons(
+    def list_school_lessons(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school.')],
         updated_after: Annotated[
@@ -216,13 +215,13 @@ class LessonsApi:
             Optional[StrictStr], Field(description='Comma separated list of objects to include.')
         ] = None,
         **kwargs
-    ) -> GetSchoolLessons200Response:
+    ) -> ListSchoolLessons200Response:
         """Returns a list of lessons for a specific school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_school_lessons(school_id, updated_after, updated_before, lessons_start_after, lessons_start_before, per_page, include, async_req=True)
+        >>> thread = api.list_school_lessons(school_id, updated_after, updated_before, lessons_start_after, lessons_start_before, per_page, include, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school. (required)
@@ -248,14 +247,14 @@ class LessonsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: GetSchoolLessons200Response
+        :rtype: ListSchoolLessons200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the get_school_lessons_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_school_lessons_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.get_school_lessons_with_http_info(
+        return self.list_school_lessons_with_http_info(
             school_id,
             updated_after,
             updated_before,
@@ -267,7 +266,7 @@ class LessonsApi:
         )
 
     @validate_arguments
-    def get_school_lessons_with_http_info(
+    def list_school_lessons_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school.')],
         updated_after: Annotated[
@@ -295,7 +294,7 @@ class LessonsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_school_lessons_with_http_info(school_id, updated_after, updated_before, lessons_start_after, lessons_start_before, per_page, include, async_req=True)
+        >>> thread = api.list_school_lessons_with_http_info(school_id, updated_after, updated_before, lessons_start_after, lessons_start_before, per_page, include, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school. (required)
@@ -334,7 +333,7 @@ class LessonsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(GetSchoolLessons200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchoolLessons200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -364,7 +363,8 @@ class LessonsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method get_school_lessons' % _key
+                    "Got an unexpected keyword argument '%s'"
+                    ' to method list_school_lessons' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -450,7 +450,7 @@ class LessonsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'GetSchoolLessons200Response',
+            '200': 'ListSchoolLessons200Response',
         }
 
         return self.api_client.call_api(

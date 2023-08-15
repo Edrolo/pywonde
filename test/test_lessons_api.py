@@ -24,15 +24,15 @@ class TestLessonsApi(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_get_school_lesson_by_id(self):
-        """Test case for get_school_lesson_by_id
+    def test_get_school_lesson(self):
+        """Test case for get_school_lesson
 
         Returns a specific lesson for a specific school  # noqa: E501
         """
         pass
 
-    def test_get_school_lessons(self):
-        """Test case for get_school_lessons
+    def test_list_school_lessons(self):
+        """Test case for list_school_lessons
 
         Returns a list of lessons for a specific school  # noqa: E501
         """

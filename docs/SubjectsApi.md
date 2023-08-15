@@ -4,12 +4,12 @@ All URIs are relative to *https://api.wonde.com/v1.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_subject**](SubjectsApi.md#get_subject) | **GET** /schools/{school_id}/subjects/{subject_id} | Retrieve a specific subject for a school
-[**get_subjects**](SubjectsApi.md#get_subjects) | **GET** /schools/{school_id}/subjects | Retrieve subjects for a school
+[**get_school_subject**](SubjectsApi.md#get_school_subject) | **GET** /schools/{school_id}/subjects/{subject_id} | Retrieve a specific subject for a school
+[**list_school_subjects**](SubjectsApi.md#list_school_subjects) | **GET** /schools/{school_id}/subjects | Retrieve subjects for a school
 
 
-# **get_subject**
-> Subject get_subject(school_id, subject_id, include=include)
+# **get_school_subject**
+> Subject get_school_subject(school_id, subject_id, include=include)
 
 Retrieve a specific subject for a school
 
@@ -57,11 +57,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve a specific subject for a school
-        api_response = api_instance.get_subject(school_id, subject_id, include=include)
-        print("The response of SubjectsApi->get_subject:\n")
+        api_response = api_instance.get_school_subject(school_id, subject_id, include=include)
+        print("The response of SubjectsApi->get_school_subject:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SubjectsApi->get_subject: %s\n" % e)
+        print("Exception when calling SubjectsApi->get_school_subject: %s\n" % e)
 ```
 
 
@@ -93,8 +93,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **get_subjects**
-> GetSubjects200Response get_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, subject_code=subject_code, subject_name=subject_name)
+# **list_school_subjects**
+> ListSchoolSubjects200Response list_school_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, subject_code=subject_code, subject_name=subject_name)
 
 Retrieve subjects for a school
 
@@ -106,7 +106,7 @@ Retrieve subjects for a school
 import time
 import os
 import wonde
-from wonde.models.get_subjects200_response import GetSubjects200Response
+from wonde.models.list_school_subjects200_response import ListSchoolSubjects200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -146,11 +146,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve subjects for a school
-        api_response = api_instance.get_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, subject_code=subject_code, subject_name=subject_name)
-        print("The response of SubjectsApi->get_subjects:\n")
+        api_response = api_instance.list_school_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, subject_code=subject_code, subject_name=subject_name)
+        print("The response of SubjectsApi->list_school_subjects:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling SubjectsApi->get_subjects: %s\n" % e)
+        print("Exception when calling SubjectsApi->list_school_subjects: %s\n" % e)
 ```
 
 
@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**GetSubjects200Response**](GetSubjects200Response.md)
+[**ListSchoolSubjects200Response**](ListSchoolSubjects200Response.md)
 
 ### Authorization
 

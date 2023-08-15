@@ -4,11 +4,11 @@ All URIs are relative to *https://api.wonde.com/v1.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**schools_school_id_deletions_get**](DeletionsApi.md#schools_school_id_deletions_get) | **GET** /schools/{school_id}/deletions | Get deletions for a school
+[**list_school_deletions**](DeletionsApi.md#list_school_deletions) | **GET** /schools/{school_id}/deletions | Get deletions for a school
 
 
-# **schools_school_id_deletions_get**
-> SchoolsSchoolIdDeletionsGet200Response schools_school_id_deletions_get(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, type=type)
+# **list_school_deletions**
+> ListSchoolDeletions200Response list_school_deletions(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, type=type)
 
 Get deletions for a school
 
@@ -22,7 +22,7 @@ It's recommended that you use the updated_after url parameter to efficiently syn
 import time
 import os
 import wonde
-from wonde.models.schools_school_id_deletions_get200_response import SchoolsSchoolIdDeletionsGet200Response
+from wonde.models.list_school_deletions200_response import ListSchoolDeletions200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -60,11 +60,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Get deletions for a school
-        api_response = api_instance.schools_school_id_deletions_get(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, type=type)
-        print("The response of DeletionsApi->schools_school_id_deletions_get:\n")
+        api_response = api_instance.list_school_deletions(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, type=type)
+        print("The response of DeletionsApi->list_school_deletions:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling DeletionsApi->schools_school_id_deletions_get: %s\n" % e)
+        print("Exception when calling DeletionsApi->list_school_deletions: %s\n" % e)
 ```
 
 
@@ -80,7 +80,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsSchoolIdDeletionsGet200Response**](SchoolsSchoolIdDeletionsGet200Response.md)
+[**ListSchoolDeletions200Response**](ListSchoolDeletions200Response.md)
 
 ### Authorization
 

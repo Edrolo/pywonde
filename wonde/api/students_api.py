@@ -23,7 +23,7 @@ from typing_extensions import Annotated
 from wonde.api_client import ApiClient
 from wonde.api_response import ApiResponse
 from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
-from wonde.models.list_students200_response import ListStudents200Response
+from wonde.models.list_school_students200_response import ListSchoolStudents200Response
 from wonde.models.student import Student
 
 
@@ -40,7 +40,7 @@ class StudentsApi:
         self.api_client = api_client
 
     @validate_arguments
-    def get_student(
+    def get_school_student(
         self,
         school_id: Annotated[
             StrictStr, Field(..., description='The ID of the school to retrieve the student from')
@@ -55,7 +55,7 @@ class StudentsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_student(school_id, student_id, async_req=True)
+        >>> thread = api.get_school_student(school_id, student_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school to retrieve the student from (required)
@@ -76,12 +76,12 @@ class StudentsApi:
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the get_student_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the get_school_student_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.get_student_with_http_info(school_id, student_id, **kwargs)
+        return self.get_school_student_with_http_info(school_id, student_id, **kwargs)
 
     @validate_arguments
-    def get_student_with_http_info(
+    def get_school_student_with_http_info(
         self,
         school_id: Annotated[
             StrictStr, Field(..., description='The ID of the school to retrieve the student from')
@@ -96,7 +96,7 @@ class StudentsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_student_with_http_info(school_id, student_id, async_req=True)
+        >>> thread = api.get_school_student_with_http_info(school_id, student_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school to retrieve the student from (required)
@@ -147,7 +147,7 @@ class StudentsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method get_student' % _key
+                    "Got an unexpected keyword argument '%s'" ' to method get_school_student' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -201,7 +201,7 @@ class StudentsApi:
         )
 
     @validate_arguments
-    def list_students(
+    def list_school_students(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school.')],
         updated_after: Annotated[
@@ -234,13 +234,13 @@ class StudentsApi:
             Optional[StrictStr], Field(description='Filter MIS ids by comma separated list.')
         ] = None,
         **kwargs
-    ) -> ListStudents200Response:
+    ) -> ListSchoolStudents200Response:
         """Retrieve a list of students for a specific school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.list_students(school_id, updated_after, updated_before, per_page, include, aspect_id, user_defined_field, only_user_defined_fields, only_upns, only_mis_ids, async_req=True)
+        >>> thread = api.list_school_students(school_id, updated_after, updated_before, per_page, include, aspect_id, user_defined_field, only_user_defined_fields, only_upns, only_mis_ids, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school. (required)
@@ -272,14 +272,14 @@ class StudentsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: ListStudents200Response
+        :rtype: ListSchoolStudents200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the list_students_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_school_students_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.list_students_with_http_info(
+        return self.list_school_students_with_http_info(
             school_id,
             updated_after,
             updated_before,
@@ -294,7 +294,7 @@ class StudentsApi:
         )
 
     @validate_arguments
-    def list_students_with_http_info(
+    def list_school_students_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school.')],
         updated_after: Annotated[
@@ -333,7 +333,7 @@ class StudentsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.list_students_with_http_info(school_id, updated_after, updated_before, per_page, include, aspect_id, user_defined_field, only_user_defined_fields, only_upns, only_mis_ids, async_req=True)
+        >>> thread = api.list_school_students_with_http_info(school_id, updated_after, updated_before, per_page, include, aspect_id, user_defined_field, only_user_defined_fields, only_upns, only_mis_ids, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school. (required)
@@ -378,7 +378,7 @@ class StudentsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(ListStudents200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchoolStudents200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -411,7 +411,8 @@ class StudentsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method list_students' % _key
+                    "Got an unexpected keyword argument '%s'"
+                    ' to method list_school_students' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -486,7 +487,7 @@ class StudentsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'ListStudents200Response',
+            '200': 'ListSchoolStudents200Response',
         }
 
         return self.api_client.call_api(

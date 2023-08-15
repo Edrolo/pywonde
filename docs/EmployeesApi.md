@@ -4,12 +4,12 @@ All URIs are relative to *https://api.wonde.com/v1.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**schools_school_id_employees_employee_id_get**](EmployeesApi.md#schools_school_id_employees_employee_id_get) | **GET** /schools/{school_id}/employees/{employee_id} | Get specific employee for a school
-[**schools_school_id_employees_get**](EmployeesApi.md#schools_school_id_employees_get) | **GET** /schools/{school_id}/employees | Get all employees for a school
+[**get_school_employee**](EmployeesApi.md#get_school_employee) | **GET** /schools/{school_id}/employees/{employee_id} | Get specific employee for a school
+[**list_school_employees**](EmployeesApi.md#list_school_employees) | **GET** /schools/{school_id}/employees | Get all employees for a school
 
 
-# **schools_school_id_employees_employee_id_get**
-> Employee schools_school_id_employees_employee_id_get(school_id, employee_id)
+# **get_school_employee**
+> Employee get_school_employee(school_id, employee_id)
 
 Get specific employee for a school
 
@@ -58,11 +58,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Get specific employee for a school
-        api_response = api_instance.schools_school_id_employees_employee_id_get(school_id, employee_id)
-        print("The response of EmployeesApi->schools_school_id_employees_employee_id_get:\n")
+        api_response = api_instance.get_school_employee(school_id, employee_id)
+        print("The response of EmployeesApi->get_school_employee:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling EmployeesApi->schools_school_id_employees_employee_id_get: %s\n" % e)
+        print("Exception when calling EmployeesApi->get_school_employee: %s\n" % e)
 ```
 
 
@@ -93,8 +93,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_school_id_employees_get**
-> SchoolsSchoolIdEmployeesGet200Response schools_school_id_employees_get(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
+# **list_school_employees**
+> ListSchoolEmployees200Response list_school_employees(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
 
 Get all employees for a school
 
@@ -106,7 +106,7 @@ Get all employees for a school
 import time
 import os
 import wonde
-from wonde.models.schools_school_id_employees_get200_response import SchoolsSchoolIdEmployeesGet200Response
+from wonde.models.list_school_employees200_response import ListSchoolEmployees200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -153,11 +153,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Get all employees for a school
-        api_response = api_instance.schools_school_id_employees_get(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
-        print("The response of EmployeesApi->schools_school_id_employees_get:\n")
+        api_response = api_instance.list_school_employees(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
+        print("The response of EmployeesApi->list_school_employees:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling EmployeesApi->schools_school_id_employees_get: %s\n" % e)
+        print("Exception when calling EmployeesApi->list_school_employees: %s\n" % e)
 ```
 
 
@@ -182,7 +182,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsSchoolIdEmployeesGet200Response**](SchoolsSchoolIdEmployeesGet200Response.md)
+[**ListSchoolEmployees200Response**](ListSchoolEmployees200Response.md)
 
 ### Authorization
 

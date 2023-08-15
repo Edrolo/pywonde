@@ -23,21 +23,13 @@ from typing_extensions import Annotated
 from wonde.api_client import ApiClient
 from wonde.api_response import ApiResponse
 from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
-from wonde.models.meta_schools_school_id_acl_get200_response import (
-    MetaSchoolsSchoolIdAclGet200Response,
-)
-from wonde.models.meta_schools_school_id_get200_response import MetaSchoolsSchoolIdGet200Response
-from wonde.models.meta_schools_school_id_permissions_get200_response import (
-    MetaSchoolsSchoolIdPermissionsGet200Response,
-)
+from wonde.models.get_school_acl200_response import GetSchoolAcl200Response
+from wonde.models.get_school_meta200_response import GetSchoolMeta200Response
+from wonde.models.get_school_permissions200_response import GetSchoolPermissions200Response
+from wonde.models.list_schools200_response import ListSchools200Response
+from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
+from wonde.models.request_school_access_request import RequestSchoolAccessRequest
 from wonde.models.school import School
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
-from wonde.models.schools_school_id_request_access_post200_response import (
-    SchoolsSchoolIdRequestAccessPost200Response,
-)
-from wonde.models.schools_school_id_request_access_post_request import (
-    SchoolsSchoolIdRequestAccessPostRequest,
-)
 
 
 class SchoolsApi:
@@ -197,20 +189,20 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def meta_schools_school_id_acl_get(
+    def get_school_acl(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         with_user_type: Annotated[
             Optional[StrictBool], Field(description='Display the type of user')
         ] = None,
         **kwargs
-    ) -> MetaSchoolsSchoolIdAclGet200Response:
+    ) -> GetSchoolAcl200Response:
         """Retrieve the access control list applied to a school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.meta_schools_school_id_acl_get(school_id, with_user_type, async_req=True)
+        >>> thread = api.get_school_acl(school_id, with_user_type, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -226,19 +218,17 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: MetaSchoolsSchoolIdAclGet200Response
+        :rtype: GetSchoolAcl200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the meta_schools_school_id_acl_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the get_school_acl_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.meta_schools_school_id_acl_get_with_http_info(
-            school_id, with_user_type, **kwargs
-        )
+        return self.get_school_acl_with_http_info(school_id, with_user_type, **kwargs)
 
     @validate_arguments
-    def meta_schools_school_id_acl_get_with_http_info(
+    def get_school_acl_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         with_user_type: Annotated[
@@ -251,7 +241,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.meta_schools_school_id_acl_get_with_http_info(school_id, with_user_type, async_req=True)
+        >>> thread = api.get_school_acl_with_http_info(school_id, with_user_type, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -280,7 +270,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(MetaSchoolsSchoolIdAclGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(GetSchoolAcl200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -302,8 +292,7 @@ class SchoolsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method meta_schools_school_id_acl_get' % _key
+                    "Got an unexpected keyword argument '%s'" ' to method get_school_acl' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -334,7 +323,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'MetaSchoolsSchoolIdAclGet200Response',
+            '200': 'GetSchoolAcl200Response',
         }
 
         return self.api_client.call_api(
@@ -357,17 +346,17 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def meta_schools_school_id_get(
+    def get_school_meta(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         **kwargs
-    ) -> MetaSchoolsSchoolIdGet200Response:
+    ) -> GetSchoolMeta200Response:
         """Retrieve meta data for a school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.meta_schools_school_id_get(school_id, async_req=True)
+        >>> thread = api.get_school_meta(school_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -381,17 +370,17 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: MetaSchoolsSchoolIdGet200Response
+        :rtype: GetSchoolMeta200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the meta_schools_school_id_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the get_school_meta_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.meta_schools_school_id_get_with_http_info(school_id, **kwargs)
+        return self.get_school_meta_with_http_info(school_id, **kwargs)
 
     @validate_arguments
-    def meta_schools_school_id_get_with_http_info(
+    def get_school_meta_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         **kwargs
@@ -401,7 +390,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.meta_schools_school_id_get_with_http_info(school_id, async_req=True)
+        >>> thread = api.get_school_meta_with_http_info(school_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -428,7 +417,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(MetaSchoolsSchoolIdGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(GetSchoolMeta200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -450,8 +439,7 @@ class SchoolsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method meta_schools_school_id_get' % _key
+                    "Got an unexpected keyword argument '%s'" ' to method get_school_meta' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -479,7 +467,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'MetaSchoolsSchoolIdGet200Response',
+            '200': 'GetSchoolMeta200Response',
         }
 
         return self.api_client.call_api(
@@ -502,17 +490,17 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def meta_schools_school_id_permissions_get(
+    def get_school_permissions(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         **kwargs
-    ) -> MetaSchoolsSchoolIdPermissionsGet200Response:
+    ) -> GetSchoolPermissions200Response:
         """Retrieve the permissions applied to a school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.meta_schools_school_id_permissions_get(school_id, async_req=True)
+        >>> thread = api.get_school_permissions(school_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -526,17 +514,17 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: MetaSchoolsSchoolIdPermissionsGet200Response
+        :rtype: GetSchoolPermissions200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the meta_schools_school_id_permissions_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the get_school_permissions_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.meta_schools_school_id_permissions_get_with_http_info(school_id, **kwargs)
+        return self.get_school_permissions_with_http_info(school_id, **kwargs)
 
     @validate_arguments
-    def meta_schools_school_id_permissions_get_with_http_info(
+    def get_school_permissions_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         **kwargs
@@ -546,7 +534,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.meta_schools_school_id_permissions_get_with_http_info(school_id, async_req=True)
+        >>> thread = api.get_school_permissions_with_http_info(school_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -573,7 +561,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(MetaSchoolsSchoolIdPermissionsGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(GetSchoolPermissions200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -596,7 +584,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method meta_schools_school_id_permissions_get' % _key
+                    ' to method get_school_permissions' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -624,7 +612,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'MetaSchoolsSchoolIdPermissionsGet200Response',
+            '200': 'GetSchoolPermissions200Response',
         }
 
         return self.api_client.call_api(
@@ -647,7 +635,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_all_get(
+    def list_schools(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -673,13 +661,13 @@ class SchoolsApi:
             Field(description='Return results with provided unique reference number'),
         ] = None,
         **kwargs
-    ) -> SchoolsAllGet200Response:
+    ) -> ListSchools200Response:
         """Retrieve all schools  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_all_get(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -705,14 +693,14 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsAllGet200Response
+        :rtype: ListSchools200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_all_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_schools_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_all_get_with_http_info(
+        return self.list_schools_with_http_info(
             updated_after,
             updated_before,
             per_page,
@@ -724,7 +712,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_all_get_with_http_info(
+    def list_schools_with_http_info(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -756,7 +744,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_all_get_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -795,7 +783,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsAllGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -825,7 +813,7 @@ class SchoolsApi:
         for _key, _val in _params['kwargs'].items():
             if _key not in _all_params:
                 raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method schools_all_get' % _key
+                    "Got an unexpected keyword argument '%s'" ' to method list_schools' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -892,7 +880,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsAllGet200Response',
+            '200': 'ListSchools200Response',
         }
 
         return self.api_client.call_api(
@@ -915,7 +903,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_approved_get(
+    def list_schools_approved(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -941,13 +929,13 @@ class SchoolsApi:
             Field(description='Return results with provided unique reference number'),
         ] = None,
         **kwargs
-    ) -> SchoolsAllGet200Response:
+    ) -> ListSchools200Response:
         """Retrieve all approved schools  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_approved_get(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_approved(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -973,14 +961,14 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsAllGet200Response
+        :rtype: ListSchools200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_approved_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_schools_approved_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_approved_get_with_http_info(
+        return self.list_schools_approved_with_http_info(
             updated_after,
             updated_before,
             per_page,
@@ -992,7 +980,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_approved_get_with_http_info(
+    def list_schools_approved_with_http_info(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -1024,7 +1012,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_approved_get_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_approved_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1063,7 +1051,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsAllGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1094,7 +1082,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_approved_get' % _key
+                    ' to method list_schools_approved' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -1161,7 +1149,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsAllGet200Response',
+            '200': 'ListSchools200Response',
         }
 
         return self.api_client.call_api(
@@ -1184,7 +1172,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_audited_get(
+    def list_schools_audited(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -1210,13 +1198,13 @@ class SchoolsApi:
             Field(description='Return results with provided unique reference number'),
         ] = None,
         **kwargs
-    ) -> SchoolsAllGet200Response:
+    ) -> ListSchools200Response:
         """Retrieve all audited schools  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_audited_get(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_audited(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1242,14 +1230,14 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsAllGet200Response
+        :rtype: ListSchools200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_audited_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_schools_audited_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_audited_get_with_http_info(
+        return self.list_schools_audited_with_http_info(
             updated_after,
             updated_before,
             per_page,
@@ -1261,7 +1249,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_audited_get_with_http_info(
+    def list_schools_audited_with_http_info(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -1293,7 +1281,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_audited_get_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_audited_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1332,7 +1320,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsAllGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1363,7 +1351,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_audited_get' % _key
+                    ' to method list_schools_audited' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -1430,7 +1418,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsAllGet200Response',
+            '200': 'ListSchools200Response',
         }
 
         return self.api_client.call_api(
@@ -1453,19 +1441,19 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_declined_get(
+    def list_schools_declined(
         self,
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
         **kwargs
-    ) -> SchoolsAllGet200Response:
+    ) -> ListSchools200Response:
         """Retrieve all schools with declined access  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_declined_get(per_page, async_req=True)
+        >>> thread = api.list_schools_declined(per_page, async_req=True)
         >>> result = thread.get()
 
         :param per_page: Amount of rows to return
@@ -1479,17 +1467,17 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsAllGet200Response
+        :rtype: ListSchools200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_declined_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_schools_declined_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_declined_get_with_http_info(per_page, **kwargs)
+        return self.list_schools_declined_with_http_info(per_page, **kwargs)
 
     @validate_arguments
-    def schools_declined_get_with_http_info(
+    def list_schools_declined_with_http_info(
         self,
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
@@ -1501,7 +1489,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_declined_get_with_http_info(per_page, async_req=True)
+        >>> thread = api.list_schools_declined_with_http_info(per_page, async_req=True)
         >>> result = thread.get()
 
         :param per_page: Amount of rows to return
@@ -1528,7 +1516,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsAllGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1551,7 +1539,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_declined_get' % _key
+                    ' to method list_schools_declined' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -1580,7 +1568,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsAllGet200Response',
+            '200': 'ListSchools200Response',
         }
 
         return self.api_client.call_api(
@@ -1603,7 +1591,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_offline_get(
+    def list_schools_offline(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -1629,13 +1617,13 @@ class SchoolsApi:
             Field(description='Return results with provided unique reference number'),
         ] = None,
         **kwargs
-    ) -> SchoolsAllGet200Response:
+    ) -> ListSchools200Response:
         """Retrieve all offline schools  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_offline_get(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_offline(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1661,14 +1649,14 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsAllGet200Response
+        :rtype: ListSchools200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_offline_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_schools_offline_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_offline_get_with_http_info(
+        return self.list_schools_offline_with_http_info(
             updated_after,
             updated_before,
             per_page,
@@ -1680,7 +1668,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_offline_get_with_http_info(
+    def list_schools_offline_with_http_info(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -1712,7 +1700,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_offline_get_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_offline_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1751,7 +1739,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsAllGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -1782,7 +1770,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_offline_get' % _key
+                    ' to method list_schools_offline' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -1849,7 +1837,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsAllGet200Response',
+            '200': 'ListSchools200Response',
         }
 
         return self.api_client.call_api(
@@ -1872,7 +1860,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_pending_get(
+    def list_schools_pending(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -1898,13 +1886,13 @@ class SchoolsApi:
             Field(description='Return results with provided unique reference number'),
         ] = None,
         **kwargs
-    ) -> SchoolsAllGet200Response:
+    ) -> ListSchools200Response:
         """Retrieve all schools with pending access request  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_pending_get(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_pending(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1930,14 +1918,14 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsAllGet200Response
+        :rtype: ListSchools200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_pending_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_schools_pending_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_pending_get_with_http_info(
+        return self.list_schools_pending_with_http_info(
             updated_after,
             updated_before,
             per_page,
@@ -1949,7 +1937,7 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_pending_get_with_http_info(
+    def list_schools_pending_with_http_info(
         self,
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
@@ -1981,7 +1969,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_pending_get_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_pending_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -2020,7 +2008,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsAllGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -2051,7 +2039,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_pending_get' % _key
+                    ' to method list_schools_pending' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -2118,7 +2106,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsAllGet200Response',
+            '200': 'ListSchools200Response',
         }
 
         return self.api_client.call_api(
@@ -2141,19 +2129,19 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_revoked_get(
+    def list_schools_revoked(
         self,
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
         **kwargs
-    ) -> SchoolsAllGet200Response:
+    ) -> ListSchools200Response:
         """Retrieve all schools with revoked access  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_revoked_get(per_page, async_req=True)
+        >>> thread = api.list_schools_revoked(per_page, async_req=True)
         >>> result = thread.get()
 
         :param per_page: Amount of rows to return
@@ -2167,17 +2155,17 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsAllGet200Response
+        :rtype: ListSchools200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_revoked_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the list_schools_revoked_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_revoked_get_with_http_info(per_page, **kwargs)
+        return self.list_schools_revoked_with_http_info(per_page, **kwargs)
 
     @validate_arguments
-    def schools_revoked_get_with_http_info(
+    def list_schools_revoked_with_http_info(
         self,
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
@@ -2189,7 +2177,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_revoked_get_with_http_info(per_page, async_req=True)
+        >>> thread = api.list_schools_revoked_with_http_info(per_page, async_req=True)
         >>> result = thread.get()
 
         :param per_page: Amount of rows to return
@@ -2216,7 +2204,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsAllGet200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -2239,7 +2227,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_revoked_get' % _key
+                    ' to method list_schools_revoked' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -2268,7 +2256,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsAllGet200Response',
+            '200': 'ListSchools200Response',
         }
 
         return self.api_client.call_api(
@@ -2291,28 +2279,28 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_school_id_request_access_post(
+    def request_school_access(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        schools_school_id_request_access_post_request: Annotated[
-            Optional[SchoolsSchoolIdRequestAccessPostRequest],
+        request_school_access_request: Annotated[
+            Optional[RequestSchoolAccessRequest],
             Field(description='Contacts to add for the request'),
         ] = None,
         **kwargs
-    ) -> SchoolsSchoolIdRequestAccessPost200Response:
+    ) -> RequestSchoolAccess200Response:
         """Request access to a school  # noqa: E501
 
         When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided.   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_request_access_post(school_id, schools_school_id_request_access_post_request, async_req=True)
+        >>> thread = api.request_school_access(school_id, request_school_access_request, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
-        :param schools_school_id_request_access_post_request: Contacts to add for the request
-        :type schools_school_id_request_access_post_request: SchoolsSchoolIdRequestAccessPostRequest
+        :param request_school_access_request: Contacts to add for the request
+        :type request_school_access_request: RequestSchoolAccessRequest
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -2322,23 +2310,23 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsSchoolIdRequestAccessPost200Response
+        :rtype: RequestSchoolAccess200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_school_id_request_access_post_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the request_school_access_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_school_id_request_access_post_with_http_info(
-            school_id, schools_school_id_request_access_post_request, **kwargs
+        return self.request_school_access_with_http_info(
+            school_id, request_school_access_request, **kwargs
         )
 
     @validate_arguments
-    def schools_school_id_request_access_post_with_http_info(
+    def request_school_access_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        schools_school_id_request_access_post_request: Annotated[
-            Optional[SchoolsSchoolIdRequestAccessPostRequest],
+        request_school_access_request: Annotated[
+            Optional[RequestSchoolAccessRequest],
             Field(description='Contacts to add for the request'),
         ] = None,
         **kwargs
@@ -2349,13 +2337,13 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_request_access_post_with_http_info(school_id, schools_school_id_request_access_post_request, async_req=True)
+        >>> thread = api.request_school_access_with_http_info(school_id, request_school_access_request, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
-        :param schools_school_id_request_access_post_request: Contacts to add for the request
-        :type schools_school_id_request_access_post_request: SchoolsSchoolIdRequestAccessPostRequest
+        :param request_school_access_request: Contacts to add for the request
+        :type request_school_access_request: RequestSchoolAccessRequest
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -2378,12 +2366,12 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsSchoolIdRequestAccessPost200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(RequestSchoolAccess200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
 
-        _all_params = ['school_id', 'schools_school_id_request_access_post_request']
+        _all_params = ['school_id', 'request_school_access_request']
         _all_params.extend(
             [
                 'async_req',
@@ -2401,7 +2389,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_school_id_request_access_post' % _key
+                    ' to method request_school_access' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -2422,8 +2410,8 @@ class SchoolsApi:
         _files = {}
         # process the body parameter
         _body_params = None
-        if _params['schools_school_id_request_access_post_request'] is not None:
-            _body_params = _params['schools_school_id_request_access_post_request']
+        if _params['request_school_access_request'] is not None:
+            _body_params = _params['request_school_access_request']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
@@ -2439,7 +2427,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsSchoolIdRequestAccessPost200Response',
+            '200': 'RequestSchoolAccess200Response',
         }
 
         return self.api_client.call_api(
@@ -2462,17 +2450,17 @@ class SchoolsApi:
         )
 
     @validate_arguments
-    def schools_school_id_revoke_access_delete(
+    def revoke_school_access(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         **kwargs
-    ) -> SchoolsSchoolIdRequestAccessPost200Response:
+    ) -> RequestSchoolAccess200Response:
         """Revoke access to a school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_revoke_access_delete(school_id, async_req=True)
+        >>> thread = api.revoke_school_access(school_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -2486,17 +2474,17 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: SchoolsSchoolIdRequestAccessPost200Response
+        :rtype: RequestSchoolAccess200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
             raise ValueError(
-                'Error! Please call the schools_school_id_revoke_access_delete_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
+                'Error! Please call the revoke_school_access_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
-        return self.schools_school_id_revoke_access_delete_with_http_info(school_id, **kwargs)
+        return self.revoke_school_access_with_http_info(school_id, **kwargs)
 
     @validate_arguments
-    def schools_school_id_revoke_access_delete_with_http_info(
+    def revoke_school_access_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         **kwargs
@@ -2506,7 +2494,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_revoke_access_delete_with_http_info(school_id, async_req=True)
+        >>> thread = api.revoke_school_access_with_http_info(school_id, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
@@ -2533,7 +2521,7 @@ class SchoolsApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(SchoolsSchoolIdRequestAccessPost200Response, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(RequestSchoolAccess200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -2556,7 +2544,7 @@ class SchoolsApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    ' to method schools_school_id_revoke_access_delete' % _key
+                    ' to method revoke_school_access' % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -2584,7 +2572,7 @@ class SchoolsApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'SchoolsSchoolIdRequestAccessPost200Response',
+            '200': 'RequestSchoolAccess200Response',
         }
 
         return self.api_client.call_api(

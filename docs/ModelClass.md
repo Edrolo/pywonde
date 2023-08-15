@@ -16,7 +16,7 @@ Name | Type | Description | Notes
 **created_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **updated_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **students** | [**ClassStudents**](ClassStudents.md) |  | [optional] 
-**employees** | [**SchoolsSchoolIdEmployeesGet200Response**](SchoolsSchoolIdEmployeesGet200Response.md) |  | [optional] 
+**employees** | [**ListSchoolEmployees200Response**](ListSchoolEmployees200Response.md) |  | [optional] 
 **lessons** | [**ClassLessons**](ClassLessons.md) |  | [optional] 
 
 ## Example

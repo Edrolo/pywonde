@@ -23,9 +23,7 @@ from wonde.models.class_lessons import ClassLessons
 from wonde.models.class_students import ClassStudents
 from wonde.models.class_subject import ClassSubject
 from wonde.models.date_time_object import DateTimeObject
-from wonde.models.schools_school_id_employees_get200_response import (
-    SchoolsSchoolIdEmployeesGet200Response,
-)
+from wonde.models.list_school_employees200_response import ListSchoolEmployees200Response
 
 
 class ModelClass(BaseModel):
@@ -46,7 +44,7 @@ class ModelClass(BaseModel):
     created_at: Optional[DateTimeObject] = None
     updated_at: Optional[DateTimeObject] = None
     students: Optional[ClassStudents] = None
-    employees: Optional[SchoolsSchoolIdEmployeesGet200Response] = None
+    employees: Optional[ListSchoolEmployees200Response] = None
     lessons: Optional[ClassLessons] = None
     __properties = [
         'id',
@@ -141,7 +139,7 @@ class ModelClass(BaseModel):
                 'students': ClassStudents.from_dict(obj.get('students'))
                 if obj.get('students') is not None
                 else None,
-                'employees': SchoolsSchoolIdEmployeesGet200Response.from_dict(obj.get('employees'))
+                'employees': ListSchoolEmployees200Response.from_dict(obj.get('employees'))
                 if obj.get('employees') is not None
                 else None,
                 'lessons': ClassLessons.from_dict(obj.get('lessons'))

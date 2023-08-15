@@ -31,85 +31,85 @@ class TestSchoolsApi(unittest.TestCase):
         """
         pass
 
-    def test_meta_schools_school_id_acl_get(self):
-        """Test case for meta_schools_school_id_acl_get
+    def test_get_school_acl(self):
+        """Test case for get_school_acl
 
         Retrieve the access control list applied to a school  # noqa: E501
         """
         pass
 
-    def test_meta_schools_school_id_get(self):
-        """Test case for meta_schools_school_id_get
+    def test_get_school_meta(self):
+        """Test case for get_school_meta
 
         Retrieve meta data for a school  # noqa: E501
         """
         pass
 
-    def test_meta_schools_school_id_permissions_get(self):
-        """Test case for meta_schools_school_id_permissions_get
+    def test_get_school_permissions(self):
+        """Test case for get_school_permissions
 
         Retrieve the permissions applied to a school  # noqa: E501
         """
         pass
 
-    def test_schools_all_get(self):
-        """Test case for schools_all_get
+    def test_list_schools(self):
+        """Test case for list_schools
 
         Retrieve all schools  # noqa: E501
         """
         pass
 
-    def test_schools_approved_get(self):
-        """Test case for schools_approved_get
+    def test_list_schools_approved(self):
+        """Test case for list_schools_approved
 
         Retrieve all approved schools  # noqa: E501
         """
         pass
 
-    def test_schools_audited_get(self):
-        """Test case for schools_audited_get
+    def test_list_schools_audited(self):
+        """Test case for list_schools_audited
 
         Retrieve all audited schools  # noqa: E501
         """
         pass
 
-    def test_schools_declined_get(self):
-        """Test case for schools_declined_get
+    def test_list_schools_declined(self):
+        """Test case for list_schools_declined
 
         Retrieve all schools with declined access  # noqa: E501
         """
         pass
 
-    def test_schools_offline_get(self):
-        """Test case for schools_offline_get
+    def test_list_schools_offline(self):
+        """Test case for list_schools_offline
 
         Retrieve all offline schools  # noqa: E501
         """
         pass
 
-    def test_schools_pending_get(self):
-        """Test case for schools_pending_get
+    def test_list_schools_pending(self):
+        """Test case for list_schools_pending
 
         Retrieve all schools with pending access request  # noqa: E501
         """
         pass
 
-    def test_schools_revoked_get(self):
-        """Test case for schools_revoked_get
+    def test_list_schools_revoked(self):
+        """Test case for list_schools_revoked
 
         Retrieve all schools with revoked access  # noqa: E501
         """
         pass
 
-    def test_schools_school_id_request_access_post(self):
-        """Test case for schools_school_id_request_access_post
+    def test_request_school_access(self):
+        """Test case for request_school_access
 
         Request access to a school  # noqa: E501
         """
         pass
 
-    def test_schools_school_id_revoke_access_delete(self):
-        """Test case for schools_school_id_revoke_access_delete
+    def test_revoke_school_access(self):
+        """Test case for revoke_school_access
 
         Revoke access to a school  # noqa: E501
         """

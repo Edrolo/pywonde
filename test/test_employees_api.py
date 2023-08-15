@@ -24,15 +24,15 @@ class TestEmployeesApi(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_schools_school_id_employees_employee_id_get(self):
-        """Test case for schools_school_id_employees_employee_id_get
+    def test_get_school_employee(self):
+        """Test case for get_school_employee
 
         Get specific employee for a school  # noqa: E501
         """
         pass
 
-    def test_schools_school_id_employees_get(self):
-        """Test case for schools_school_id_employees_get
+    def test_list_school_employees(self):
+        """Test case for list_school_employees
 
         Get all employees for a school  # noqa: E501
         """

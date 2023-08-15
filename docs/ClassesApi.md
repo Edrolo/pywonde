@@ -4,12 +4,12 @@ All URIs are relative to *https://api.wonde.com/v1.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**schools_school_id_classes_class_id_get**](ClassesApi.md#schools_school_id_classes_class_id_get) | **GET** /schools/{school_id}/classes/{class_id} | Get specific class for a school
-[**schools_school_id_classes_get**](ClassesApi.md#schools_school_id_classes_get) | **GET** /schools/{school_id}/classes | Get all classes for a school
+[**get_school_class**](ClassesApi.md#get_school_class) | **GET** /schools/{school_id}/classes/{class_id} | Get specific class for a school
+[**list_school_classes**](ClassesApi.md#list_school_classes) | **GET** /schools/{school_id}/classes | Get all classes for a school
 
 
-# **schools_school_id_classes_class_id_get**
-> SchoolsSchoolIdClassesClassIdGet200Response schools_school_id_classes_class_id_get(school_id, class_id, include=include)
+# **get_school_class**
+> GetSchoolClass200Response get_school_class(school_id, class_id, include=include)
 
 Get specific class for a school
 
@@ -21,7 +21,7 @@ Get specific class for a school
 import time
 import os
 import wonde
-from wonde.models.schools_school_id_classes_class_id_get200_response import SchoolsSchoolIdClassesClassIdGet200Response
+from wonde.models.get_school_class200_response import GetSchoolClass200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -57,11 +57,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Get specific class for a school
-        api_response = api_instance.schools_school_id_classes_class_id_get(school_id, class_id, include=include)
-        print("The response of ClassesApi->schools_school_id_classes_class_id_get:\n")
+        api_response = api_instance.get_school_class(school_id, class_id, include=include)
+        print("The response of ClassesApi->get_school_class:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling ClassesApi->schools_school_id_classes_class_id_get: %s\n" % e)
+        print("Exception when calling ClassesApi->get_school_class: %s\n" % e)
 ```
 
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsSchoolIdClassesClassIdGet200Response**](SchoolsSchoolIdClassesClassIdGet200Response.md)
+[**GetSchoolClass200Response**](GetSchoolClass200Response.md)
 
 ### Authorization
 
@@ -93,8 +93,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **schools_school_id_classes_get**
-> SchoolsSchoolIdClassesGet200Response schools_school_id_classes_get(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
+# **list_school_classes**
+> ListSchoolClasses200Response list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
 
 Get all classes for a school
 
@@ -106,7 +106,7 @@ Get all classes for a school
 import time
 import os
 import wonde
-from wonde.models.schools_school_id_classes_get200_response import SchoolsSchoolIdClassesGet200Response
+from wonde.models.list_school_classes200_response import ListSchoolClasses200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -148,11 +148,11 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Get all classes for a school
-        api_response = api_instance.schools_school_id_classes_get(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
-        print("The response of ClassesApi->schools_school_id_classes_get:\n")
+        api_response = api_instance.list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
+        print("The response of ClassesApi->list_school_classes:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling ClassesApi->schools_school_id_classes_get: %s\n" % e)
+        print("Exception when calling ClassesApi->list_school_classes: %s\n" % e)
 ```
 
 
@@ -172,7 +172,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SchoolsSchoolIdClassesGet200Response**](SchoolsSchoolIdClassesGet200Response.md)
+[**ListSchoolClasses200Response**](ListSchoolClasses200Response.md)
 
 ### Authorization
 

@@ -48,22 +48,25 @@ from wonde.models.contact import Contact
 from wonde.models.date_time_object import DateTimeObject
 from wonde.models.deletion import Deletion
 from wonde.models.employee import Employee
-from wonde.models.get_school_lessons200_response import GetSchoolLessons200Response
-from wonde.models.get_school_lessons200_response_meta import GetSchoolLessons200ResponseMeta
-from wonde.models.get_subjects200_response import GetSubjects200Response
+from wonde.models.get_school_acl200_response import GetSchoolAcl200Response
+from wonde.models.get_school_class200_response import GetSchoolClass200Response
+from wonde.models.get_school_meta200_response import GetSchoolMeta200Response
+from wonde.models.get_school_permissions200_response import GetSchoolPermissions200Response
 from wonde.models.lesson import Lesson
-from wonde.models.list_students200_response import ListStudents200Response
+from wonde.models.list_school_classes200_response import ListSchoolClasses200Response
+from wonde.models.list_school_deletions200_response import ListSchoolDeletions200Response
+from wonde.models.list_school_employees200_response import ListSchoolEmployees200Response
+from wonde.models.list_school_lessons200_response import ListSchoolLessons200Response
+from wonde.models.list_school_lessons200_response_meta import ListSchoolLessons200ResponseMeta
+from wonde.models.list_school_students200_response import ListSchoolStudents200Response
+from wonde.models.list_school_subjects200_response import ListSchoolSubjects200Response
+from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.models.meta import Meta
-from wonde.models.meta_schools_school_id_acl_get200_response import (
-    MetaSchoolsSchoolIdAclGet200Response,
-)
-from wonde.models.meta_schools_school_id_get200_response import MetaSchoolsSchoolIdGet200Response
-from wonde.models.meta_schools_school_id_permissions_get200_response import (
-    MetaSchoolsSchoolIdPermissionsGet200Response,
-)
 from wonde.models.model_class import ModelClass
 from wonde.models.pagination import Pagination
 from wonde.models.permission import Permission
+from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
+from wonde.models.request_school_access_request import RequestSchoolAccessRequest
 from wonde.models.school import School
 from wonde.models.school_address import SchoolAddress
 from wonde.models.school_address_address_country import SchoolAddressAddressCountry
@@ -71,24 +74,5 @@ from wonde.models.school_extended import SchoolExtended
 from wonde.models.school_meta import SchoolMeta
 from wonde.models.school_region import SchoolRegion
 from wonde.models.school_region_identifiers import SchoolRegionIdentifiers
-from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
-from wonde.models.schools_school_id_classes_class_id_get200_response import (
-    SchoolsSchoolIdClassesClassIdGet200Response,
-)
-from wonde.models.schools_school_id_classes_get200_response import (
-    SchoolsSchoolIdClassesGet200Response,
-)
-from wonde.models.schools_school_id_deletions_get200_response import (
-    SchoolsSchoolIdDeletionsGet200Response,
-)
-from wonde.models.schools_school_id_employees_get200_response import (
-    SchoolsSchoolIdEmployeesGet200Response,
-)
-from wonde.models.schools_school_id_request_access_post200_response import (
-    SchoolsSchoolIdRequestAccessPost200Response,
-)
-from wonde.models.schools_school_id_request_access_post_request import (
-    SchoolsSchoolIdRequestAccessPostRequest,
-)
 from wonde.models.student import Student
 from wonde.models.subject import Subject

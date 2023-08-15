@@ -24,15 +24,15 @@ class TestSubjectsApi(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_get_subject(self):
-        """Test case for get_subject
+    def test_get_school_subject(self):
+        """Test case for get_school_subject
 
         Retrieve a specific subject for a school  # noqa: E501
         """
         pass
 
-    def test_get_subjects(self):
-        """Test case for get_subjects
+    def test_list_school_subjects(self):
+        """Test case for list_school_subjects
 
         Retrieve subjects for a school  # noqa: E501
         """
