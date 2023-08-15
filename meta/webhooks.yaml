@@ -1,0 +1,96 @@
+webhooks:
+  writeback:
+    payload:
+      type: object
+      properties:
+        payload_type:
+          type: string
+          enum: ['writeback']
+        writeback_id:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+
+  schoolApproved:
+    payload:
+      type: object
+      properties:
+        payload_type:
+          type: string
+          enum: ['schoolApproved']
+        school_id:
+          type: string
+        school_name:
+          type: string
+        school_token:
+          type: string
+        school_la_code:
+          type: string
+        school_urn:
+          type: string
+        school_establishment_number:
+          type: string
+
+  accessRevoked:
+    payload:
+      type: object
+      properties:
+        payload_type:
+          type: string
+          enum: ['accessRevoked']
+        school_id:
+          type: string
+        school_name:
+          type: string
+        school_la_code:
+          type: string
+        school_urn:
+          type: string
+        school_establishment_number:
+          type: string
+        revoke_reason:
+          type: string
+
+  accessDeclined:
+    payload:
+      type: object
+      properties:
+        payload_type:
+          type: string
+          enum: ['accessDeclined']
+        school_id:
+          type: string
+        school_name:
+          type: string
+        school_la_code:
+          type: string
+        school_urn:
+          type: string
+        school_establishment_number:
+          type: string
+        decline_reason:
+          type: string
+
+  schoolMigration:
+    payload:
+      type: object
+      properties:
+        payload_type:
+          type: string
+          enum: ['schoolMigration']
+        school_id:
+          type: string
+        school_name:
+          type: string
+        migrate_from:
+          type: string
+        migrate_to:
+          type: string
+        scheduled_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time

@@ -1,0 +1,1526 @@
+openapi: 3.0.0
+
+info:
+  version: 1.0.0
+  title: Wonde API
+  description: API Docs
+  x-logo:
+    url: https://docs.wonde.com/img/brand/wonde-icon-colour.svg
+
+servers:
+  # The domain required for a school is available through the region object returned by a call to
+  # the https://docs.wonde.com/docs/api/sync#schools endpoint.
+  # This domain can then be used to build the API call by inserting the domain into the following
+  # base URL: https://{domain}/v1.0/schools/
+  # Using the wrong domain for a school will return no data
+  - description: Production domain for schools in the UK and the rest of the world
+    url: https://api.wonde.com/v1.0/
+  - description: Production domain for schools in Australia and New Zealand
+    url: https://api-ap-southeast-2.wonde.com/v1.0/
+  - description: Production domain for schools in South Africa
+    url: https://api-af-south-1.wonde.com/v1.0/
+
+paths:
+  /schools/{school_id}/deletions:
+    get:
+      tags:
+        - Deletions
+      summary: Get deletions for a school
+      description: >
+        It's recommended that you use the updated_after url parameter to efficiently sync updates 
+        to datasets. The deletions endpoint exists to provide a record of when an item is deleted. 
+        
+        The deletions endpoint will have an entry for every top level item (student, contact, 
+        employee, group...) unless the object is deleted due to a parent being removed.
+        An example of this would be when a class is removed the associated lessons would be deleted
+        without an entry in the deletions endpoint.
+        
+        A `restored_at` value will be returned for the deletions of students, student pre-admissions, 
+        student leavers, contacts, employees, groups and classes when a record that was previously 
+        deleted has been restored (it became available in the MIS data again with the same MIS ID).
+        
+        It's recommended that applications perform frequent full syncs to make sure data remains accurate.
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - name: type
+          in: query
+          description: Only return records that have the provided type
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of deletions for a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Deletion'
+  /schools/all:
+    get:
+      summary: Retrieve all schools
+      tags:
+        - Schools
+      parameters:
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Postcode'
+        - $ref: '#/components/parameters/LaCode'
+        - $ref: '#/components/parameters/EstablishmentNumber'
+        - $ref: '#/components/parameters/Urn'
+      responses:
+        200:
+          description: A list of schools
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/School'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+  /schools/{school_id}:
+    get:
+      summary: Retrieve a specific school
+      tags:
+        - Schools
+      operationId: getSchool
+      parameters:
+        - name: school_id
+          in: path
+          required: true
+          description: The ID of the school to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A school
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/School'
+  /schools/approved:
+    get:
+      summary: Retrieve all approved schools
+      tags:
+        - Schools
+      parameters:
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Postcode'
+        - $ref: '#/components/parameters/LaCode'
+        - $ref: '#/components/parameters/EstablishmentNumber'
+        - $ref: '#/components/parameters/Urn'
+      responses:
+        '200':
+          $ref: '#/components/responses/SchoolList'
+  /schools/pending:
+    get:
+      summary: Retrieve all schools with pending access request
+      tags:
+        - Schools
+      parameters:
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Postcode'
+        - $ref: '#/components/parameters/LaCode'
+        - $ref: '#/components/parameters/EstablishmentNumber'
+        - $ref: '#/components/parameters/Urn'
+      responses:
+        '200':
+          $ref: '#/components/responses/SchoolList'
+  /schools/audited:
+    get:
+      summary: Retrieve all audited schools
+      tags:
+        - Schools
+      parameters:
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Postcode'
+        - $ref: '#/components/parameters/LaCode'
+        - $ref: '#/components/parameters/EstablishmentNumber'
+        - $ref: '#/components/parameters/Urn'
+      responses:
+        '200':
+          $ref: '#/components/responses/SchoolList'
+  /schools/offline:
+    get:
+      summary: Retrieve all offline schools
+      tags:
+        - Schools
+      parameters:
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Postcode'
+        - $ref: '#/components/parameters/LaCode'
+        - $ref: '#/components/parameters/EstablishmentNumber'
+        - $ref: '#/components/parameters/Urn'
+      responses:
+        '200':
+          $ref: '#/components/responses/SchoolList'
+  /schools/revoked:
+    get:
+      summary: Retrieve all schools with revoked access
+      tags:
+        - Schools
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/SchoolList'
+  /schools/declined:
+    get:
+      summary: Retrieve all schools with declined access
+      tags:
+        - Schools
+      parameters:
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/SchoolList'
+  /meta/schools/{school_id}:
+    get:
+      summary: Retrieve meta data for a school
+      tags:
+        - Schools
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+      responses:
+        200:
+          description: Meta data for a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SchoolMeta'
+  /meta/schools/{school_id}/permissions:
+    get:
+      summary: Retrieve the permissions applied to a school
+      tags:
+        - Schools
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+      responses:
+        200:
+          description: Permissions applied to a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Permission'
+  /meta/schools/{school_id}/acl:
+    get:
+      summary: Retrieve the access control list applied to a school
+      tags:
+        - Schools
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - in: query
+          name: with_user_type
+          schema:
+            type: boolean
+          description: Display the type of user
+      responses:
+        200:
+          description: Access control list for a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ACL'
+  /schools/{school_id}/request-access:
+    post:
+      summary: Request access to a school
+      tags:
+        - Schools
+      description: >
+        When requesting access to a school it is recommended that you provide details of available 
+        contacts at the school. 
+        This can speed up the approval process considerably but it is not required. 
+        The contact should be provided within an array. 
+        More than one contact can be provided.
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+      requestBody:
+        description: Contacts to add for the request
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contacts:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Contact'
+      responses:
+        200:
+          description: Response to the access request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  state:
+                    type: string
+                  message:
+                    type: string
+  /schools/{school_id}/revoke-access:
+    delete:
+      summary: Revoke access to a school
+      tags:
+        - Schools
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+      responses:
+        200:
+          description: Response to the revoke access request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  state:
+                    type: string
+                  message:
+                    type: string
+
+  /schools/{school_id}/classes:
+    get:
+      summary: Get all classes for a school
+      tags:
+        - Classes
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - name: include
+          in: query
+          description: Comma separated list of objects to include
+          schema:
+            type: string
+            enum:
+              - subject
+              - students
+              - students.contact_details
+              - students.education_details
+              - students.extended_details
+              - students.house
+              - students.registration
+              - students.year
+              - students.boarding
+              - students.campus
+              - employees
+              - employees.contact_details
+              - employees.employment_details
+              - employees.extended_details
+              - lessons
+              - lessons.room
+              - lessons.period
+        - name: has_students
+          in: query
+          description: Only get classes that have students
+          schema:
+            type: boolean  # documented as any https://docs.wonde.com/docs/api/sync#get-classes
+        - name: has_lessons
+          in: query
+          description: Only get classes that have lessons
+          schema:
+            type: boolean  # documented as any https://docs.wonde.com/docs/api/sync#get-classes
+        - name: class_name
+          in: query
+          description: Return results with the provided class name
+          schema:
+            type: string
+        - name: class_subject
+          in: query
+          description: Return results with the provided subject id
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of classes for a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Class'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+
+  /schools/{school_id}/classes/{class_id}:
+    get:
+      summary: Get specific class for a school
+      tags:
+        - Classes
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - in: path
+          name: class_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the class
+      responses:
+        200:
+          description: A class for a specific school
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+
+  /schools/{school_id}/employees:
+    get:
+      summary: Get all employees for a school
+      tags:
+        - Employees
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - name: include
+          in: query
+          description: Comma separated list of objects to include
+          schema:
+            type: string
+        - name: employment_start_before
+          in: query
+          description: Get employees who have started before a date
+          schema:
+            type: string
+            format: date
+        - name: employment_start_after
+          in: query
+          description: Get employees who have started after a date
+          schema:
+            type: string
+            format: date
+        - name: has_role
+          in: query
+          description: Only return employees that have a role
+          schema:
+            type: boolean
+        - name: has_contract
+          in: query
+          description: Only return employees that have a contract
+          schema:
+            type: boolean
+        - name: has_class
+          in: query
+          description: Only return employees that have one or more classes
+          schema:
+            type: boolean
+        - name: has_group
+          in: query
+          description: Only return employees that have one or more groups
+          schema:
+            type: boolean
+        - name: user_defined_field
+          in: query
+          description: Filter employees by user defined field key
+          schema:
+            type: string
+        - name: only_user_defined_fields
+          in: query
+          description: Filter user defined fields by comma separated list
+          schema:
+            type: string
+        - name: only_mis_ids
+          in: query
+          description: Filter MIS ids by comma separated list
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of employees for a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Employee'
+
+  /schools/{school_id}/employees/{employee_id}:
+    get:
+      summary: Get specific employee for a school
+      description: >
+        You need the employees read permission to view this object.
+        To retrieve the secondary and tertiary ids please add extra_ids=true to the url.
+      tags:
+        - Employees
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - in: path
+          name: employee_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the employee
+      responses:
+        200:
+          description: An employee for a specific school
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+
+  /schools/{school_id}/students:
+    get:
+      summary: Retrieve a list of students for a specific school
+      tags:
+        - Students
+      operationId: listStudents
+      parameters:
+        - name: school_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the school.
+        - name: updated_after
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Return rows modified after date.
+        - name: updated_before
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Return rows modified before date.
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+          description: Amount of rows to return.
+        - name: include
+          in: query
+          description: Comma separated list of objects to include.
+          schema:
+            type: string
+            enum:
+              - classes
+              - classes.employees
+              - classes.subject
+              - education_details
+              - contact_details
+              - attendance_summary
+              - extended_details
+              - contacts
+              - contacts.contact_details
+              - year
+              - year.employees
+              - house
+              - house.employees
+              - registration
+              - registration.employees
+              - boarding
+              - boarding.employees
+              - groups
+              - groups.employees
+              - campus
+              - permissions
+              - identifiers
+              - behaviours
+              - behaviours.employees
+              - achievements
+              - achievements.employees
+              - photo
+              - sen_needs
+              - siblings
+              - medical_conditions
+              - medical_conditions.notes
+              - medical_events
+              - medical_events.notes
+              - medical_notes
+              - doctors
+              - in_care_date_ranges
+              - sen_date_ranges
+              - fsm_date_ranges
+              - user_defined_fields
+              - results
+              - results.aspect
+              - results.resultset
+              - exclusions
+              - child_protection_plan_date_ranges
+              - upfsm_date_ranges
+        - name: aspect_id
+          in: query
+          schema:
+            type: string
+          description: If including results, restrict to those for this aspect ID only.
+        - name: user_defined_field
+          in: query
+          schema:
+            type: string
+          description: Filter students by user defined field key.
+        - name: only_user_defined_fields
+          in: query
+          schema:
+            type: string
+          description: Filter user defined fields by comma separated list.
+        - name: only_upns
+          in: query
+          schema:
+            type: string
+          description: Filter UPNs by comma separated list.
+        - name: only_mis_ids
+          in: query
+          schema:
+            type: string
+          description: Filter MIS ids by comma separated list.
+      responses:
+        '200':
+          description: A list of students
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Student'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+
+  /schools/{school_id}/students/{student_id}:
+    get:
+      summary: Retrieve a specific student in a specific school
+      tags:
+        - Students
+      operationId: getStudent
+      parameters:
+        - name: school_id
+          in: path
+          required: true
+          description: The ID of the school to retrieve the student from
+          schema:
+            type: string
+        - name: student_id
+          in: path
+          required: true
+          description: The ID of the student to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A student
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+
+  /schools/{school_id}/subjects:
+    get:
+      summary: Retrieve subjects for a school
+      operationId: getSubjects
+      tags:
+        - Subjects
+      parameters:
+        - name: school_id
+          in: path
+          description: ID of the school to retrieve subjects for
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - name: include
+          in: query
+          description: Comma separated list of objects to include.
+          required: false
+          schema:
+            type: string
+        - name: subject_code
+          in: query
+          description: Return results with the provided subject code.
+          required: false
+          schema:
+            type: string
+        - name: subject_name
+          in: query
+          description: Return results with the provided subject name.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subject'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+
+  /schools/{school_id}/subjects/{subject_id}:
+    get:
+      summary: Retrieve a specific subject for a school
+      operationId: getSubject
+      tags:
+        - Subjects
+      parameters:
+        - name: school_id
+          in: path
+          description: ID of the school to retrieve the subject from
+          required: true
+          schema:
+            type: string
+        - name: subject_id
+          in: path
+          description: ID of the subject to retrieve
+          required: true
+          schema:
+            type: string
+        - name: include  # unconfirmed
+          in: query
+          description: Comma separated list of objects to include.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subject'
+
+  /schools/{school_id}/lessons:
+    get:
+      summary: Returns a list of lessons for a specific school
+      tags:
+        - Lessons
+      operationId: getSchoolLessons
+      parameters:
+        - name: school_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the school.
+        - name: updated_after
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Return rows modified after date.
+        - name: updated_before
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Return rows modified before date.
+        - name: lessons_start_after
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Return rows starting after date.
+        - name: lessons_start_before
+          in: query
+          schema:
+            type: string
+            format: date
+          description: Return rows starting before date.
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+          description: Amount of rows to return.
+        - name: include
+          in: query
+          schema:
+            type: string
+            enum: [class, employee, period, room]
+          description: Comma separated list of objects to include.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Lesson'
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+                      includes:
+                        type: array
+                        items:
+                          type: string
+                          enum: [class, employee, period, room]
+
+  /schools/{school_id}/lessons/{lesson_id}:
+    get:
+      summary: Returns a specific lesson for a specific school
+      tags:
+        - Lessons
+      operationId: getSchoolLessonById
+      parameters:
+        - name: school_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the school.
+        - name: lesson_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the lesson.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+
+
+security:
+  - BearerAuth: []
+  - BasicAuth: []
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      # curl https://api.wonde.com/v1.0 -H Authorization: Bearer 7e76896f9aca62569048c667db292d72dd84f224
+    BasicAuth:
+      type: http
+      scheme: basic
+      # send the username and password combination delimited by a colon character
+      # i.e; (username:password). We only require an access token, so use this as the username
+      # and leave the password field blank (make sure to include the colon character though).
+      # curl https://api.wonde.com/v1.0 -u 7e76896f9aca62569048c667db292d72dd84f224:
+
+  schemas:
+    DateTimeObject:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: The date and time value, apparently with no timezone
+          example: 2015-10-29 14:53:59.000000
+        timezone_type:
+          type: integer
+          description: The type of the timezone, represented by an integer. Not sure of mapping.
+          example: 3
+        timezone:
+          type: string
+          description: The timezone in which the date and time is represented.
+          example: UTC
+
+    Deletion:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+        mis_id:
+          type: string
+        deleted_at:
+          $ref: '#/components/schemas/DateTimeObject'
+        restored_at:
+          $ref: '#/components/schemas/DateTimeObject'
+
+    School:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        establishment_number:
+          type: integer
+        urn:
+          type: integer
+        phase_of_education:
+          type: string
+        la_code:
+          type: integer
+        timezone:
+          type: string
+        mis:
+          type: string
+        address:
+          type: object
+          properties:
+            address_line_1:
+              type: string
+              example: St James's Passage
+            address_line_2:
+              type: string
+              example: Duke's Place
+            address_town:
+              type: string
+              example: London
+            address_postcode:
+              type: string
+              example: EC3A 5DE
+            address_country:
+              type: object
+              example:
+              properties:
+                code:
+                  type: string
+                  example: GBR
+                name:
+                  type: string
+                  example: United Kingdom
+        extended:
+          type: object
+          properties:
+            allows_writeback:
+              type: boolean
+            has_timetables:
+              type: boolean
+            has_lesson_attendance:
+              type: boolean
+
+        region:
+          type: object
+          properties:
+            code:
+              type: string
+              example: GBR
+            domain:
+              type: string
+              example: api.wonde.com
+            school_url:
+              type: string
+              example: https://api.wonde.com/v1.0/schools/A1300691890
+            identifiers:
+              type: object
+              properties:
+                la_code:
+                  type: integer
+                  example: 201
+                establishment_number:
+                  type: integer
+                  example: 3614
+                urn:
+                  type: integer
+                  example: 10000
+    SchoolMeta:
+      type: object
+      properties:
+        online:
+          type: boolean
+          description: If the school is online
+        approved:
+          type: boolean
+          description: If the school has approved access to application
+        audited:
+          type: boolean
+          description: If the school has been audited for data completeness
+        custom_attendance_codes:
+          type: boolean
+          description: If the school has their own custom attendance codes
+
+    Permission:
+      type: object
+      properties:
+        identity:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        parent:
+          type: string
+        group:
+          type: string
+        active_from:
+          $ref: '#/components/schemas/DateTimeObject'
+        optional:
+          type: boolean
+        approved:
+          type: boolean
+        audited:
+          type: boolean
+
+    ACL:
+      type: object
+      properties:
+        mode:
+          type: string
+        ids:
+          type: array
+          items:
+            oneOf:
+              - type: string
+#              - type: object
+#                properties:
+#                  id:
+#                    type: string
+#                  type:
+#                    type: string
+
+    Contact:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: First name of contact
+        last_name:
+          type: string
+          description: Last name of contact
+        phone_number:
+          type: string
+          description: Phone number of contact
+        email_address:
+          type: string
+          description: Email address of contact
+        notes:
+          type: string
+          description: Notes for the contact
+
+    Class:
+      type: object
+      description: >
+        https://docs.wonde.com/docs/api/sync#get-classes
+        Related objects
+        
+        Name                            Relationship
+        --------------------------------------------
+        subject                         one
+        students                        many
+        students.contact_details        many > one
+        students.education_details      many > one
+        students.extended_details       many > one
+        students.house                  many > one
+        students.registration           many > one
+        students.year                   many > one
+        students.boarding               many > one
+        students.campus                 many > one
+        employees                       many
+        employees.contact_details       many > one
+        employees.employment_details    many > one
+        employees.extended_details      many > one
+        lessons                         many
+        lessons.room                    many > one
+        lessons.period                  many > one
+      properties:
+        id:
+          type: string
+          description: The ID of the object.
+          example: A1329183376
+        mis_id:
+          type: string
+          description: The ID in the MIS.
+          example: 8925
+        name:
+          type: string
+          description: Class name.
+          example: 10A/Ar1
+        code:
+          type: string
+          description: Class code.
+          example: 10A/Ar1
+        description:
+          type: string
+          description: Class description.
+          example: 10A/Ar1
+        subject:
+          type: string
+          description: The subject for the class.
+          example: Mathematics
+        alternative:
+          type: boolean
+          description: The class is an alternative to another class.
+          example: false
+        restored_at: # When the Wonde ID was restored from the deletion's data.
+          $ref: '#/components/schemas/DateTimeObject'
+        created_at: # When the record was added to Wonde.
+          $ref: '#/components/schemas/DateTimeObject'
+        updated_at: # When the record was last updated on Wonde.
+          $ref: '#/components/schemas/DateTimeObject'
+
+    Employee:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the object.
+          example: A1329183376
+        upi:
+          type: string
+          description: Unique Person Identifier - If a person is a contact and an employee they will have the same UPI but different ids.
+          example: 5cc4ab015f8f7870b581e30e0ef474fa
+        mis_id:
+          type: string
+          description: The ID in the Management Information System (MIS).
+          example: 26
+        title:
+          type: string
+          description: Employee's title.
+          example: Mrs
+        initials:
+          type: string
+          description: Employee's initials.
+          example: SS
+        surname:
+          type: string
+          description: Employee's surname.
+          example: Smith
+        forename:
+          type: string
+          description: Employee's forename.
+          example: Sally
+        middle_names:
+          type: string
+          description: Employee's middle names.
+          example: Victoria
+        legal_surname:
+          type: string
+          description: Employee's legal surname.
+          example: Smith
+        legal_forename:
+          type: string
+          description: Employee's legal forename.
+          example: Sally
+        gender:
+          type: string
+          description: Employee's gender. (male|female)
+          example: female
+        date_of_birth:
+          type: string
+          format: date-time
+          description: Employee's date of birth.
+          example: 1963-02-11T00:00:00.000Z
+        restored_at: # When the Wonde ID was restored from the deletion's data.
+          $ref: '#/components/schemas/DateTimeObject'
+        created_at: # When the record was added to Wonde.
+          $ref: '#/components/schemas/DateTimeObject'
+        updated_at: # When the record was last updated on Wonde.
+          $ref: '#/components/schemas/DateTimeObject'
+
+    Student:
+      type: object
+      description: >
+        https://docs.wonde.com/docs/api/sync#student-object
+        You need the students read permission to view this object.
+        
+        Related objects
+        
+        Name                                Relationship
+        ------------------------------------------------
+        classes                             many
+        classes.employees                   many
+        classes.subject                     many > one
+        education_details                   one
+        contact_details                     one
+        attendance_summary                  one
+        extended_details                    one
+        contacts                            many
+        contacts.contact_details            many > one
+        year                                one (nullable)
+        year.employees                      one (nullable) > many
+        house                               one (nullable)
+        house.employees                     one (nullable) > many
+        registration                        one (nullable)
+        registration.employees              one (nullable) > many
+        boarding                            one (nullable)
+        boarding.employees                  one (nullable) > many
+        groups                              many
+        groups.employees                    many > many
+        campus                              one (nullable)
+        permissions                         one
+        identifiers                         one
+        behaviours                          many
+        behaviours.employees                many > many
+        achievements                        many
+        achievements.employees              many > many
+        photo                               one
+        sen_needs                           many
+        siblings                            many
+        medical_conditions                  many
+        medical_conditions.notes            many > many
+        medical_events                      many
+        medical_events.notes                many > many
+        medical_notes                       many
+        doctors                             many
+        in_care_date_ranges                 many
+        sen_date_ranges                     many
+        fsm_date_ranges                     many
+        user_defined_fields                 many
+        results                             many
+        results.aspect                      many > one
+        results.resultset                   many > one
+        exclusions                          many
+        child_protection_plan_date_ranges   many
+        upfsm_date_ranges                   many
+
+      properties:
+        id:
+          type: string
+          description: The ID of the object.
+          example: A1749191433
+        upi:
+          type: string
+          description: >
+            Unique Person Identifier - This field is the mis_id and school_id combined to create a
+            unique hash.
+            There are benefits of using the UPI when matching users, for example, when a student is
+            dis-enrolled the student will be removed from Wonde.
+            If that student is then re-enrolled the Wonde ID will change but the UPI will remain 
+            the same. 
+            Make sure to not mistake this field with UPN.
+          example: 8d444684b7aa79bc97f8594a4aab7ce3
+        mis_id:
+          type: string
+          description: The student’s ID in the MIS.
+          example: 9919
+        initials:
+          type: string
+          nullable: true
+          description: The student’s initials.
+          example: TS
+        surname:
+          type: string
+          nullable: true
+          description: The student’s last name.
+          example: Smith
+        forename:
+          type: string
+          nullable: true
+          description: The student’s first name.
+          example: Tom
+        middle_names:
+          type: string
+          nullable: true
+          description: The student’s middle names.
+          example: null
+        legal_surname:
+          type: string
+          nullable: true
+          description: The student’s legal last name.
+          example: Smith
+        legal_forename:
+          type: string
+          nullable: true
+          description: The student’s legal first name.
+          example: Tom
+        gender:
+          type: string
+          enum: [male, female]
+          description: The student’s gender. Possible values are 'MALE' or 'FEMALE'.
+          example: MALE
+        date_of_birth:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: The student’s date of birth.
+        restored_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the Wonde ID was restored from the deletion's data.
+        created_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the record was added to Wonde.
+        updated_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the record was last updated on Wonde.
+
+    Subject:
+      type: object
+      description: <
+        https://docs.wonde.com/docs/api/sync#subject-object
+        
+        Related objects
+
+        Name                    Relationship
+        -----------------------------------------
+        classes                    many
+        classes.lessons            many > many
+        classes.lessons.period    many > many > one
+        classes.lessons.room    many > many > one
+      properties:
+        id:
+          type: string
+          description: The ID of the object.
+          example: A1362597725
+        mis_id:
+          type: string
+          description: The subject ID in the MIS.
+          example: 520
+        code:
+          type: string
+          description: Short identifier for the subject.
+          example: Bi
+        name:
+          type: string
+          description: The subject’s name.
+          example: Biology
+        active:
+          type: boolean
+          nullable: true
+          description: Is the subject active.
+        created_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the record was added to Wonde.
+        updated_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the record was last updated on Wonde.
+
+    Lesson:
+      type: object
+      description: >
+        https://docs.wonde.com/docs/api/sync#lesson-object
+        
+        Related objects
+        
+        Name      Relationship
+        ----------------------
+        period    one
+        class     one
+        employee  one
+        room      one
+      properties:
+        id:
+          type: string
+          description: The ID of the object.
+        room:
+          type: string
+          nullable: true
+          description: The ID of the room the lesson will be taught in.
+        period:
+          type: string
+          nullable: true
+          description: The ID of the period the lesson occurs during.
+        employee_id:
+          type: string
+          nullable: true
+          description: The ID of the main class teacher for this lesson.
+        period_instance_id:
+          type: integer
+          nullable: true
+          description: >
+            All lessons happening during the same period have the same period_instance_id. 
+            This value can be used to match lessons and attendance as SIMS records a mark for a 
+            period instance not a lesson instance.
+        alternative:
+          type: boolean
+          nullable: true
+          description: The lesson is an alternative to another lesson.
+        start_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the lesson starts.
+        end_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the lesson ends.
+        created_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the record was added to Wonde.
+        updated_at:
+          $ref: '#/components/schemas/DateTimeObject'
+          # description: When the record was last updated on Wonde.
+
+    Meta:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        includes:
+          type: array
+          items:
+            type: string
+
+    Pagination:
+      type: object
+      description: >
+        https://docs.wonde.com/docs/api/sync#pagination
+        The pagination object is returned as part of the response body when pagination is enabled. 
+        By default, 50 objects are returned per page. If the response contains 50 objects or fewer, 
+        no pagination object will be returned. If the response contains more than 50 objects, the 
+        first 50 will be returned along with the pagination object.
+        You can request a different pagination limit or force pagination by appending ?per_page= to 
+        the request with the number of items you would like per page. For instance, to show only two 
+        results per page, you could add ?per_page=2 to the end of your query. 
+        The maximum number of results per page is set per-endpoint.
+      properties:
+        next:
+          type: string
+          description: The next page in the paginated response.
+          example: https://api.wonde.com/v1.0/schools/{school_id}/students/?page=2
+        previous:
+          type: string
+          description: The previous page in the paginated response.
+          example: null
+        more:
+          type: boolean
+          description: Is there another page after the current page.
+        per_page:
+          type: integer
+          description: How many rows are currently being returned per page/response.
+          example: 2
+        current_page:
+          type: integer
+          description: The current paginated page number.
+          example: 1
+
+  responses:
+    SchoolList:
+      description: A list of schools
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/School'
+              meta:
+                $ref: '#/components/schemas/Meta'
+
+  parameters:
+
+    UpdatedAfter:
+      name: updated_after
+      in: query
+      description: Return rows modified after date
+      schema:
+        type: string
+        format: date
+    UpdatedBefore:
+      name: updated_before
+      in: query
+      description: Return rows modified before date
+      schema:
+        type: string
+        format: date
+    PerPage:
+      name: per_page
+      in: query
+      description: Amount of rows to return
+      schema:
+        type: integer
+    Postcode:
+      name: postcode
+      in: query
+      description: Return results matching postcode search string
+      schema:
+        type: string
+    LaCode:
+      name: la_code
+      in: query
+      description: Return results with provided la_code
+      schema:
+        type: string
+    EstablishmentNumber:
+      name: establishment_number
+      in: query
+      description: Return results with provided establishment_number
+      schema:
+        type: string
+    Urn:
+      name: urn
+      in: query
+      description: Return results with provided unique reference number
+      schema:
+        type: integer
