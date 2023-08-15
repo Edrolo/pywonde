@@ -14,6 +14,9 @@ Do not edit the class manually.
 
 
 # import models into model package
+from wonde.models.acl import ACL
+from wonde.models.acl_ids_inner import ACLIdsInner
+from wonde.models.acl_ids_inner_one_of import ACLIdsInnerOneOf
 from wonde.models.class_lessons import ClassLessons
 from wonde.models.class_students import ClassStudents
 from wonde.models.class_subject import ClassSubject
@@ -28,6 +31,9 @@ from wonde.models.get_subjects200_response import GetSubjects200Response
 from wonde.models.lesson import Lesson
 from wonde.models.list_students200_response import ListStudents200Response
 from wonde.models.meta import Meta
+from wonde.models.meta_schools_school_id_acl_get200_response import (
+    MetaSchoolsSchoolIdAclGet200Response,
+)
 from wonde.models.meta_schools_school_id_get200_response import MetaSchoolsSchoolIdGet200Response
 from wonde.models.meta_schools_school_id_permissions_get200_response import (
     MetaSchoolsSchoolIdPermissionsGet200Response,

@@ -15,11 +15,13 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Any
+from typing import Any, List, Optional
 
 from pydantic import BaseModel, Field, StrictStr, ValidationError, validator
 
-ACLIDSINNER_ONE_OF_SCHEMAS = ['str']
+from wonde.models.acl_ids_inner_one_of import ACLIdsInnerOneOf
+
+ACLIDSINNER_ONE_OF_SCHEMAS = ['ACLIdsInnerOneOf', 'str']
 
 
 class ACLIdsInner(BaseModel):
@@ -28,9 +30,11 @@ class ACLIdsInner(BaseModel):
     """
 
     # data type: str
-    oneof_schema_1_validator: StrictStr | None = None
+    oneof_schema_1_validator: Optional[StrictStr] = None
+    # data type: ACLIdsInnerOneOf
+    oneof_schema_2_validator: Optional[ACLIdsInnerOneOf] = None
     actual_instance: Any
-    one_of_schemas: list[str] = Field(ACLIDSINNER_ONE_OF_SCHEMAS, const=True)
+    one_of_schemas: List[str] = Field(ACLIDSINNER_ONE_OF_SCHEMAS, const=True)
 
     class Config:
         validate_assignment = True
@@ -60,16 +64,21 @@ class ACLIdsInner(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # validate data type: ACLIdsInnerOneOf
+        if not isinstance(v, ACLIdsInnerOneOf):
+            error_messages.append(f'Error! Input type `{type(v)}` is not `ACLIdsInnerOneOf`')
+        else:
+            match += 1
         if match > 1:
             # more than 1 match
             raise ValueError(
-                'Multiple matches found when setting `actual_instance` in ACLIdsInner with oneOf schemas: str. Details: '
+                'Multiple matches found when setting `actual_instance` in ACLIdsInner with oneOf schemas: ACLIdsInnerOneOf, str. Details: '
                 + ', '.join(error_messages)
             )
         elif match == 0:
             # no match
             raise ValueError(
-                'No match found when setting `actual_instance` in ACLIdsInner with oneOf schemas: str. Details: '
+                'No match found when setting `actual_instance` in ACLIdsInner with oneOf schemas: ACLIdsInnerOneOf, str. Details: '
                 + ', '.join(error_messages)
             )
         else:
@@ -95,17 +104,23 @@ class ACLIdsInner(BaseModel):
             match += 1
         except (ValidationError, ValueError) as e:
             error_messages.append(str(e))
+        # deserialize data into ACLIdsInnerOneOf
+        try:
+            instance.actual_instance = ACLIdsInnerOneOf.from_json(json_str)
+            match += 1
+        except (ValidationError, ValueError) as e:
+            error_messages.append(str(e))
 
         if match > 1:
             # more than 1 match
             raise ValueError(
-                'Multiple matches found when deserializing the JSON string into ACLIdsInner with oneOf schemas: str. Details: '
+                'Multiple matches found when deserializing the JSON string into ACLIdsInner with oneOf schemas: ACLIdsInnerOneOf, str. Details: '
                 + ', '.join(error_messages)
             )
         elif match == 0:
             # no match
             raise ValueError(
-                'No match found when deserializing the JSON string into ACLIdsInner with oneOf schemas: str. Details: '
+                'No match found when deserializing the JSON string into ACLIdsInner with oneOf schemas: ACLIdsInnerOneOf, str. Details: '
                 + ', '.join(error_messages)
             )
         else:

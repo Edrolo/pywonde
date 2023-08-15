@@ -5,6 +5,7 @@ All URIs are relative to *https://api.wonde.com/v1.0*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**get_school**](SchoolsApi.md#get_school) | **GET** /schools/{school_id} | Retrieve a specific school
+[**meta_schools_school_id_acl_get**](SchoolsApi.md#meta_schools_school_id_acl_get) | **GET** /meta/schools/{school_id}/acl | Retrieve the access control list applied to a school
 [**meta_schools_school_id_get**](SchoolsApi.md#meta_schools_school_id_get) | **GET** /meta/schools/{school_id} | Retrieve meta data for a school
 [**meta_schools_school_id_permissions_get**](SchoolsApi.md#meta_schools_school_id_permissions_get) | **GET** /meta/schools/{school_id}/permissions | Retrieve the permissions applied to a school
 [**schools_all_get**](SchoolsApi.md#schools_all_get) | **GET** /schools/all | Retrieve all schools
@@ -96,6 +97,89 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A school |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **meta_schools_school_id_acl_get**
+> MetaSchoolsSchoolIdAclGet200Response meta_schools_school_id_acl_get(school_id, with_user_type=with_user_type)
+
+Retrieve the access control list applied to a school
+
+### Example
+
+* Basic Authentication (BasicAuth):
+* Bearer Authentication (BearerAuth):
+```python
+import time
+import os
+import wonde
+from wonde.models.meta_schools_school_id_acl_get200_response import MetaSchoolsSchoolIdAclGet200Response
+from wonde.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.wonde.com/v1.0
+# See configuration.py for a list of all supported configuration parameters.
+configuration = wonde.Configuration(
+    host = "https://api.wonde.com/v1.0"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure HTTP basic authorization: BasicAuth
+configuration = wonde.Configuration(
+    username = os.environ["USERNAME"],
+    password = os.environ["PASSWORD"]
+)
+
+# Configure Bearer authorization: BearerAuth
+configuration = wonde.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with wonde.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = wonde.SchoolsApi(api_client)
+    school_id = 'school_id_example' # str | The ID of the school
+    with_user_type = True # bool | Display the type of user (optional)
+
+    try:
+        # Retrieve the access control list applied to a school
+        api_response = api_instance.meta_schools_school_id_acl_get(school_id, with_user_type=with_user_type)
+        print("The response of SchoolsApi->meta_schools_school_id_acl_get:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling SchoolsApi->meta_schools_school_id_acl_get: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **school_id** | **str**| The ID of the school | 
+ **with_user_type** | **bool**| Display the type of user | [optional] 
+
+### Return type
+
+[**MetaSchoolsSchoolIdAclGet200Response**](MetaSchoolsSchoolIdAclGet200Response.md)
+
+### Authorization
+
+[BasicAuth](../README.md#BasicAuth), [BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Access control list for a specific school |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -17,18 +17,17 @@ import pprint
 import re  # noqa: F401
 from typing import Optional
 
-from pydantic import BaseModel
-
-from wonde.models.acl import ACL
+from pydantic import BaseModel, StrictStr
 
 
-class MetaSchoolsSchoolIdAclGet200Response(BaseModel):
+class ACLIdsInnerOneOf(BaseModel):
     """
-    MetaSchoolsSchoolIdAclGet200Response
+    ACLIdsInnerOneOf
     """
 
-    data: Optional[ACL] = None
-    __properties = ['data']
+    id: Optional[StrictStr] = None
+    type: Optional[StrictStr] = None
+    __properties = ['id', 'type']
 
     class Config:
         """Pydantic configuration"""
@@ -45,28 +44,23 @@ class MetaSchoolsSchoolIdAclGet200Response(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> MetaSchoolsSchoolIdAclGet200Response:
-        """Create an instance of MetaSchoolsSchoolIdAclGet200Response from a JSON string"""
+    def from_json(cls, json_str: str) -> ACLIdsInnerOneOf:
+        """Create an instance of ACLIdsInnerOneOf from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
         _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
-        # override the default output from pydantic by calling `to_dict()` of data
-        if self.data:
-            _dict['data'] = self.data.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> MetaSchoolsSchoolIdAclGet200Response:
-        """Create an instance of MetaSchoolsSchoolIdAclGet200Response from a dict"""
+    def from_dict(cls, obj: dict) -> ACLIdsInnerOneOf:
+        """Create an instance of ACLIdsInnerOneOf from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return MetaSchoolsSchoolIdAclGet200Response.parse_obj(obj)
+            return ACLIdsInnerOneOf.parse_obj(obj)
 
-        _obj = MetaSchoolsSchoolIdAclGet200Response.parse_obj(
-            {'data': ACL.from_dict(obj.get('data')) if obj.get('data') is not None else None}
-        )
+        _obj = ACLIdsInnerOneOf.parse_obj({'id': obj.get('id'), 'type': obj.get('type')})
         return _obj

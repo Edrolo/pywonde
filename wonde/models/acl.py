@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictStr, conlist
 
@@ -26,8 +27,8 @@ class ACL(BaseModel):
     ACL
     """
 
-    mode: StrictStr | None = None
-    ids: conlist(ACLIdsInner) | None = None
+    mode: Optional[StrictStr] = None
+    ids: Optional[conlist(ACLIdsInner)] = None
     __properties = ['mode', 'ids']
 
     class Config:

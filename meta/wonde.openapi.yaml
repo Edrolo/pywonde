@@ -244,33 +244,33 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Permission'
-#  /meta/schools/{school_id}/acl:
-#    get:
-#      summary: Retrieve the access control list applied to a school
-#      tags:
-#        - Schools
-#      parameters:
-#        - in: path
-#          name: school_id
-#          schema:
-#            type: string
-#          required: true
-#          description: The ID of the school
-#        - in: query
-#          name: with_user_type
-#          schema:
-#            type: boolean
-#          description: Display the type of user
-#      responses:
-#        200:
-#          description: Access control list for a specific school
-#          content:
-#            application/json:
-#              schema:
-#                type: object
-#                properties:
-#                  data:
-#                    $ref: '#/components/schemas/ACL'
+  /meta/schools/{school_id}/acl:
+    get:
+      summary: Retrieve the access control list applied to a school
+      tags:
+        - Schools
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - in: query
+          name: with_user_type
+          schema:
+            type: boolean
+          description: Display the type of user
+      responses:
+        200:
+          description: Access control list for a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ACL'
   /schools/{school_id}/request-access:
     post:
       summary: Request access to a school
@@ -1079,22 +1079,22 @@ components:
         audited:
           type: boolean
 
-#    ACL:
-#      type: object
-#      properties:
-#        mode:
-#          type: string
-#        ids:
-#          type: array
-#          items:
-#            oneOf:
-#              - type: string
-#              - type: object
-#                properties:
-#                  id:
-#                    type: string
-#                  type:
-#                    type: string
+    ACL:
+      type: object
+      properties:
+        mode:
+          type: string
+        ids:
+          type: array
+          items:
+            oneOf:
+              - type: string
+              - type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
 
     Contact:
       type: object
