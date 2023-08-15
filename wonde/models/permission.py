@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictBool, StrictStr
 
@@ -26,15 +27,15 @@ class Permission(BaseModel):
     Permission
     """
 
-    identity: StrictStr | None = None
-    name: StrictStr | None = None
-    description: StrictStr | None = None
-    parent: StrictStr | None = None
-    group: StrictStr | None = None
-    active_from: DateTimeObject | None = None
-    optional: StrictBool | None = None
-    approved: StrictBool | None = None
-    audited: StrictBool | None = None
+    identity: Optional[StrictStr] = None
+    name: Optional[StrictStr] = None
+    description: Optional[StrictStr] = None
+    parent: Optional[StrictStr] = None
+    group: Optional[StrictStr] = None
+    active_from: Optional[DateTimeObject] = None
+    optional: Optional[StrictBool] = None
+    approved: Optional[StrictBool] = None
+    audited: Optional[StrictBool] = None
     __properties = [
         'identity',
         'name',

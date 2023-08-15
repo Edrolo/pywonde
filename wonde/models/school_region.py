@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictStr
 
@@ -26,10 +27,10 @@ class SchoolRegion(BaseModel):
     SchoolRegion
     """
 
-    code: StrictStr | None = None
-    domain: StrictStr | None = None
-    school_url: StrictStr | None = None
-    identifiers: SchoolRegionIdentifiers | None = None
+    code: Optional[StrictStr] = None
+    domain: Optional[StrictStr] = None
+    school_url: Optional[StrictStr] = None
+    identifiers: Optional[SchoolRegionIdentifiers] = None
     __properties = ['code', 'domain', 'school_url', 'identifiers']
 
     class Config:

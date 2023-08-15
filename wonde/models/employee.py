@@ -16,6 +16,7 @@ import json
 import pprint
 import re  # noqa: F401
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictStr
 
@@ -27,26 +28,26 @@ class Employee(BaseModel):
     Employee
     """
 
-    id: StrictStr | None = Field(None, description='The ID of the object.')
-    upi: StrictStr | None = Field(
+    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    upi: Optional[StrictStr] = Field(
         None,
         description='Unique Person Identifier - If a person is a contact and an employee they will have the same UPI but different ids.',
     )
-    mis_id: StrictStr | None = Field(
+    mis_id: Optional[StrictStr] = Field(
         None, description='The ID in the Management Information System (MIS).'
     )
-    title: StrictStr | None = Field(None, description="Employee's title.")
-    initials: StrictStr | None = Field(None, description="Employee's initials.")
-    surname: StrictStr | None = Field(None, description="Employee's surname.")
-    forename: StrictStr | None = Field(None, description="Employee's forename.")
-    middle_names: StrictStr | None = Field(None, description="Employee's middle names.")
-    legal_surname: StrictStr | None = Field(None, description="Employee's legal surname.")
-    legal_forename: StrictStr | None = Field(None, description="Employee's legal forename.")
-    gender: StrictStr | None = Field(None, description="Employee's gender. (male|female)")
-    date_of_birth: datetime | None = Field(None, description="Employee's date of birth.")
-    restored_at: DateTimeObject | None = None
-    created_at: DateTimeObject | None = None
-    updated_at: DateTimeObject | None = None
+    title: Optional[StrictStr] = Field(None, description="Employee's title.")
+    initials: Optional[StrictStr] = Field(None, description="Employee's initials.")
+    surname: Optional[StrictStr] = Field(None, description="Employee's surname.")
+    forename: Optional[StrictStr] = Field(None, description="Employee's forename.")
+    middle_names: Optional[StrictStr] = Field(None, description="Employee's middle names.")
+    legal_surname: Optional[StrictStr] = Field(None, description="Employee's legal surname.")
+    legal_forename: Optional[StrictStr] = Field(None, description="Employee's legal forename.")
+    gender: Optional[StrictStr] = Field(None, description="Employee's gender. (male|female)")
+    date_of_birth: Optional[datetime] = Field(None, description="Employee's date of birth.")
+    restored_at: Optional[DateTimeObject] = None
+    created_at: Optional[DateTimeObject] = None
+    updated_at: Optional[DateTimeObject] = None
     __properties = [
         'id',
         'upi',

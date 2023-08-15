@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -26,7 +27,7 @@ class MetaSchoolsSchoolIdGet200Response(BaseModel):
     MetaSchoolsSchoolIdGet200Response
     """
 
-    data: SchoolMeta | None = None
+    data: Optional[SchoolMeta] = None
     __properties = ['data']
 
     class Config:

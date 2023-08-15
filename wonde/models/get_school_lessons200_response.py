@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, conlist
 
@@ -27,8 +28,8 @@ class GetSchoolLessons200Response(BaseModel):
     GetSchoolLessons200Response
     """
 
-    data: conlist(Lesson) | None = None
-    meta: GetSchoolLessons200ResponseMeta | None = None
+    data: Optional[conlist(Lesson)] = None
+    meta: Optional[GetSchoolLessons200ResponseMeta] = None
     __properties = ['data', 'meta']
 
     class Config:

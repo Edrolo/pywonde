@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictStr
 
@@ -26,11 +27,11 @@ class Deletion(BaseModel):
     Deletion
     """
 
-    type: StrictStr | None = None
-    id: StrictStr | None = None
-    mis_id: StrictStr | None = None
-    deleted_at: DateTimeObject | None = None
-    restored_at: DateTimeObject | None = None
+    type: Optional[StrictStr] = None
+    id: Optional[StrictStr] = None
+    mis_id: Optional[StrictStr] = None
+    deleted_at: Optional[DateTimeObject] = None
+    restored_at: Optional[DateTimeObject] = None
     __properties = ['type', 'id', 'mis_id', 'deleted_at', 'restored_at']
 
     class Config:

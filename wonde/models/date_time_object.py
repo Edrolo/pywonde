@@ -16,6 +16,7 @@ import json
 import pprint
 import re  # noqa: F401
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictInt, StrictStr
 
@@ -25,14 +26,14 @@ class DateTimeObject(BaseModel):
     DateTimeObject
     """
 
-    var_date: datetime | None = Field(
+    var_date: Optional[datetime] = Field(
         None, alias='date', description='The date and time value, apparently with no timezone'
     )
-    timezone_type: StrictInt | None = Field(
+    timezone_type: Optional[StrictInt] = Field(
         None,
         description='The type of the timezone, represented by an integer. Not sure of mapping.',
     )
-    timezone: StrictStr | None = Field(
+    timezone: Optional[StrictStr] = Field(
         None, description='The timezone in which the date and time is represented.'
     )
     __properties = ['date', 'timezone_type', 'timezone']

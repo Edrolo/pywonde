@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictBool, StrictStr
 
@@ -24,9 +25,9 @@ class SchoolsSchoolIdRequestAccessPost200Response(BaseModel):
     SchoolsSchoolIdRequestAccessPost200Response
     """
 
-    success: StrictBool | None = None
-    state: StrictStr | None = None
-    message: StrictStr | None = None
+    success: Optional[StrictBool] = None
+    state: Optional[StrictStr] = None
+    message: Optional[StrictStr] = None
     __properties = ['success', 'state', 'message']
 
     class Config:

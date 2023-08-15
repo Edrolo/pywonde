@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictBool
 
@@ -24,9 +25,9 @@ class SchoolExtended(BaseModel):
     SchoolExtended
     """
 
-    allows_writeback: StrictBool | None = None
-    has_timetables: StrictBool | None = None
-    has_lesson_attendance: StrictBool | None = None
+    allows_writeback: Optional[StrictBool] = None
+    has_timetables: Optional[StrictBool] = None
+    has_lesson_attendance: Optional[StrictBool] = None
     __properties = ['allows_writeback', 'has_timetables', 'has_lesson_attendance']
 
     class Config:

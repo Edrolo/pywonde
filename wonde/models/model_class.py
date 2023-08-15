@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictBool, StrictStr
 
@@ -26,18 +27,18 @@ class ModelClass(BaseModel):
     https://docs.wonde.com/docs/api/sync#get-classes Related objects Name                            Relationship -------------------------------------------- subject                         one students                        many students.contact_details        many > one students.education_details      many > one students.extended_details       many > one students.house                  many > one students.registration           many > one students.year                   many > one students.boarding               many > one students.campus                 many > one employees                       many employees.contact_details       many > one employees.employment_details    many > one employees.extended_details      many > one lessons                         many lessons.room                    many > one lessons.period                  many > one
     """
 
-    id: StrictStr | None = Field(None, description='The ID of the object.')
-    mis_id: StrictStr | None = Field(None, description='The ID in the MIS.')
-    name: StrictStr | None = Field(None, description='Class name.')
-    code: StrictStr | None = Field(None, description='Class code.')
-    description: StrictStr | None = Field(None, description='Class description.')
-    subject: StrictStr | None = Field(None, description='The subject for the class.')
-    alternative: StrictBool | None = Field(
+    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    mis_id: Optional[StrictStr] = Field(None, description='The ID in the MIS.')
+    name: Optional[StrictStr] = Field(None, description='Class name.')
+    code: Optional[StrictStr] = Field(None, description='Class code.')
+    description: Optional[StrictStr] = Field(None, description='Class description.')
+    subject: Optional[StrictStr] = Field(None, description='The subject for the class.')
+    alternative: Optional[StrictBool] = Field(
         None, description='The class is an alternative to another class.'
     )
-    restored_at: DateTimeObject | None = None
-    created_at: DateTimeObject | None = None
-    updated_at: DateTimeObject | None = None
+    restored_at: Optional[DateTimeObject] = None
+    created_at: Optional[DateTimeObject] = None
+    updated_at: Optional[DateTimeObject] = None
     __properties = [
         'id',
         'mis_id',

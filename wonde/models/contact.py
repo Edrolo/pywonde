@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictStr
 
@@ -24,11 +25,11 @@ class Contact(BaseModel):
     Contact
     """
 
-    first_name: StrictStr | None = Field(None, description='First name of contact')
-    last_name: StrictStr | None = Field(None, description='Last name of contact')
-    phone_number: StrictStr | None = Field(None, description='Phone number of contact')
-    email_address: StrictStr | None = Field(None, description='Email address of contact')
-    notes: StrictStr | None = Field(None, description='Notes for the contact')
+    first_name: Optional[StrictStr] = Field(None, description='First name of contact')
+    last_name: Optional[StrictStr] = Field(None, description='Last name of contact')
+    phone_number: Optional[StrictStr] = Field(None, description='Phone number of contact')
+    email_address: Optional[StrictStr] = Field(None, description='Email address of contact')
+    notes: Optional[StrictStr] = Field(None, description='Notes for the contact')
     __properties = ['first_name', 'last_name', 'phone_number', 'email_address', 'notes']
 
     class Config:

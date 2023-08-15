@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictStr, conlist, validator
 
@@ -26,8 +27,8 @@ class GetSchoolLessons200ResponseMeta(BaseModel):
     GetSchoolLessons200ResponseMeta
     """
 
-    pagination: Pagination | None = None
-    includes: conlist(StrictStr) | None = None
+    pagination: Optional[Pagination] = None
+    includes: Optional[conlist(StrictStr)] = None
     __properties = ['pagination', 'includes']
 
     @validator('includes')

@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
 
@@ -26,27 +27,27 @@ class Lesson(BaseModel):
     https://docs.wonde.com/docs/api/sync#lesson-object Related objects Name      Relationship ---------------------- period    one class     one employee  one room      one
     """
 
-    id: StrictStr | None = Field(None, description='The ID of the object.')
-    room: StrictStr | None = Field(
+    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    room: Optional[StrictStr] = Field(
         None, description='The ID of the room the lesson will be taught in.'
     )
-    period: StrictStr | None = Field(
+    period: Optional[StrictStr] = Field(
         None, description='The ID of the period the lesson occurs during.'
     )
-    employee_id: StrictStr | None = Field(
+    employee_id: Optional[StrictStr] = Field(
         None, description='The ID of the main class teacher for this lesson.'
     )
-    period_instance_id: StrictInt | None = Field(
+    period_instance_id: Optional[StrictInt] = Field(
         None,
         description='All lessons happening during the same period have the same period_instance_id.  This value can be used to match lessons and attendance as SIMS records a mark for a  period instance not a lesson instance. ',
     )
-    alternative: StrictBool | None = Field(
+    alternative: Optional[StrictBool] = Field(
         None, description='The lesson is an alternative to another lesson.'
     )
-    start_at: DateTimeObject | None = None
-    end_at: DateTimeObject | None = None
-    created_at: DateTimeObject | None = None
-    updated_at: DateTimeObject | None = None
+    start_at: Optional[DateTimeObject] = None
+    end_at: Optional[DateTimeObject] = None
+    created_at: Optional[DateTimeObject] = None
+    updated_at: Optional[DateTimeObject] = None
     __properties = [
         'id',
         'room',

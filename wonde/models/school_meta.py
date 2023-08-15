@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictBool
 
@@ -24,14 +25,14 @@ class SchoolMeta(BaseModel):
     SchoolMeta
     """
 
-    online: StrictBool | None = Field(None, description='If the school is online')
-    approved: StrictBool | None = Field(
+    online: Optional[StrictBool] = Field(None, description='If the school is online')
+    approved: Optional[StrictBool] = Field(
         None, description='If the school has approved access to application'
     )
-    audited: StrictBool | None = Field(
+    audited: Optional[StrictBool] = Field(
         None, description='If the school has been audited for data completeness'
     )
-    custom_attendance_codes: StrictBool | None = Field(
+    custom_attendance_codes: Optional[StrictBool] = Field(
         None, description='If the school has their own custom attendance codes'
     )
     __properties = ['online', 'approved', 'audited', 'custom_attendance_codes']

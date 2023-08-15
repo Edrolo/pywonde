@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictStr, validator
 
@@ -26,25 +27,25 @@ class Student(BaseModel):
     https://docs.wonde.com/docs/api/sync#student-object You need the students read permission to view this object. Related objects Name                                Relationship ------------------------------------------------ classes                             many classes.employees                   many classes.subject                     many > one education_details                   one contact_details                     one attendance_summary                  one extended_details                    one contacts                            many contacts.contact_details            many > one year                                one (nullable) year.employees                      one (nullable) > many house                               one (nullable) house.employees                     one (nullable) > many registration                        one (nullable) registration.employees              one (nullable) > many boarding                            one (nullable) boarding.employees                  one (nullable) > many groups                              many groups.employees                    many > many campus                              one (nullable) permissions                         one identifiers                         one behaviours                          many behaviours.employees                many > many achievements                        many achievements.employees              many > many photo                               one sen_needs                           many siblings                            many medical_conditions                  many medical_conditions.notes            many > many medical_events                      many medical_events.notes                many > many medical_notes                       many doctors                             many in_care_date_ranges                 many sen_date_ranges                     many fsm_date_ranges                     many user_defined_fields                 many results                             many results.aspect                      many > one results.resultset                   many > one exclusions                          many child_protection_plan_date_ranges   many upfsm_date_ranges                   many
     """
 
-    id: StrictStr | None = Field(None, description='The ID of the object.')
-    upi: StrictStr | None = Field(
+    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    upi: Optional[StrictStr] = Field(
         None,
         description='Unique Person Identifier - This field is the mis_id and school_id combined to create a unique hash. There are benefits of using the UPI when matching users, for example, when a student is dis-enrolled the student will be removed from Wonde. If that student is then re-enrolled the Wonde ID will change but the UPI will remain  the same.  Make sure to not mistake this field with UPN. ',
     )
-    mis_id: StrictStr | None = Field(None, description='The student`s ID in the MIS.')
-    initials: StrictStr | None = Field(None, description='The student`s initials.')
-    surname: StrictStr | None = Field(None, description='The student`s last name.')
-    forename: StrictStr | None = Field(None, description='The student`s first name.')
-    middle_names: StrictStr | None = Field(None, description='The student`s middle names.')
-    legal_surname: StrictStr | None = Field(None, description='The student`s legal last name.')
-    legal_forename: StrictStr | None = Field(None, description='The student`s legal first name.')
-    gender: StrictStr | None = Field(
+    mis_id: Optional[StrictStr] = Field(None, description='The student`s ID in the MIS.')
+    initials: Optional[StrictStr] = Field(None, description='The student`s initials.')
+    surname: Optional[StrictStr] = Field(None, description='The student`s last name.')
+    forename: Optional[StrictStr] = Field(None, description='The student`s first name.')
+    middle_names: Optional[StrictStr] = Field(None, description='The student`s middle names.')
+    legal_surname: Optional[StrictStr] = Field(None, description='The student`s legal last name.')
+    legal_forename: Optional[StrictStr] = Field(None, description='The student`s legal first name.')
+    gender: Optional[StrictStr] = Field(
         None, description="The student`s gender. Possible values are 'MALE' or 'FEMALE'."
     )
-    date_of_birth: DateTimeObject | None = None
-    restored_at: DateTimeObject | None = None
-    created_at: DateTimeObject | None = None
-    updated_at: DateTimeObject | None = None
+    date_of_birth: Optional[DateTimeObject] = None
+    restored_at: Optional[DateTimeObject] = None
+    created_at: Optional[DateTimeObject] = None
+    updated_at: Optional[DateTimeObject] = None
     __properties = [
         'id',
         'upi',

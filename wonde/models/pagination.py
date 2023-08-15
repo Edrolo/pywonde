@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
 
@@ -24,17 +25,19 @@ class Pagination(BaseModel):
     https://docs.wonde.com/docs/api/sync#pagination The pagination object is returned as part of the response body when pagination is enabled.  By default, 50 objects are returned per page. If the response contains 50 objects or fewer,  no pagination object will be returned. If the response contains more than 50 objects, the  first 50 will be returned along with the pagination object. You can request a different pagination limit or force pagination by appending ?per_page= to  the request with the number of items you would like per page. For instance, to show only two  results per page, you could add ?per_page=2 to the end of your query.  The maximum number of results per page is set per-endpoint.
     """
 
-    next: StrictStr | None = Field(None, description='The next page in the paginated response.')
-    previous: StrictStr | None = Field(
+    next: Optional[StrictStr] = Field(None, description='The next page in the paginated response.')
+    previous: Optional[StrictStr] = Field(
         None, description='The previous page in the paginated response.'
     )
-    more: StrictBool | None = Field(
+    more: Optional[StrictBool] = Field(
         None, description='Is there another page after the current page.'
     )
-    per_page: StrictInt | None = Field(
+    per_page: Optional[StrictInt] = Field(
         None, description='How many rows are currently being returned per page/response.'
     )
-    current_page: StrictInt | None = Field(None, description='The current paginated page number.')
+    current_page: Optional[StrictInt] = Field(
+        None, description='The current paginated page number.'
+    )
     __properties = ['next', 'previous', 'more', 'per_page', 'current_page']
 
     class Config:

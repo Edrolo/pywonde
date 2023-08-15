@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictInt, StrictStr
 
@@ -28,17 +29,17 @@ class School(BaseModel):
     School
     """
 
-    id: StrictStr | None = None
-    name: StrictStr | None = None
-    establishment_number: StrictInt | None = None
-    urn: StrictInt | None = None
-    phase_of_education: StrictStr | None = None
-    la_code: StrictInt | None = None
-    timezone: StrictStr | None = None
-    mis: StrictStr | None = None
-    address: SchoolAddress | None = None
-    extended: SchoolExtended | None = None
-    region: SchoolRegion | None = None
+    id: Optional[StrictStr] = None
+    name: Optional[StrictStr] = None
+    establishment_number: Optional[StrictInt] = None
+    urn: Optional[StrictInt] = None
+    phase_of_education: Optional[StrictStr] = None
+    la_code: Optional[StrictInt] = None
+    timezone: Optional[StrictStr] = None
+    mis: Optional[StrictStr] = None
+    address: Optional[SchoolAddress] = None
+    extended: Optional[SchoolExtended] = None
+    region: Optional[SchoolRegion] = None
     __properties = [
         'id',
         'name',

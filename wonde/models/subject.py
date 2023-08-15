@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, Field, StrictBool, StrictStr
 
@@ -26,13 +27,13 @@ class Subject(BaseModel):
     < https://docs.wonde.com/docs/api/sync#subject-object Related objects Name                    Relationship ----------------------------------------- classes                    many classes.lessons            many > many classes.lessons.period    many > many > one classes.lessons.room    many > many > one
     """
 
-    id: StrictStr | None = Field(None, description='The ID of the object.')
-    mis_id: StrictStr | None = Field(None, description='The subject ID in the MIS.')
-    code: StrictStr | None = Field(None, description='Short identifier for the subject.')
-    name: StrictStr | None = Field(None, description='The subject`s name.')
-    active: StrictBool | None = Field(None, description='Is the subject active.')
-    created_at: DateTimeObject | None = None
-    updated_at: DateTimeObject | None = None
+    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    mis_id: Optional[StrictStr] = Field(None, description='The subject ID in the MIS.')
+    code: Optional[StrictStr] = Field(None, description='Short identifier for the subject.')
+    name: Optional[StrictStr] = Field(None, description='The subject`s name.')
+    active: Optional[StrictBool] = Field(None, description='Is the subject active.')
+    created_at: Optional[DateTimeObject] = None
+    updated_at: Optional[DateTimeObject] = None
     __properties = ['id', 'mis_id', 'code', 'name', 'active', 'created_at', 'updated_at']
 
     class Config:

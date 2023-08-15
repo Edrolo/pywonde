@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictStr
 
@@ -26,11 +27,11 @@ class SchoolAddress(BaseModel):
     SchoolAddress
     """
 
-    address_line_1: StrictStr | None = None
-    address_line_2: StrictStr | None = None
-    address_town: StrictStr | None = None
-    address_postcode: StrictStr | None = None
-    address_country: SchoolAddressAddressCountry | None = None
+    address_line_1: Optional[StrictStr] = None
+    address_line_2: Optional[StrictStr] = None
+    address_town: Optional[StrictStr] = None
+    address_postcode: Optional[StrictStr] = None
+    address_country: Optional[SchoolAddressAddressCountry] = None
     __properties = [
         'address_line_1',
         'address_line_2',

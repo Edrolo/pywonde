@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
+from typing import Optional
 
 from pydantic import BaseModel, StrictInt
 
@@ -24,9 +25,9 @@ class SchoolRegionIdentifiers(BaseModel):
     SchoolRegionIdentifiers
     """
 
-    la_code: StrictInt | None = None
-    establishment_number: StrictInt | None = None
-    urn: StrictInt | None = None
+    la_code: Optional[StrictInt] = None
+    establishment_number: Optional[StrictInt] = None
+    urn: Optional[StrictInt] = None
     __properties = ['la_code', 'establishment_number', 'urn']
 
     class Config:
