@@ -6,10 +6,19 @@ authors = [
     "Matt Fisher <m@ttfisher.com>",
     "OpenAPI Generator Community <team@openapitools.org>"
 ]
-license = "NoLicense"
+license = "MIT"
 readme = "README.md"
 repository = "https://github.com/Edrolo/pywonde"
 keywords = ["OpenAPI", "OpenAPI-Generator", "Wonde API"]
+classifiers=[
+    'License :: OSI Approved :: MIT License',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
