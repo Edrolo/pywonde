@@ -1,0 +1,21 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.282'  # Ruff version
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+  - repo: https://github.com/grantjenks/blue
+    rev: 'v0.9.1'
+    hooks:
+      - id: blue
+        language_version: python3.8
+
+#  - repo: https://github.com/pre-commit/mirrors-mypy
+#    rev: 'V1.4.1'
+#    hooks:
+#      - id: mypy
+#        args: [--strict, --ignore-missing-imports, --config-file=mypy.ini]
