@@ -84,10 +84,11 @@ with wonde.ApiClient(configuration) as api_client:
     api_instance = wonde.ClassesApi(api_client)
     school_id = 'school_id_example' # str | The ID of the school
     class_id = 'class_id_example' # str | The ID of the class
+    include = ['include_example'] # List[str] | Comma separated list of objects to include (optional)
 
     try:
         # Get specific class for a school
-        api_response = api_instance.schools_school_id_classes_class_id_get(school_id, class_id)
+        api_response = api_instance.schools_school_id_classes_class_id_get(school_id, class_id, include=include)
         print("The response of ClassesApi->schools_school_id_classes_class_id_get:\n")
         pprint(api_response)
     except ApiException as e:
@@ -131,6 +132,11 @@ Class | Method | HTTP request | Description
 
  - [ACL](docs/ACL.md)
  - [ACLIdsInner](docs/ACLIdsInner.md)
+ - [ACLIdsInnerOneOf](docs/ACLIdsInnerOneOf.md)
+ - [ClassLessons](docs/ClassLessons.md)
+ - [ClassStudents](docs/ClassStudents.md)
+ - [ClassSubject](docs/ClassSubject.md)
+ - [ClassSubjectOneOf](docs/ClassSubjectOneOf.md)
  - [Contact](docs/Contact.md)
  - [DateTimeObject](docs/DateTimeObject.md)
  - [Deletion](docs/Deletion.md)
@@ -155,6 +161,7 @@ Class | Method | HTTP request | Description
  - [SchoolRegion](docs/SchoolRegion.md)
  - [SchoolRegionIdentifiers](docs/SchoolRegionIdentifiers.md)
  - [SchoolsAllGet200Response](docs/SchoolsAllGet200Response.md)
+ - [SchoolsSchoolIdClassesClassIdGet200Response](docs/SchoolsSchoolIdClassesClassIdGet200Response.md)
  - [SchoolsSchoolIdClassesGet200Response](docs/SchoolsSchoolIdClassesGet200Response.md)
  - [SchoolsSchoolIdDeletionsGet200Response](docs/SchoolsSchoolIdDeletionsGet200Response.md)
  - [SchoolsSchoolIdEmployeesGet200Response](docs/SchoolsSchoolIdEmployeesGet200Response.md)
@@ -181,7 +188,3 @@ Authentication schemes defined for the API:
 
 
 ## Author
-
-
-
-
