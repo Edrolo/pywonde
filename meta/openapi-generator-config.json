@@ -2,5 +2,8 @@
   "projectName": "pywonde",
   "packageName": "wonde",
   "packageUrl": "https://github.com/Edrolo/pywonde",
-  "packageVersion": "0.1.0"
+  "packageVersion": "0.1.0",
+  "gitHost": "github.com",
+  "gitUserId": "Edrolo",
+  "gitRepoId": "pywonde"
 }
