@@ -439,7 +439,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Class'
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Class'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
 
   /schools/{school_id}/employees:
     get:

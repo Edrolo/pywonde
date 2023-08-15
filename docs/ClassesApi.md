@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **schools_school_id_classes_class_id_get**
-> ModelClass schools_school_id_classes_class_id_get(school_id, class_id)
+> SchoolsSchoolIdClassesClassIdGet200Response schools_school_id_classes_class_id_get(school_id, class_id)
 
 Get specific class for a school
 
@@ -21,7 +21,7 @@ Get specific class for a school
 import time
 import os
 import wonde
-from wonde.models.model_class import ModelClass
+from wonde.models.schools_school_id_classes_class_id_get200_response import SchoolsSchoolIdClassesClassIdGet200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -73,7 +73,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ModelClass**](ModelClass.md)
+[**SchoolsSchoolIdClassesClassIdGet200Response**](SchoolsSchoolIdClassesClassIdGet200Response.md)
 
 ### Authorization
 

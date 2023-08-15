@@ -23,7 +23,9 @@ from typing_extensions import Annotated
 from wonde.api_client import ApiClient
 from wonde.api_response import ApiResponse
 from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
-from wonde.models.model_class import ModelClass
+from wonde.models.schools_school_id_classes_class_id_get200_response import (
+    SchoolsSchoolIdClassesClassIdGet200Response,
+)
 from wonde.models.schools_school_id_classes_get200_response import (
     SchoolsSchoolIdClassesGet200Response,
 )
@@ -47,7 +49,7 @@ class ClassesApi:
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         class_id: Annotated[StrictStr, Field(..., description='The ID of the class')],
         **kwargs
-    ) -> ModelClass:
+    ) -> SchoolsSchoolIdClassesClassIdGet200Response:
         """Get specific class for a school  # noqa: E501
 
         This method makes a synchronous HTTP request by default. To make an
@@ -69,7 +71,7 @@ class ClassesApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: ModelClass
+        :rtype: SchoolsSchoolIdClassesClassIdGet200Response
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -121,7 +123,7 @@ class ClassesApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: tuple(ModelClass, status_code(int), headers(HTTPHeaderDict))
+        :rtype: tuple(SchoolsSchoolIdClassesClassIdGet200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -175,7 +177,7 @@ class ClassesApi:
         _auth_settings = ['BasicAuth', 'BearerAuth']
 
         _response_types_map = {
-            '200': 'ModelClass',
+            '200': 'SchoolsSchoolIdClassesClassIdGet200Response',
         }
 
         return self.api_client.call_api(
