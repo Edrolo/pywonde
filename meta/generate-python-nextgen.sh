@@ -10,3 +10,5 @@ openapi-generator generate \
   --input-spec=wonde.openapi.yaml \
   --output=..
 #  --enable-post-process-file \
+
+poetry run pre-commit run --all-files
