@@ -23,6 +23,7 @@ servers:
 paths:
   /schools/{school_id}/deletions:
     get:
+      operationId: listSchoolDeletions
       tags:
         - Deletions
       summary: Get deletions for a school
@@ -70,6 +71,7 @@ paths:
   /schools/all:
     get:
       summary: Retrieve all schools
+      operationId: listSchools
       tags:
         - Schools
       parameters:
@@ -97,9 +99,9 @@ paths:
   /schools/{school_id}:
     get:
       summary: Retrieve a specific school
+      operationId: getSchool
       tags:
         - Schools
-      operationId: getSchool
       parameters:
         - name: school_id
           in: path
@@ -117,6 +119,7 @@ paths:
   /schools/approved:
     get:
       summary: Retrieve all approved schools
+      operationId: listSchoolsApproved
       tags:
         - Schools
       parameters:
@@ -133,6 +136,7 @@ paths:
   /schools/pending:
     get:
       summary: Retrieve all schools with pending access request
+      operationId: listSchoolsPending
       tags:
         - Schools
       parameters:
@@ -149,6 +153,7 @@ paths:
   /schools/audited:
     get:
       summary: Retrieve all audited schools
+      operationId: listSchoolsAudited
       tags:
         - Schools
       parameters:
@@ -165,6 +170,7 @@ paths:
   /schools/offline:
     get:
       summary: Retrieve all offline schools
+      operationId: listSchoolsOffline
       tags:
         - Schools
       parameters:
@@ -181,6 +187,7 @@ paths:
   /schools/revoked:
     get:
       summary: Retrieve all schools with revoked access
+      operationId: listSchoolsRevoked
       tags:
         - Schools
       parameters:
@@ -191,6 +198,7 @@ paths:
   /schools/declined:
     get:
       summary: Retrieve all schools with declined access
+      operationId: listSchoolsDeclined
       tags:
         - Schools
       parameters:
@@ -201,6 +209,7 @@ paths:
   /meta/schools/{school_id}:
     get:
       summary: Retrieve meta data for a school
+      operationId: getSchoolMeta
       tags:
         - Schools
       parameters:
@@ -223,6 +232,7 @@ paths:
   /meta/schools/{school_id}/permissions:
     get:
       summary: Retrieve the permissions applied to a school
+      operationId: getSchoolPermissions
       tags:
         - Schools
       parameters:
@@ -247,6 +257,7 @@ paths:
   /meta/schools/{school_id}/acl:
     get:
       summary: Retrieve the access control list applied to a school
+      operationId: getSchoolAcl
       tags:
         - Schools
       parameters:
@@ -274,6 +285,7 @@ paths:
   /schools/{school_id}/request-access:
     post:
       summary: Request access to a school
+      operationId: requestSchoolAccess
       tags:
         - Schools
       description: >
@@ -318,6 +330,7 @@ paths:
   /schools/{school_id}/revoke-access:
     delete:
       summary: Revoke access to a school
+      operationId: revokeSchoolAccess
       tags:
         - Schools
       parameters:
@@ -345,6 +358,7 @@ paths:
   /schools/{school_id}/classes:
     get:
       summary: Get all classes for a school
+      operationId: listSchoolClasses
       tags:
         - Classes
       parameters:
@@ -418,6 +432,7 @@ paths:
   /schools/{school_id}/classes/{class_id}:
     get:
       summary: Get specific class for a school
+      operationId: getSchoolClass
       tags:
         - Classes
       parameters:
@@ -477,6 +492,7 @@ paths:
   /schools/{school_id}/employees:
     get:
       summary: Get all employees for a school
+      operationId: listSchoolEmployees
       tags:
         - Employees
       parameters:
@@ -560,6 +576,7 @@ paths:
       description: >
         You need the employees read permission to view this object.
         To retrieve the secondary and tertiary ids please add extra_ids=true to the url.
+      operationId: getSchoolEmployee
       tags:
         - Employees
       parameters:
@@ -586,9 +603,9 @@ paths:
   /schools/{school_id}/students:
     get:
       summary: Retrieve a list of students for a specific school
+      operationId: listSchoolStudents
       tags:
         - Students
-      operationId: listStudents
       parameters:
         - name: school_id
           in: path
@@ -707,9 +724,9 @@ paths:
   /schools/{school_id}/students/{student_id}:
     get:
       summary: Retrieve a specific student in a specific school
+      operationId: getSchoolStudent
       tags:
         - Students
-      operationId: getStudent
       parameters:
         - name: school_id
           in: path
@@ -734,7 +751,7 @@ paths:
   /schools/{school_id}/subjects:
     get:
       summary: Retrieve subjects for a school
-      operationId: getSubjects
+      operationId: listSchoolSubjects
       tags:
         - Subjects
       parameters:
@@ -783,7 +800,7 @@ paths:
   /schools/{school_id}/subjects/{subject_id}:
     get:
       summary: Retrieve a specific subject for a school
-      operationId: getSubject
+      operationId: getSchoolSubject
       tags:
         - Subjects
       parameters:
@@ -818,7 +835,7 @@ paths:
       summary: Returns a list of lessons for a specific school
       tags:
         - Lessons
-      operationId: getSchoolLessons
+      operationId: listSchoolLessons
       parameters:
         - name: school_id
           in: path
@@ -889,7 +906,7 @@ paths:
       summary: Returns a specific lesson for a specific school
       tags:
         - Lessons
-      operationId: getSchoolLessonById
+      operationId: getSchoolLesson
       parameters:
         - name: school_id
           in: path
