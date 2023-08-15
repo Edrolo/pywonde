@@ -24,7 +24,7 @@ from wonde.models.date_time_object import DateTimeObject
 
 class Subject(BaseModel):
     """
-    < https://docs.wonde.com/docs/api/sync#subject-object Related objects Name                    Relationship ----------------------------------------- classes                    many classes.lessons            many > many classes.lessons.period    many > many > one classes.lessons.room    many > many > one
+    < https://docs.wonde.com/docs/api/sync#subject-object Related objects Name                    Relationship ----------------------------------------- classes                 many classes.lessons         many > many classes.lessons.period  many > many > one classes.lessons.room    many > many > one
     """
 
     id: Optional[StrictStr] = Field(None, description='The ID of the object.')

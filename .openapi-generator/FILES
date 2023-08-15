@@ -3,8 +3,10 @@
 .gitlab-ci.yml
 .travis.yml
 README.md
-docs/ACL.md
-docs/ACLIdsInner.md
+docs/ClassLessons.md
+docs/ClassStudents.md
+docs/ClassSubject.md
+docs/ClassSubjectOneOf.md
 docs/ClassesApi.md
 docs/Contact.md
 docs/DateTimeObject.md
@@ -19,7 +21,6 @@ docs/Lesson.md
 docs/LessonsApi.md
 docs/ListStudents200Response.md
 docs/Meta.md
-docs/MetaSchoolsSchoolIdAclGet200Response.md
 docs/MetaSchoolsSchoolIdGet200Response.md
 docs/MetaSchoolsSchoolIdPermissionsGet200Response.md
 docs/ModelClass.md
@@ -34,6 +35,7 @@ docs/SchoolRegion.md
 docs/SchoolRegionIdentifiers.md
 docs/SchoolsAllGet200Response.md
 docs/SchoolsApi.md
+docs/SchoolsSchoolIdClassesClassIdGet200Response.md
 docs/SchoolsSchoolIdClassesGet200Response.md
 docs/SchoolsSchoolIdDeletionsGet200Response.md
 docs/SchoolsSchoolIdEmployeesGet200Response.md
@@ -49,6 +51,9 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_class_lessons.py
+test/test_class_subject.py
+test/test_class_subject_one_of.py
 tox.ini
 wonde/__init__.py
 wonde/api/__init__.py
@@ -64,8 +69,10 @@ wonde/api_response.py
 wonde/configuration.py
 wonde/exceptions.py
 wonde/models/__init__.py
-wonde/models/acl.py
-wonde/models/acl_ids_inner.py
+wonde/models/class_lessons.py
+wonde/models/class_students.py
+wonde/models/class_subject.py
+wonde/models/class_subject_one_of.py
 wonde/models/contact.py
 wonde/models/date_time_object.py
 wonde/models/deletion.py
@@ -76,7 +83,6 @@ wonde/models/get_subjects200_response.py
 wonde/models/lesson.py
 wonde/models/list_students200_response.py
 wonde/models/meta.py
-wonde/models/meta_schools_school_id_acl_get200_response.py
 wonde/models/meta_schools_school_id_get200_response.py
 wonde/models/meta_schools_school_id_permissions_get200_response.py
 wonde/models/model_class.py
@@ -90,6 +96,7 @@ wonde/models/school_meta.py
 wonde/models/school_region.py
 wonde/models/school_region_identifiers.py
 wonde/models/schools_all_get200_response.py
+wonde/models/schools_school_id_classes_class_id_get200_response.py
 wonde/models/schools_school_id_classes_get200_response.py
 wonde/models/schools_school_id_deletions_get200_response.py
 wonde/models/schools_school_id_employees_get200_response.py

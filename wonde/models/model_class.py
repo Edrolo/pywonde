@@ -19,8 +19,13 @@ from typing import Optional
 
 from pydantic import BaseModel, Field, StrictBool, StrictStr
 
+from wonde.models.class_lessons import ClassLessons
 from wonde.models.class_students import ClassStudents
+from wonde.models.class_subject import ClassSubject
 from wonde.models.date_time_object import DateTimeObject
+from wonde.models.schools_school_id_employees_get200_response import (
+    SchoolsSchoolIdEmployeesGet200Response,
+)
 
 
 class ModelClass(BaseModel):
@@ -33,7 +38,7 @@ class ModelClass(BaseModel):
     name: Optional[StrictStr] = Field(None, description='Class name.')
     code: Optional[StrictStr] = Field(None, description='Class code.')
     description: Optional[StrictStr] = Field(None, description='Class description.')
-    subject: Optional[StrictStr] = Field(None, description='The subject for the class.')
+    subject: Optional[ClassSubject] = None
     alternative: Optional[StrictBool] = Field(
         None, description='The class is an alternative to another class.'
     )
@@ -41,6 +46,8 @@ class ModelClass(BaseModel):
     created_at: Optional[DateTimeObject] = None
     updated_at: Optional[DateTimeObject] = None
     students: Optional[ClassStudents] = None
+    employees: Optional[SchoolsSchoolIdEmployeesGet200Response] = None
+    lessons: Optional[ClassLessons] = None
     __properties = [
         'id',
         'mis_id',
@@ -53,6 +60,8 @@ class ModelClass(BaseModel):
         'created_at',
         'updated_at',
         'students',
+        'employees',
+        'lessons',
     ]
 
     class Config:
@@ -77,6 +86,9 @@ class ModelClass(BaseModel):
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
         _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+        # override the default output from pydantic by calling `to_dict()` of subject
+        if self.subject:
+            _dict['subject'] = self.subject.to_dict()
         # override the default output from pydantic by calling `to_dict()` of restored_at
         if self.restored_at:
             _dict['restored_at'] = self.restored_at.to_dict()
@@ -89,6 +101,12 @@ class ModelClass(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of students
         if self.students:
             _dict['students'] = self.students.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of employees
+        if self.employees:
+            _dict['employees'] = self.employees.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of lessons
+        if self.lessons:
+            _dict['lessons'] = self.lessons.to_dict()
         return _dict
 
     @classmethod
@@ -107,7 +125,9 @@ class ModelClass(BaseModel):
                 'name': obj.get('name'),
                 'code': obj.get('code'),
                 'description': obj.get('description'),
-                'subject': obj.get('subject'),
+                'subject': ClassSubject.from_dict(obj.get('subject'))
+                if obj.get('subject') is not None
+                else None,
                 'alternative': obj.get('alternative'),
                 'restored_at': DateTimeObject.from_dict(obj.get('restored_at'))
                 if obj.get('restored_at') is not None
@@ -120,6 +140,12 @@ class ModelClass(BaseModel):
                 else None,
                 'students': ClassStudents.from_dict(obj.get('students'))
                 if obj.get('students') is not None
+                else None,
+                'employees': SchoolsSchoolIdEmployeesGet200Response.from_dict(obj.get('employees'))
+                if obj.get('employees') is not None
+                else None,
+                'lessons': ClassLessons.from_dict(obj.get('lessons'))
+                if obj.get('lessons') is not None
                 else None,
             }
         )

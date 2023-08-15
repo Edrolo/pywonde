@@ -1162,9 +1162,15 @@ components:
           description: Class description.
           example: 10A/Ar1
         subject:
-          type: string
-          description: The subject for the class.
-          example: Mathematics
+          description: The subject for the class. `include` to get object
+          oneOf:
+            - type: string
+              example: Mathematics
+            - type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/Subject'
+
         alternative:
           type: boolean
           description: The class is an alternative to another class.
@@ -1185,6 +1191,20 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Student'
+        employees:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Employee'
+        lessons:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Lesson'
 
     Employee:
       type: object

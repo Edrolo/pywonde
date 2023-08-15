@@ -1,6 +1,6 @@
 # Subject
 
-< https://docs.wonde.com/docs/api/sync#subject-object Related objects Name                    Relationship ----------------------------------------- classes                    many classes.lessons            many > many classes.lessons.period    many > many > one classes.lessons.room    many > many > one
+< https://docs.wonde.com/docs/api/sync#subject-object Related objects Name                    Relationship ----------------------------------------- classes                 many classes.lessons         many > many classes.lessons.period  many > many > one classes.lessons.room    many > many > one
 
 ## Properties
 Name | Type | Description | Notes

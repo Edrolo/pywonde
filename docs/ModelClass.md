@@ -10,12 +10,14 @@ Name | Type | Description | Notes
 **name** | **str** | Class name. | [optional] 
 **code** | **str** | Class code. | [optional] 
 **description** | **str** | Class description. | [optional] 
-**subject** | **str** | The subject for the class. | [optional] 
+**subject** | [**ClassSubject**](ClassSubject.md) |  | [optional] 
 **alternative** | **bool** | The class is an alternative to another class. | [optional] 
 **restored_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **created_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **updated_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **students** | [**ClassStudents**](ClassStudents.md) |  | [optional] 
+**employees** | [**SchoolsSchoolIdEmployeesGet200Response**](SchoolsSchoolIdEmployeesGet200Response.md) |  | [optional] 
+**lessons** | [**ClassLessons**](ClassLessons.md) |  | [optional] 
 
 ## Example
 

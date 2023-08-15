@@ -37,7 +37,10 @@ from wonde.exceptions import ApiAttributeError
 from wonde.exceptions import ApiException
 
 # import models into sdk package
+from wonde.models.class_lessons import ClassLessons
 from wonde.models.class_students import ClassStudents
+from wonde.models.class_subject import ClassSubject
+from wonde.models.class_subject_one_of import ClassSubjectOneOf
 from wonde.models.contact import Contact
 from wonde.models.date_time_object import DateTimeObject
 from wonde.models.deletion import Deletion
