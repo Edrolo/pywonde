@@ -17,15 +17,12 @@ from datetime import (
 )
 from typing import Optional
 
-from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_arguments
+from pydantic import Field, StrictInt, StrictStr, validate_arguments
 from typing_extensions import Annotated
 
 from wonde.api_client import ApiClient
 from wonde.api_response import ApiResponse
 from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
-from wonde.models.meta_schools_school_id_acl_get200_response import (
-    MetaSchoolsSchoolIdAclGet200Response,
-)
 from wonde.models.meta_schools_school_id_get200_response import MetaSchoolsSchoolIdGet200Response
 from wonde.models.meta_schools_school_id_permissions_get200_response import (
     MetaSchoolsSchoolIdPermissionsGet200Response,
@@ -179,166 +176,6 @@ class SchoolsApi:
 
         return self.api_client.call_api(
             '/schools/{school_id}',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            response_types_map=_response_types_map,
-            auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
-            collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
-        )
-
-    @validate_arguments
-    def meta_schools_school_id_acl_get(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        with_user_type: Annotated[
-            Optional[StrictBool], Field(description='Display the type of user')
-        ] = None,
-        **kwargs
-    ) -> MetaSchoolsSchoolIdAclGet200Response:
-        """Retrieve the access control list applied to a school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.meta_schools_school_id_acl_get(school_id, with_user_type, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param with_user_type: Display the type of user
-        :type with_user_type: bool
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: MetaSchoolsSchoolIdAclGet200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            raise ValueError(
-                'Error! Please call the meta_schools_school_id_acl_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            )
-        return self.meta_schools_school_id_acl_get_with_http_info(
-            school_id, with_user_type, **kwargs
-        )
-
-    @validate_arguments
-    def meta_schools_school_id_acl_get_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        with_user_type: Annotated[
-            Optional[StrictBool], Field(description='Display the type of user')
-        ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve the access control list applied to a school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.meta_schools_school_id_acl_get_with_http_info(school_id, with_user_type, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param with_user_type: Display the type of user
-        :type with_user_type: bool
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
-        :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(MetaSchoolsSchoolIdAclGet200Response, status_code(int), headers(HTTPHeaderDict))
-        """
-
-        _params = locals()
-
-        _all_params = ['school_id', 'with_user_type']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
-        )
-
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method meta_schools_school_id_acl_get' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        # process the query parameters
-        _query_params = []
-        if _params.get('with_user_type') is not None:
-            _query_params.append(('with_user_type', _params['with_user_type']))
-
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
-            '200': 'MetaSchoolsSchoolIdAclGet200Response',
-        }
-
-        return self.api_client.call_api(
-            '/meta/schools/{school_id}/acl',
             'GET',
             _path_params,
             _query_params,
