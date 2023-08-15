@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **schools_school_id_classes_class_id_get**
-> SchoolsSchoolIdClassesClassIdGet200Response schools_school_id_classes_class_id_get(school_id, class_id)
+> SchoolsSchoolIdClassesClassIdGet200Response schools_school_id_classes_class_id_get(school_id, class_id, include=include)
 
 Get specific class for a school
 
@@ -53,10 +53,11 @@ with wonde.ApiClient(configuration) as api_client:
     api_instance = wonde.ClassesApi(api_client)
     school_id = 'school_id_example' # str | The ID of the school
     class_id = 'class_id_example' # str | The ID of the class
+    include = ['include_example'] # List[str] | Comma separated list of objects to include (optional)
 
     try:
         # Get specific class for a school
-        api_response = api_instance.schools_school_id_classes_class_id_get(school_id, class_id)
+        api_response = api_instance.schools_school_id_classes_class_id_get(school_id, class_id, include=include)
         print("The response of ClassesApi->schools_school_id_classes_class_id_get:\n")
         pprint(api_response)
     except Exception as e:
@@ -70,6 +71,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
  **class_id** | **str**| The ID of the class | 
+ **include** | [**List[str]**](str.md)| Comma separated list of objects to include | [optional] 
 
 ### Return type
 

@@ -17,7 +17,14 @@ from datetime import (
 )
 from typing import Optional
 
-from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_arguments
+from pydantic import (
+    Field,
+    StrictBool,
+    StrictInt,
+    StrictStr,
+    conlist,
+    validate_arguments,
+)
 from typing_extensions import Annotated
 
 from wonde.api_client import ApiClient
@@ -48,6 +55,10 @@ class ClassesApi:
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         class_id: Annotated[StrictStr, Field(..., description='The ID of the class')],
+        include: Annotated[
+            Optional[conlist(StrictStr)],
+            Field(description='Comma separated list of objects to include'),
+        ] = None,
         **kwargs
     ) -> SchoolsSchoolIdClassesClassIdGet200Response:
         """Get specific class for a school  # noqa: E501
@@ -55,13 +66,15 @@ class ClassesApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_classes_class_id_get(school_id, class_id, async_req=True)
+        >>> thread = api.schools_school_id_classes_class_id_get(school_id, class_id, include, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
         :param class_id: The ID of the class (required)
         :type class_id: str
+        :param include: Comma separated list of objects to include
+        :type include: List[str]
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request. If one
@@ -79,7 +92,7 @@ class ClassesApi:
                 'Error! Please call the schools_school_id_classes_class_id_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
             )
         return self.schools_school_id_classes_class_id_get_with_http_info(
-            school_id, class_id, **kwargs
+            school_id, class_id, include, **kwargs
         )
 
     @validate_arguments
@@ -87,6 +100,10 @@ class ClassesApi:
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
         class_id: Annotated[StrictStr, Field(..., description='The ID of the class')],
+        include: Annotated[
+            Optional[conlist(StrictStr)],
+            Field(description='Comma separated list of objects to include'),
+        ] = None,
         **kwargs
     ) -> ApiResponse:
         """Get specific class for a school  # noqa: E501
@@ -94,13 +111,15 @@ class ClassesApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.schools_school_id_classes_class_id_get_with_http_info(school_id, class_id, async_req=True)
+        >>> thread = api.schools_school_id_classes_class_id_get_with_http_info(school_id, class_id, include, async_req=True)
         >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
         :param class_id: The ID of the class (required)
         :type class_id: str
+        :param include: Comma separated list of objects to include
+        :type include: List[str]
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -128,7 +147,7 @@ class ClassesApi:
 
         _params = locals()
 
-        _all_params = ['school_id', 'class_id']
+        _all_params = ['school_id', 'class_id', 'include']
         _all_params.extend(
             [
                 'async_req',
@@ -163,6 +182,10 @@ class ClassesApi:
 
         # process the query parameters
         _query_params = []
+        if _params.get('include') is not None:
+            _query_params.append(('include', _params['include']))
+            _collection_formats['include'] = 'csv'
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters

@@ -37,6 +37,7 @@ from wonde.exceptions import ApiAttributeError
 from wonde.exceptions import ApiException
 
 # import models into sdk package
+from wonde.models.class_students import ClassStudents
 from wonde.models.contact import Contact
 from wonde.models.date_time_object import DateTimeObject
 from wonde.models.deletion import Deletion
@@ -62,6 +63,9 @@ from wonde.models.school_meta import SchoolMeta
 from wonde.models.school_region import SchoolRegion
 from wonde.models.school_region_identifiers import SchoolRegionIdentifiers
 from wonde.models.schools_all_get200_response import SchoolsAllGet200Response
+from wonde.models.schools_school_id_classes_class_id_get200_response import (
+    SchoolsSchoolIdClassesClassIdGet200Response,
+)
 from wonde.models.schools_school_id_classes_get200_response import (
     SchoolsSchoolIdClassesGet200Response,
 )

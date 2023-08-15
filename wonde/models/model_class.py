@@ -19,6 +19,7 @@ from typing import Optional
 
 from pydantic import BaseModel, Field, StrictBool, StrictStr
 
+from wonde.models.class_students import ClassStudents
 from wonde.models.date_time_object import DateTimeObject
 
 
@@ -39,6 +40,7 @@ class ModelClass(BaseModel):
     restored_at: Optional[DateTimeObject] = None
     created_at: Optional[DateTimeObject] = None
     updated_at: Optional[DateTimeObject] = None
+    students: Optional[ClassStudents] = None
     __properties = [
         'id',
         'mis_id',
@@ -50,6 +52,7 @@ class ModelClass(BaseModel):
         'restored_at',
         'created_at',
         'updated_at',
+        'students',
     ]
 
     class Config:
@@ -83,6 +86,9 @@ class ModelClass(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of updated_at
         if self.updated_at:
             _dict['updated_at'] = self.updated_at.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of students
+        if self.students:
+            _dict['students'] = self.students.to_dict()
         return _dict
 
     @classmethod
@@ -111,6 +117,9 @@ class ModelClass(BaseModel):
                 else None,
                 'updated_at': DateTimeObject.from_dict(obj.get('updated_at'))
                 if obj.get('updated_at') is not None
+                else None,
+                'students': ClassStudents.from_dict(obj.get('students'))
+                if obj.get('students') is not None
                 else None,
             }
         )

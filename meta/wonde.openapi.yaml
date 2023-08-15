@@ -433,6 +433,34 @@ paths:
             type: string
           required: true
           description: The ID of the class
+        - in: query
+          name: include
+          description: Comma separated list of objects to include
+          required: false
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+              - subject
+              - students
+              - students.contact_details
+              - students.education_details
+              - students.extended_details
+              - students.house
+              - students.registration
+              - students.year
+              - students.boarding
+              - students.campus
+              - employees
+              - employees.contact_details
+              - employees.employment_details
+              - employees.extended_details
+              - lessons
+              - lessons.room
+              - lessons.period
       responses:
         200:
           description: A class for a specific school
@@ -1148,6 +1176,16 @@ components:
         updated_at: # When the record was last updated on Wonde.
           $ref: '#/components/schemas/DateTimeObject'
 
+        # Optional "includes"
+
+        students:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Student'
+
     Employee:
       type: object
       properties:
@@ -1340,9 +1378,9 @@ components:
 
         Name                    Relationship
         -----------------------------------------
-        classes                    many
-        classes.lessons            many > many
-        classes.lessons.period    many > many > one
+        classes                 many
+        classes.lessons         many > many
+        classes.lessons.period  many > many > one
         classes.lessons.room    many > many > one
       properties:
         id:

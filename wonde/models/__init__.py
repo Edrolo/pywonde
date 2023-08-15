@@ -14,6 +14,7 @@ Do not edit the class manually.
 
 
 # import models into model package
+from wonde.models.class_students import ClassStudents
 from wonde.models.contact import Contact
 from wonde.models.date_time_object import DateTimeObject
 from wonde.models.deletion import Deletion

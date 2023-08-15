@@ -15,6 +15,7 @@ Name | Type | Description | Notes
 **restored_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **created_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **updated_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
+**students** | [**ClassStudents**](ClassStudents.md) |  | [optional] 
 
 ## Example
 
