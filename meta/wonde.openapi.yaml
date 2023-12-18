@@ -115,7 +115,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/School'
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/School'
   /schools/approved:
     get:
       summary: Retrieve all approved schools
@@ -988,13 +991,13 @@ components:
         name:
           type: string
         establishment_number:
-          type: integer
+          type: string
         urn:
           type: integer
         phase_of_education:
           type: string
         la_code:
-          type: integer
+          type: string
         timezone:
           type: string
         mis:
@@ -1050,10 +1053,10 @@ components:
               type: object
               properties:
                 la_code:
-                  type: integer
+                  type: string
                   example: 201
                 establishment_number:
-                  type: integer
+                  type: string
                   example: 3614
                 urn:
                   type: integer
@@ -1112,6 +1115,15 @@ components:
                     type: string
                   type:
                     type: string
+
+    ContactDetails:
+      type: object
+      properties:
+        emails:
+          type: object
+          properties:
+            email:
+              type: string
 
     Contact:
       type: object
@@ -1282,6 +1294,15 @@ components:
         updated_at: # When the record was last updated on Wonde.
           $ref: '#/components/schemas/DateTimeObject'
 
+        # Optional "includes"
+
+        contact_details:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/ContactDetails'
+
+
     Student:
       type: object
       description: >
@@ -1405,6 +1426,15 @@ components:
         updated_at:
           $ref: '#/components/schemas/DateTimeObject'
           # description: When the record was last updated on Wonde.
+
+        # Optional "includes"
+
+        contact_details:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/ContactDetails'
+
 
     Subject:
       type: object
