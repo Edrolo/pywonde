@@ -78,6 +78,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - $ref: '#/components/parameters/Postcode'
         - $ref: '#/components/parameters/LaCode'
         - $ref: '#/components/parameters/EstablishmentNumber'
@@ -110,7 +112,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: A school
           content:
             application/json:
@@ -119,7 +121,7 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/School'
-  /schools/approved:
+  /schools:
     get:
       summary: Retrieve all approved schools
       operationId: listSchoolsApproved
@@ -129,12 +131,14 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - $ref: '#/components/parameters/Postcode'
         - $ref: '#/components/parameters/LaCode'
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/pending:
     get:
@@ -151,7 +155,7 @@ paths:
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/audited:
     get:
@@ -168,7 +172,7 @@ paths:
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/offline:
     get:
@@ -185,7 +189,7 @@ paths:
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/revoked:
     get:
@@ -196,7 +200,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PerPage'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/declined:
     get:
@@ -207,7 +211,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PerPage'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /meta/schools/{school_id}:
     get:
@@ -374,6 +378,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include
@@ -508,6 +514,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include
@@ -572,6 +580,8 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Employee'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
 
   /schools/{school_id}/employees/{employee_id}:
     get:
@@ -616,23 +626,11 @@ paths:
           schema:
             type: string
           description: The ID of the school.
-        - name: updated_after
-          in: query
-          schema:
-            type: string
-            format: date
-          description: Return rows modified after date.
-        - name: updated_before
-          in: query
-          schema:
-            type: string
-            format: date
-          description: Return rows modified before date.
-        - name: per_page
-          in: query
-          schema:
-            type: integer
-          description: Amount of rows to return.
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include.
@@ -710,7 +708,7 @@ paths:
             type: string
           description: Filter MIS ids by comma separated list.
       responses:
-        '200':
+        200:
           description: A list of students
           content:
             application/json:
@@ -744,7 +742,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: A student
           content:
             application/json:
@@ -767,6 +765,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include.
@@ -786,7 +786,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -826,7 +826,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -882,7 +882,7 @@ paths:
             enum: [class, employee, period, room]
           description: Comma separated list of objects to include.
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -924,7 +924,7 @@ paths:
             type: string
           description: The ID of the lesson.
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -1124,6 +1124,14 @@ components:
           properties:
             email:
               type: string
+
+    EducationDetails:
+      type: object
+      properties:
+        current_nc_year:
+          type: string
+        local_upn:
+          type: string
 
     Contact:
       type: object
@@ -1435,6 +1443,12 @@ components:
             data:
               $ref: '#/components/schemas/ContactDetails'
 
+        education_details:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/EducationDetails'
+
 
     Subject:
       type: object
@@ -1610,6 +1624,18 @@ components:
       description: Amount of rows to return
       schema:
         type: integer
+    PageOffset:
+      name: page
+      in: query
+      description: Page offset for offset-paginated results.
+      schema:
+        type: integer
+    PageCursor:
+      name: cursor
+      in: query
+      description: Page cursor for cursor-paginated results.
+      schema:
+        type: string
     Postcode:
       name: postcode
       in: query
