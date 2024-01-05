@@ -434,7 +434,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Class'
+                      $ref: '#/components/schemas/SchoolClass'
                   meta:
                     $ref: '#/components/schemas/Meta'
 
@@ -494,7 +494,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Class'
+                    $ref: '#/components/schemas/SchoolClass'
                   meta:
                     $ref: '#/components/schemas/Meta'
 
@@ -1152,7 +1152,7 @@ components:
           type: string
           description: Notes for the contact
 
-    Class:
+    SchoolClass:
       type: object
       description: >
         https://docs.wonde.com/docs/api/sync#get-classes
