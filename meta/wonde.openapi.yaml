@@ -1292,9 +1292,9 @@ components:
           example: female
         date_of_birth:
           type: string
-          format: date-time
+          format: date
           description: Employee's date of birth.
-          example: 1963-02-11T00:00:00.000Z
+          example: 1963-02-11
         restored_at: # When the Wonde ID was restored from the deletion's data.
           $ref: '#/components/schemas/DateTimeObject'
         created_at: # When the record was added to Wonde.
@@ -1423,8 +1423,10 @@ components:
           description: The student’s gender. Possible values are 'MALE' or 'FEMALE'.
           example: MALE
         date_of_birth:
-          $ref: '#/components/schemas/DateTimeObject'
-          # description: The student’s date of birth.
+          type: string
+          format: date
+          description: Student's date of birth.
+          example: 2010-02-11
         restored_at:
           $ref: '#/components/schemas/DateTimeObject'
           # description: When the Wonde ID was restored from the deletion's data.
