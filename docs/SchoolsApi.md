@@ -9,7 +9,7 @@ Method | HTTP request | Description
 [**get_school_meta**](SchoolsApi.md#get_school_meta) | **GET** /meta/schools/{school_id} | Retrieve meta data for a school
 [**get_school_permissions**](SchoolsApi.md#get_school_permissions) | **GET** /meta/schools/{school_id}/permissions | Retrieve the permissions applied to a school
 [**list_schools**](SchoolsApi.md#list_schools) | **GET** /schools/all | Retrieve all schools
-[**list_schools_approved**](SchoolsApi.md#list_schools_approved) | **GET** /schools/approved | Retrieve all approved schools
+[**list_schools_approved**](SchoolsApi.md#list_schools_approved) | **GET** /schools | Retrieve all approved schools
 [**list_schools_audited**](SchoolsApi.md#list_schools_audited) | **GET** /schools/audited | Retrieve all audited schools
 [**list_schools_declined**](SchoolsApi.md#list_schools_declined) | **GET** /schools/declined | Retrieve all schools with declined access
 [**list_schools_offline**](SchoolsApi.md#list_schools_offline) | **GET** /schools/offline | Retrieve all offline schools
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 
 
 # **get_school**
-> School get_school(school_id)
+> GetSchool200Response get_school(school_id)
 
 Retrieve a specific school
 
@@ -32,7 +32,7 @@ Retrieve a specific school
 import time
 import os
 import wonde
-from wonde.models.school import School
+from wonde.models.get_school200_response import GetSchool200Response
 from wonde.rest import ApiException
 from pprint import pprint
 
@@ -74,6 +74,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -82,7 +83,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**School**](School.md)
+[**GetSchool200Response**](GetSchool200Response.md)
 
 ### Authorization
 
@@ -154,6 +155,7 @@ with wonde.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling SchoolsApi->get_school_acl: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -238,6 +240,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -319,6 +322,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -346,7 +350,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_schools**
-> ListSchools200Response list_schools(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+> ListSchools200Response list_schools(updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
 
 Retrieve all schools
 
@@ -391,6 +395,8 @@ with wonde.ApiClient(configuration) as api_client:
     updated_after = '2013-10-20' # date | Return rows modified after date (optional)
     updated_before = '2013-10-20' # date | Return rows modified before date (optional)
     per_page = 56 # int | Amount of rows to return (optional)
+    page = 56 # int | Page offset for offset-paginated results. (optional)
+    cursor = 'cursor_example' # str | Page cursor for cursor-paginated results. (optional)
     postcode = 'postcode_example' # str | Return results matching postcode search string (optional)
     la_code = 'la_code_example' # str | Return results with provided la_code (optional)
     establishment_number = 'establishment_number_example' # str | Return results with provided establishment_number (optional)
@@ -398,12 +404,13 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all schools
-        api_response = api_instance.list_schools(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+        api_response = api_instance.list_schools(updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
         print("The response of SchoolsApi->list_schools:\n")
         pprint(api_response)
     except Exception as e:
         print("Exception when calling SchoolsApi->list_schools: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -413,6 +420,8 @@ Name | Type | Description  | Notes
  **updated_after** | **date**| Return rows modified after date | [optional] 
  **updated_before** | **date**| Return rows modified before date | [optional] 
  **per_page** | **int**| Amount of rows to return | [optional] 
+ **page** | **int**| Page offset for offset-paginated results. | [optional] 
+ **cursor** | **str**| Page cursor for cursor-paginated results. | [optional] 
  **postcode** | **str**| Return results matching postcode search string | [optional] 
  **la_code** | **str**| Return results with provided la_code | [optional] 
  **establishment_number** | **str**| Return results with provided establishment_number | [optional] 
@@ -439,7 +448,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_schools_approved**
-> ListSchools200Response list_schools_approved(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+> ListSchools200Response list_schools_approved(updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
 
 Retrieve all approved schools
 
@@ -484,6 +493,8 @@ with wonde.ApiClient(configuration) as api_client:
     updated_after = '2013-10-20' # date | Return rows modified after date (optional)
     updated_before = '2013-10-20' # date | Return rows modified before date (optional)
     per_page = 56 # int | Amount of rows to return (optional)
+    page = 56 # int | Page offset for offset-paginated results. (optional)
+    cursor = 'cursor_example' # str | Page cursor for cursor-paginated results. (optional)
     postcode = 'postcode_example' # str | Return results matching postcode search string (optional)
     la_code = 'la_code_example' # str | Return results with provided la_code (optional)
     establishment_number = 'establishment_number_example' # str | Return results with provided establishment_number (optional)
@@ -491,12 +502,13 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Retrieve all approved schools
-        api_response = api_instance.list_schools_approved(updated_after=updated_after, updated_before=updated_before, per_page=per_page, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
+        api_response = api_instance.list_schools_approved(updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, postcode=postcode, la_code=la_code, establishment_number=establishment_number, urn=urn)
         print("The response of SchoolsApi->list_schools_approved:\n")
         pprint(api_response)
     except Exception as e:
         print("Exception when calling SchoolsApi->list_schools_approved: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -506,6 +518,8 @@ Name | Type | Description  | Notes
  **updated_after** | **date**| Return rows modified after date | [optional] 
  **updated_before** | **date**| Return rows modified before date | [optional] 
  **per_page** | **int**| Amount of rows to return | [optional] 
+ **page** | **int**| Page offset for offset-paginated results. | [optional] 
+ **cursor** | **str**| Page cursor for cursor-paginated results. | [optional] 
  **postcode** | **str**| Return results matching postcode search string | [optional] 
  **la_code** | **str**| Return results with provided la_code | [optional] 
  **establishment_number** | **str**| Return results with provided establishment_number | [optional] 
@@ -590,6 +604,7 @@ with wonde.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling SchoolsApi->list_schools_audited: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -679,6 +694,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -764,6 +780,7 @@ with wonde.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling SchoolsApi->list_schools_offline: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -859,6 +876,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -946,6 +964,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1031,6 +1050,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -1111,6 +1131,7 @@ with wonde.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling SchoolsApi->revoke_school_access: %s\n" % e)
 ```
+
 
 
 ### Parameters

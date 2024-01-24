@@ -65,6 +65,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -94,7 +95,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_school_classes**
-> ListSchoolClasses200Response list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
+> ListSchoolClasses200Response list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
 
 Get all classes for a school
 
@@ -140,6 +141,8 @@ with wonde.ApiClient(configuration) as api_client:
     updated_after = '2013-10-20' # date | Return rows modified after date (optional)
     updated_before = '2013-10-20' # date | Return rows modified before date (optional)
     per_page = 56 # int | Amount of rows to return (optional)
+    page = 56 # int | Page offset for offset-paginated results. (optional)
+    cursor = 'cursor_example' # str | Page cursor for cursor-paginated results. (optional)
     include = 'include_example' # str | Comma separated list of objects to include (optional)
     has_students = True # bool | Only get classes that have students (optional)
     has_lessons = True # bool | Only get classes that have lessons (optional)
@@ -148,12 +151,13 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Get all classes for a school
-        api_response = api_instance.list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
+        api_response = api_instance.list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
         print("The response of ClassesApi->list_school_classes:\n")
         pprint(api_response)
     except Exception as e:
         print("Exception when calling ClassesApi->list_school_classes: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -164,6 +168,8 @@ Name | Type | Description  | Notes
  **updated_after** | **date**| Return rows modified after date | [optional] 
  **updated_before** | **date**| Return rows modified before date | [optional] 
  **per_page** | **int**| Amount of rows to return | [optional] 
+ **page** | **int**| Page offset for offset-paginated results. | [optional] 
+ **cursor** | **str**| Page cursor for cursor-paginated results. | [optional] 
  **include** | **str**| Comma separated list of objects to include | [optional] 
  **has_students** | **bool**| Only get classes that have students | [optional] 
  **has_lessons** | **bool**| Only get classes that have lessons | [optional] 

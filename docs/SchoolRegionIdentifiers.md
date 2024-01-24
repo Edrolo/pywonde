@@ -4,8 +4,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**la_code** | **int** |  | [optional] 
-**establishment_number** | **int** |  | [optional] 
+**la_code** | **str** |  | [optional] 
+**establishment_number** | **str** |  | [optional] 
 **urn** | **int** |  | [optional] 
 
 ## Example

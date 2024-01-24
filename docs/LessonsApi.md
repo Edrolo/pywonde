@@ -64,6 +64,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -150,6 +151,7 @@ with wonde.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling LessonsApi->list_school_lessons: %s\n" % e)
 ```
+
 
 
 ### Parameters
