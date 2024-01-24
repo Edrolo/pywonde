@@ -15,10 +15,12 @@ Name | Type | Description | Notes
 **legal_surname** | **str** | The student’s legal last name. | [optional] 
 **legal_forename** | **str** | The student’s legal first name. | [optional] 
 **gender** | **str** | The student’s gender. Possible values are &#39;MALE&#39; or &#39;FEMALE&#39;. | [optional] 
-**date_of_birth** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
+**date_of_birth** | **date** | Student&#39;s date of birth. | [optional] 
 **restored_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **created_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **updated_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
+**contact_details** | [**EmployeeContactDetails**](EmployeeContactDetails.md) |  | [optional] 
+**education_details** | [**StudentEducationDetails**](StudentEducationDetails.md) |  | [optional] 
 
 ## Example
 

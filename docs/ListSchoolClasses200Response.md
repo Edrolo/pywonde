@@ -4,7 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**data** | [**List[ModelClass]**](ModelClass.md) |  | [optional] 
+**data** | [**List[SchoolClass]**](SchoolClass.md) |  | [optional] 
 **meta** | [**Meta**](Meta.md) |  | [optional] 
 
 ## Example

@@ -65,6 +65,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -94,7 +95,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_school_subjects**
-> ListSchoolSubjects200Response list_school_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, subject_code=subject_code, subject_name=subject_name)
+> ListSchoolSubjects200Response list_school_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, subject_code=subject_code, subject_name=subject_name)
 
 Retrieve subjects for a school
 
@@ -140,18 +141,21 @@ with wonde.ApiClient(configuration) as api_client:
     updated_after = '2013-10-20' # date | Return rows modified after date (optional)
     updated_before = '2013-10-20' # date | Return rows modified before date (optional)
     per_page = 56 # int | Amount of rows to return (optional)
+    page = 56 # int | Page offset for offset-paginated results. (optional)
+    cursor = 'cursor_example' # str | Page cursor for cursor-paginated results. (optional)
     include = 'include_example' # str | Comma separated list of objects to include. (optional)
     subject_code = 'subject_code_example' # str | Return results with the provided subject code. (optional)
     subject_name = 'subject_name_example' # str | Return results with the provided subject name. (optional)
 
     try:
         # Retrieve subjects for a school
-        api_response = api_instance.list_school_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, subject_code=subject_code, subject_name=subject_name)
+        api_response = api_instance.list_school_subjects(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, subject_code=subject_code, subject_name=subject_name)
         print("The response of SubjectsApi->list_school_subjects:\n")
         pprint(api_response)
     except Exception as e:
         print("Exception when calling SubjectsApi->list_school_subjects: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -162,6 +166,8 @@ Name | Type | Description  | Notes
  **updated_after** | **date**| Return rows modified after date | [optional] 
  **updated_before** | **date**| Return rows modified before date | [optional] 
  **per_page** | **int**| Amount of rows to return | [optional] 
+ **page** | **int**| Page offset for offset-paginated results. | [optional] 
+ **cursor** | **str**| Page cursor for cursor-paginated results. | [optional] 
  **include** | **str**| Comma separated list of objects to include. | [optional] 
  **subject_code** | **str**| Return results with the provided subject code. | [optional] 
  **subject_name** | **str**| Return results with the provided subject name. | [optional] 
