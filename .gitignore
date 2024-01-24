@@ -67,3 +67,6 @@ target/
 
 # Environment variables
 .envrc
+
+# Visual Studio Code
+.vscode/
