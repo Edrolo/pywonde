@@ -4,7 +4,6 @@
 
 #export PYTHON_POST_PROCESS_FILE="ruff"
 
-# GENERATOR_VERSION=v6.6.0
 GENERATOR_VERSION=v7.0.1
 
 # Note: We will run the container as the current user/group, so that the generated files
@@ -19,5 +18,4 @@ docker run --rm \
   --output=/project
 #  --enable-post-process-file \
 
-# poetry run pre-commit run --all-files
 pre-commit run --all-files
