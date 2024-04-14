@@ -78,6 +78,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - $ref: '#/components/parameters/Postcode'
         - $ref: '#/components/parameters/LaCode'
         - $ref: '#/components/parameters/EstablishmentNumber'
@@ -110,13 +112,16 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: A school
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/School'
-  /schools/approved:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/School'
+  /schools:
     get:
       summary: Retrieve all approved schools
       operationId: listSchoolsApproved
@@ -126,12 +131,14 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - $ref: '#/components/parameters/Postcode'
         - $ref: '#/components/parameters/LaCode'
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/pending:
     get:
@@ -148,7 +155,7 @@ paths:
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/audited:
     get:
@@ -165,7 +172,7 @@ paths:
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/offline:
     get:
@@ -182,7 +189,7 @@ paths:
         - $ref: '#/components/parameters/EstablishmentNumber'
         - $ref: '#/components/parameters/Urn'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/revoked:
     get:
@@ -193,7 +200,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PerPage'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /schools/declined:
     get:
@@ -204,7 +211,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PerPage'
       responses:
-        '200':
+        200:
           $ref: '#/components/responses/SchoolList'
   /meta/schools/{school_id}:
     get:
@@ -371,6 +378,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include
@@ -425,7 +434,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Class'
+                      $ref: '#/components/schemas/SchoolClass'
                   meta:
                     $ref: '#/components/schemas/Meta'
 
@@ -485,7 +494,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/Class'
+                    $ref: '#/components/schemas/SchoolClass'
                   meta:
                     $ref: '#/components/schemas/Meta'
 
@@ -505,6 +514,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include
@@ -569,6 +580,8 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Employee'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
 
   /schools/{school_id}/employees/{employee_id}:
     get:
@@ -613,23 +626,11 @@ paths:
           schema:
             type: string
           description: The ID of the school.
-        - name: updated_after
-          in: query
-          schema:
-            type: string
-            format: date
-          description: Return rows modified after date.
-        - name: updated_before
-          in: query
-          schema:
-            type: string
-            format: date
-          description: Return rows modified before date.
-        - name: per_page
-          in: query
-          schema:
-            type: integer
-          description: Amount of rows to return.
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include.
@@ -707,7 +708,7 @@ paths:
             type: string
           description: Filter MIS ids by comma separated list.
       responses:
-        '200':
+        200:
           description: A list of students
           content:
             application/json:
@@ -741,7 +742,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: A student
           content:
             application/json:
@@ -764,6 +765,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - name: include
           in: query
           description: Comma separated list of objects to include.
@@ -783,7 +786,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -823,7 +826,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -879,7 +882,7 @@ paths:
             enum: [class, employee, period, room]
           description: Comma separated list of objects to include.
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -921,7 +924,7 @@ paths:
             type: string
           description: The ID of the lesson.
       responses:
-        '200':
+        200:
           description: Successful operation
           content:
             application/json:
@@ -988,13 +991,13 @@ components:
         name:
           type: string
         establishment_number:
-          type: integer
+          type: string
         urn:
           type: integer
         phase_of_education:
           type: string
         la_code:
-          type: integer
+          type: string
         timezone:
           type: string
         mis:
@@ -1050,10 +1053,10 @@ components:
               type: object
               properties:
                 la_code:
-                  type: integer
+                  type: string
                   example: 201
                 establishment_number:
-                  type: integer
+                  type: string
                   example: 3614
                 urn:
                   type: integer
@@ -1113,6 +1116,23 @@ components:
                   type:
                     type: string
 
+    ContactDetails:
+      type: object
+      properties:
+        emails:
+          type: object
+          properties:
+            email:
+              type: string
+
+    EducationDetails:
+      type: object
+      properties:
+        current_nc_year:
+          type: string
+        local_upn:
+          type: string
+
     Contact:
       type: object
       properties:
@@ -1132,7 +1152,7 @@ components:
           type: string
           description: Notes for the contact
 
-    Class:
+    SchoolClass:
       type: object
       description: >
         https://docs.wonde.com/docs/api/sync#get-classes
@@ -1272,15 +1292,24 @@ components:
           example: female
         date_of_birth:
           type: string
-          format: date-time
+          format: date
           description: Employee's date of birth.
-          example: 1963-02-11T00:00:00.000Z
+          example: 1963-02-11
         restored_at: # When the Wonde ID was restored from the deletion's data.
           $ref: '#/components/schemas/DateTimeObject'
         created_at: # When the record was added to Wonde.
           $ref: '#/components/schemas/DateTimeObject'
         updated_at: # When the record was last updated on Wonde.
           $ref: '#/components/schemas/DateTimeObject'
+
+        # Optional "includes"
+
+        contact_details:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/ContactDetails'
+
 
     Student:
       type: object
@@ -1394,8 +1423,10 @@ components:
           description: The student’s gender. Possible values are 'MALE' or 'FEMALE'.
           example: MALE
         date_of_birth:
-          $ref: '#/components/schemas/DateTimeObject'
-          # description: The student’s date of birth.
+          type: string
+          format: date
+          description: Student's date of birth.
+          example: 2010-02-11
         restored_at:
           $ref: '#/components/schemas/DateTimeObject'
           # description: When the Wonde ID was restored from the deletion's data.
@@ -1405,6 +1436,21 @@ components:
         updated_at:
           $ref: '#/components/schemas/DateTimeObject'
           # description: When the record was last updated on Wonde.
+
+        # Optional "includes"
+
+        contact_details:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/ContactDetails'
+
+        education_details:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/EducationDetails'
+
 
     Subject:
       type: object
@@ -1580,6 +1626,18 @@ components:
       description: Amount of rows to return
       schema:
         type: integer
+    PageOffset:
+      name: page
+      in: query
+      description: Page offset for offset-paginated results.
+      schema:
+        type: integer
+    PageCursor:
+      name: cursor
+      in: query
+      description: Page cursor for cursor-paginated results.
+      schema:
+        type: string
     Postcode:
       name: postcode
       in: query

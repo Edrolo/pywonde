@@ -66,6 +66,7 @@ with wonde.ApiClient(configuration) as api_client:
 ```
 
 
+
 ### Parameters
 
 Name | Type | Description  | Notes
@@ -94,7 +95,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_school_employees**
-> ListSchoolEmployees200Response list_school_employees(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
+> ListSchoolEmployees200Response list_school_employees(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
 
 Get all employees for a school
 
@@ -140,6 +141,8 @@ with wonde.ApiClient(configuration) as api_client:
     updated_after = '2013-10-20' # date | Return rows modified after date (optional)
     updated_before = '2013-10-20' # date | Return rows modified before date (optional)
     per_page = 56 # int | Amount of rows to return (optional)
+    page = 56 # int | Page offset for offset-paginated results. (optional)
+    cursor = 'cursor_example' # str | Page cursor for cursor-paginated results. (optional)
     include = 'include_example' # str | Comma separated list of objects to include (optional)
     employment_start_before = '2013-10-20' # date | Get employees who have started before a date (optional)
     employment_start_after = '2013-10-20' # date | Get employees who have started after a date (optional)
@@ -153,12 +156,13 @@ with wonde.ApiClient(configuration) as api_client:
 
     try:
         # Get all employees for a school
-        api_response = api_instance.list_school_employees(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
+        api_response = api_instance.list_school_employees(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, employment_start_before=employment_start_before, employment_start_after=employment_start_after, has_role=has_role, has_contract=has_contract, has_class=has_class, has_group=has_group, user_defined_field=user_defined_field, only_user_defined_fields=only_user_defined_fields, only_mis_ids=only_mis_ids)
         print("The response of EmployeesApi->list_school_employees:\n")
         pprint(api_response)
     except Exception as e:
         print("Exception when calling EmployeesApi->list_school_employees: %s\n" % e)
 ```
+
 
 
 ### Parameters
@@ -169,6 +173,8 @@ Name | Type | Description  | Notes
  **updated_after** | **date**| Return rows modified after date | [optional] 
  **updated_before** | **date**| Return rows modified before date | [optional] 
  **per_page** | **int**| Amount of rows to return | [optional] 
+ **page** | **int**| Page offset for offset-paginated results. | [optional] 
+ **cursor** | **str**| Page cursor for cursor-paginated results. | [optional] 
  **include** | **str**| Comma separated list of objects to include | [optional] 
  **employment_start_before** | **date**| Get employees who have started before a date | [optional] 
  **employment_start_after** | **date**| Get employees who have started after a date | [optional] 

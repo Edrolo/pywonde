@@ -6,10 +6,10 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
-**establishment_number** | **int** |  | [optional] 
+**establishment_number** | **str** |  | [optional] 
 **urn** | **int** |  | [optional] 
 **phase_of_education** | **str** |  | [optional] 
-**la_code** | **int** |  | [optional] 
+**la_code** | **str** |  | [optional] 
 **timezone** | **str** |  | [optional] 
 **mis** | **str** |  | [optional] 
 **address** | [**SchoolAddress**](SchoolAddress.md) |  | [optional] 

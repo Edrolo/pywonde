@@ -15,10 +15,11 @@ Name | Type | Description | Notes
 **legal_surname** | **str** | Employee&#39;s legal surname. | [optional] 
 **legal_forename** | **str** | Employee&#39;s legal forename. | [optional] 
 **gender** | **str** | Employee&#39;s gender. (male|female) | [optional] 
-**date_of_birth** | **datetime** | Employee&#39;s date of birth. | [optional] 
+**date_of_birth** | **date** | Employee&#39;s date of birth. | [optional] 
 **restored_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **created_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **updated_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
+**contact_details** | [**EmployeeContactDetails**](EmployeeContactDetails.md) |  | [optional] 
 
 ## Example
 

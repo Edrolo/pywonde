@@ -1,4 +1,4 @@
-# ClassStudents
+# SchoolClassStudents
 
 
 ## Properties
@@ -9,19 +9,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from wonde.models.class_students import ClassStudents
+from wonde.models.school_class_students import SchoolClassStudents
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of ClassStudents from a JSON string
-class_students_instance = ClassStudents.from_json(json)
+# create an instance of SchoolClassStudents from a JSON string
+school_class_students_instance = SchoolClassStudents.from_json(json)
 # print the JSON string representation of the object
-print ClassStudents.to_json()
+print SchoolClassStudents.to_json()
 
 # convert the object into a dict
-class_students_dict = class_students_instance.to_dict()
-# create an instance of ClassStudents from a dict
-class_students_form_dict = class_students.from_dict(class_students_dict)
+school_class_students_dict = school_class_students_instance.to_dict()
+# create an instance of SchoolClassStudents from a dict
+school_class_students_form_dict = school_class_students.from_dict(school_class_students_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

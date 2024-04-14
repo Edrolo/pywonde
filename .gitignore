@@ -64,3 +64,9 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Environment variables
+.envrc
+
+# Visual Studio Code
+.vscode/
