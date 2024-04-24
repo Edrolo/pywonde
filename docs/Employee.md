@@ -20,6 +20,7 @@ Name | Type | Description | Notes
 **created_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **updated_at** | [**DateTimeObject**](DateTimeObject.md) |  | [optional] 
 **contact_details** | [**EmployeeContactDetails**](EmployeeContactDetails.md) |  | [optional] 
+**employment_details** | [**EmployeeEmploymentDetails**](EmployeeEmploymentDetails.md) |  | [optional] 
 
 ## Example
 

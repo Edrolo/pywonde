@@ -5,6 +5,9 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **email** | **str** |  | [optional] 
+**primary** | **str** |  | [optional] 
+**home** | **str** |  | [optional] 
+**work** | **str** |  | [optional] 
 
 ## Example
 
