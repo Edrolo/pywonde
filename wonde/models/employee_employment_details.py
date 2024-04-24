@@ -17,19 +17,18 @@ import pprint
 import re  # noqa: F401
 from typing import Optional
 
-from pydantic import BaseModel, StrictStr
+from pydantic import BaseModel
+
+from wonde.models.employment_details import EmploymentDetails
 
 
-class ContactDetailsEmails(BaseModel):
+class EmployeeEmploymentDetails(BaseModel):
     """
-    ContactDetailsEmails
+    EmployeeEmploymentDetails
     """
 
-    email: Optional[StrictStr] = None
-    primary: Optional[StrictStr] = None
-    home: Optional[StrictStr] = None
-    work: Optional[StrictStr] = None
-    __properties = ['email', 'primary', 'home', 'work']
+    data: Optional[EmploymentDetails] = None
+    __properties = ['data']
 
     class Config:
         """Pydantic configuration"""
@@ -46,30 +45,32 @@ class ContactDetailsEmails(BaseModel):
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> ContactDetailsEmails:
-        """Create an instance of ContactDetailsEmails from a JSON string"""
+    def from_json(cls, json_str: str) -> EmployeeEmploymentDetails:
+        """Create an instance of EmployeeEmploymentDetails from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self):
         """Returns the dictionary representation of the model using alias"""
         _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+        # override the default output from pydantic by calling `to_dict()` of data
+        if self.data:
+            _dict['data'] = self.data.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> ContactDetailsEmails:
-        """Create an instance of ContactDetailsEmails from a dict"""
+    def from_dict(cls, obj: dict) -> EmployeeEmploymentDetails:
+        """Create an instance of EmployeeEmploymentDetails from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return ContactDetailsEmails.parse_obj(obj)
+            return EmployeeEmploymentDetails.parse_obj(obj)
 
-        _obj = ContactDetailsEmails.parse_obj(
+        _obj = EmployeeEmploymentDetails.parse_obj(
             {
-                'email': obj.get('email'),
-                'primary': obj.get('primary'),
-                'home': obj.get('home'),
-                'work': obj.get('work'),
+                'data': EmploymentDetails.from_dict(obj.get('data'))
+                if obj.get('data') is not None
+                else None
             }
         )
         return _obj

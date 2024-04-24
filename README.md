@@ -141,6 +141,8 @@ Class | Method | HTTP request | Description
  - [EducationDetails](docs/EducationDetails.md)
  - [Employee](docs/Employee.md)
  - [EmployeeContactDetails](docs/EmployeeContactDetails.md)
+ - [EmployeeEmploymentDetails](docs/EmployeeEmploymentDetails.md)
+ - [EmploymentDetails](docs/EmploymentDetails.md)
  - [GetSchool200Response](docs/GetSchool200Response.md)
  - [GetSchoolAcl200Response](docs/GetSchoolAcl200Response.md)
  - [GetSchoolClass200Response](docs/GetSchoolClass200Response.md)

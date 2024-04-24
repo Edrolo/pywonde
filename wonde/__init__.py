@@ -48,6 +48,8 @@ from wonde.models.deletion import Deletion
 from wonde.models.education_details import EducationDetails
 from wonde.models.employee import Employee
 from wonde.models.employee_contact_details import EmployeeContactDetails
+from wonde.models.employee_employment_details import EmployeeEmploymentDetails
+from wonde.models.employment_details import EmploymentDetails
 from wonde.models.get_school200_response import GetSchool200Response
 from wonde.models.get_school_acl200_response import GetSchoolAcl200Response
 from wonde.models.get_school_class200_response import GetSchoolClass200Response
