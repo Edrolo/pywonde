@@ -22,6 +22,7 @@ from pydantic import BaseModel, Field, StrictStr
 
 from wonde.models.date_time_object import DateTimeObject
 from wonde.models.employee_contact_details import EmployeeContactDetails
+from wonde.models.employee_employment_details import EmployeeEmploymentDetails
 
 
 class Employee(BaseModel):
@@ -50,6 +51,7 @@ class Employee(BaseModel):
     created_at: Optional[DateTimeObject] = None
     updated_at: Optional[DateTimeObject] = None
     contact_details: Optional[EmployeeContactDetails] = None
+    employment_details: Optional[EmployeeEmploymentDetails] = None
     __properties = [
         'id',
         'upi',
@@ -67,6 +69,7 @@ class Employee(BaseModel):
         'created_at',
         'updated_at',
         'contact_details',
+        'employment_details',
     ]
 
     class Config:
@@ -103,6 +106,9 @@ class Employee(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of contact_details
         if self.contact_details:
             _dict['contact_details'] = self.contact_details.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of employment_details
+        if self.employment_details:
+            _dict['employment_details'] = self.employment_details.to_dict()
         return _dict
 
     @classmethod
@@ -139,6 +145,11 @@ class Employee(BaseModel):
                 else None,
                 'contact_details': EmployeeContactDetails.from_dict(obj.get('contact_details'))
                 if obj.get('contact_details') is not None
+                else None,
+                'employment_details': EmployeeEmploymentDetails.from_dict(
+                    obj.get('employment_details')
+                )
+                if obj.get('employment_details') is not None
                 else None,
             }
         )

@@ -150,6 +150,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - $ref: '#/components/parameters/Postcode'
         - $ref: '#/components/parameters/LaCode'
         - $ref: '#/components/parameters/EstablishmentNumber'
@@ -167,6 +169,8 @@ paths:
         - $ref: '#/components/parameters/UpdatedAfter'
         - $ref: '#/components/parameters/UpdatedBefore'
         - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
         - $ref: '#/components/parameters/Postcode'
         - $ref: '#/components/parameters/LaCode'
         - $ref: '#/components/parameters/EstablishmentNumber'
@@ -1124,6 +1128,12 @@ components:
           properties:
             email:
               type: string
+            primary:
+              type: string
+            home:
+              type: string
+            work:
+              type: string
 
     EducationDetails:
       type: object
@@ -1131,6 +1141,20 @@ components:
         current_nc_year:
           type: string
         local_upn:
+          type: string
+
+    EmploymentDetails:
+      type: object
+      properties:
+        current:
+          type: boolean
+        teaching_staff:
+          type: boolean
+        employment_start_date:
+          $ref: '#/components/schemas/DateTimeObject'
+        employment_end_date:
+          $ref: '#/components/schemas/DateTimeObject'
+        role_text:
           type: string
 
     Contact:
@@ -1309,6 +1333,12 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/ContactDetails'
+
+        employment_details:
+          type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/EmploymentDetails'
 
 
     Student:

@@ -1234,6 +1234,12 @@ class SchoolsApi:
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
         postcode: Annotated[
             Optional[StrictStr], Field(description='Return results matching postcode search string')
         ] = None,
@@ -1255,7 +1261,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.list_schools_audited(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_audited(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1264,6 +1270,10 @@ class SchoolsApi:
         :type updated_before: date
         :param per_page: Amount of rows to return
         :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
         :param postcode: Return results matching postcode search string
         :type postcode: str
         :param la_code: Return results with provided la_code
@@ -1291,6 +1301,8 @@ class SchoolsApi:
             updated_after,
             updated_before,
             per_page,
+            page,
+            cursor,
             postcode,
             la_code,
             establishment_number,
@@ -1309,6 +1321,12 @@ class SchoolsApi:
         ] = None,
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
         ] = None,
         postcode: Annotated[
             Optional[StrictStr], Field(description='Return results matching postcode search string')
@@ -1331,7 +1349,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.list_schools_audited_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_audited_with_http_info(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1340,6 +1358,10 @@ class SchoolsApi:
         :type updated_before: date
         :param per_page: Amount of rows to return
         :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
         :param postcode: Return results matching postcode search string
         :type postcode: str
         :param la_code: Return results with provided la_code
@@ -1379,6 +1401,8 @@ class SchoolsApi:
             'updated_after',
             'updated_before',
             'per_page',
+            'page',
+            'cursor',
             'postcode',
             'la_code',
             'establishment_number',
@@ -1441,6 +1465,12 @@ class SchoolsApi:
 
         if _params.get('per_page') is not None:
             _query_params.append(('per_page', _params['per_page']))
+
+        if _params.get('page') is not None:
+            _query_params.append(('page', _params['page']))
+
+        if _params.get('cursor') is not None:
+            _query_params.append(('cursor', _params['cursor']))
 
         if _params.get('postcode') is not None:
             _query_params.append(('postcode', _params['postcode']))
@@ -1919,6 +1949,12 @@ class SchoolsApi:
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
         postcode: Annotated[
             Optional[StrictStr], Field(description='Return results matching postcode search string')
         ] = None,
@@ -1940,7 +1976,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.list_schools_pending(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_pending(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -1949,6 +1985,10 @@ class SchoolsApi:
         :type updated_before: date
         :param per_page: Amount of rows to return
         :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
         :param postcode: Return results matching postcode search string
         :type postcode: str
         :param la_code: Return results with provided la_code
@@ -1976,6 +2016,8 @@ class SchoolsApi:
             updated_after,
             updated_before,
             per_page,
+            page,
+            cursor,
             postcode,
             la_code,
             establishment_number,
@@ -1994,6 +2036,12 @@ class SchoolsApi:
         ] = None,
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
         ] = None,
         postcode: Annotated[
             Optional[StrictStr], Field(description='Return results matching postcode search string')
@@ -2016,7 +2064,7 @@ class SchoolsApi:
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.list_schools_pending_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
+        >>> thread = api.list_schools_pending_with_http_info(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
         >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
@@ -2025,6 +2073,10 @@ class SchoolsApi:
         :type updated_before: date
         :param per_page: Amount of rows to return
         :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
         :param postcode: Return results matching postcode search string
         :type postcode: str
         :param la_code: Return results with provided la_code
@@ -2064,6 +2116,8 @@ class SchoolsApi:
             'updated_after',
             'updated_before',
             'per_page',
+            'page',
+            'cursor',
             'postcode',
             'la_code',
             'establishment_number',
@@ -2126,6 +2180,12 @@ class SchoolsApi:
 
         if _params.get('per_page') is not None:
             _query_params.append(('per_page', _params['per_page']))
+
+        if _params.get('page') is not None:
+            _query_params.append(('page', _params['page']))
+
+        if _params.get('cursor') is not None:
+            _query_params.append(('cursor', _params['cursor']))
 
         if _params.get('postcode') is not None:
             _query_params.append(('postcode', _params['postcode']))

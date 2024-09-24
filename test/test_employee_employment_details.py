@@ -12,11 +12,11 @@ Do not edit the class manually.
 
 import unittest
 
-from wonde.models.school_class_subject_one_of import SchoolClassSubjectOneOf
+from wonde.models.employee_employment_details import EmployeeEmploymentDetails
 
 
-class TestSchoolClassSubjectOneOf(unittest.TestCase):
-    """SchoolClassSubjectOneOf unit test stubs"""
+class TestEmployeeEmploymentDetails(unittest.TestCase):
+    """EmployeeEmploymentDetails unit test stubs"""
 
     def setUp(self):
         pass
@@ -24,38 +24,36 @@ class TestSchoolClassSubjectOneOf(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> SchoolClassSubjectOneOf:
-        """Test SchoolClassSubjectOneOf
+    def make_instance(self, include_optional) -> EmployeeEmploymentDetails:
+        """Test EmployeeEmploymentDetails
         include_option is a boolean, when False only required
         params are included, when True both required and
         optional params are included"""
-        # uncomment below to create an instance of `SchoolClassSubjectOneOf`
+        # uncomment below to create an instance of `EmployeeEmploymentDetails`
         """
-        model = SchoolClassSubjectOneOf()  # noqa: E501
+        model = EmployeeEmploymentDetails()  # noqa: E501
         if include_optional:
-            return SchoolClassSubjectOneOf(
-                data = wonde.models.subject.Subject(
-                    id = 'A1362597725', 
-                    mis_id = '520', 
-                    code = 'Bi', 
-                    name = 'Biology', 
-                    active = True, 
-                    created_at = wonde.models.date_time_object.DateTimeObject(
+            return EmployeeEmploymentDetails(
+                data = wonde.models.employment_details.EmploymentDetails(
+                    current = True, 
+                    teaching_staff = True, 
+                    employment_start_date = wonde.models.date_time_object.DateTimeObject(
                         date = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         timezone_type = 3, 
                         timezone = 'UTC', ), 
-                    updated_at = wonde.models.date_time_object.DateTimeObject(
+                    employment_end_date = wonde.models.date_time_object.DateTimeObject(
                         date = datetime.datetime.strptime('2013-10-20 19:20:30.00', '%Y-%m-%d %H:%M:%S.%f'), 
                         timezone_type = 3, 
-                        timezone = 'UTC', ), )
+                        timezone = 'UTC', ), 
+                    role_text = '', )
             )
         else:
-            return SchoolClassSubjectOneOf(
+            return EmployeeEmploymentDetails(
         )
         """
 
-    def testSchoolClassSubjectOneOf(self):
-        """Test SchoolClassSubjectOneOf"""
+    def testEmployeeEmploymentDetails(self):
+        """Test EmployeeEmploymentDetails"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 
