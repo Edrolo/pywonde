@@ -14,7 +14,7 @@ import re  # noqa: F401
 from datetime import date
 from typing import Optional
 
-from pydantic import Field, StrictInt, StrictStr, validate_arguments
+from pydantic import Field, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
 from wonde.api_client import ApiClient
@@ -36,7 +36,7 @@ class SubjectsApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_arguments
+    @validate_call
     def get_school_subject(
         self,
         school_id: Annotated[
@@ -79,7 +79,7 @@ class SubjectsApi:
             raise ValueError(message)
         return self.get_school_subject_with_http_info(school_id, subject_id, include, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def get_school_subject_with_http_info(
         self,
         school_id: Annotated[
@@ -205,7 +205,7 @@ class SubjectsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_school_subjects(
         self,
         school_id: Annotated[
@@ -291,7 +291,7 @@ class SubjectsApi:
             **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_school_subjects_with_http_info(
         self,
         school_id: Annotated[

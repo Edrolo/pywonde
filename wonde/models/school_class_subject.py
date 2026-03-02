@@ -37,7 +37,7 @@ class SchoolClassSubject(BaseModel):
         actual_instance: Union[SchoolClassSubjectOneOf, str]
     else:
         actual_instance: Any
-    one_of_schemas: List[str] = Field(SCHOOLCLASSSUBJECT_ONE_OF_SCHEMAS, const=True)
+    one_of_schemas: List[str] = Field(default=SCHOOLCLASSSUBJECT_ONE_OF_SCHEMAS)
 
     class Config:
         validate_assignment = True

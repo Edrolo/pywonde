@@ -37,7 +37,7 @@ class ACLIdsInner(BaseModel):
         actual_instance: Union[ACLIdsInnerOneOf, str]
     else:
         actual_instance: Any
-    one_of_schemas: List[str] = Field(ACLIDSINNER_ONE_OF_SCHEMAS, const=True)
+    one_of_schemas: List[str] = Field(default=ACLIDSINNER_ONE_OF_SCHEMAS)
 
     class Config:
         validate_assignment = True

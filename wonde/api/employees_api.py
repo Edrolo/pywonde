@@ -14,7 +14,7 @@ import re  # noqa: F401
 from datetime import date
 from typing import Optional
 
-from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_arguments
+from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
 from wonde.api_client import ApiClient
@@ -36,7 +36,7 @@ class EmployeesApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_arguments
+    @validate_call
     def get_school_employee(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -73,7 +73,7 @@ class EmployeesApi:
             raise ValueError(message)
         return self.get_school_employee_with_http_info(school_id, employee_id, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def get_school_employee_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -191,7 +191,7 @@ class EmployeesApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_school_employees(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -320,7 +320,7 @@ class EmployeesApi:
             **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_school_employees_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
