@@ -14,7 +14,7 @@ import re  # noqa: F401
 from datetime import date
 from typing import Optional
 
-from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_arguments
+from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
 from wonde.api_client import ApiClient
@@ -41,7 +41,7 @@ class SchoolsApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_arguments
+    @validate_call
     def get_school(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school to retrieve')],
@@ -74,7 +74,7 @@ class SchoolsApi:
             raise ValueError(message)
         return self.get_school_with_http_info(school_id, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def get_school_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school to retrieve')],
@@ -184,7 +184,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def get_school_acl(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -222,7 +222,7 @@ class SchoolsApi:
             raise ValueError(message)
         return self.get_school_acl_with_http_info(school_id, with_user_type, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def get_school_acl_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -340,7 +340,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def get_school_meta(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -373,7 +373,7 @@ class SchoolsApi:
             raise ValueError(message)
         return self.get_school_meta_with_http_info(school_id, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def get_school_meta_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -483,7 +483,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def get_school_permissions(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -516,7 +516,7 @@ class SchoolsApi:
             raise ValueError(message)
         return self.get_school_permissions_with_http_info(school_id, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def get_school_permissions_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -627,7 +627,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools(
         self,
         updated_after: Annotated[
@@ -715,7 +715,7 @@ class SchoolsApi:
             **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_with_http_info(
         self,
         updated_after: Annotated[
@@ -924,7 +924,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_approved(
         self,
         updated_after: Annotated[
@@ -1012,7 +1012,7 @@ class SchoolsApi:
             **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_approved_with_http_info(
         self,
         updated_after: Annotated[
@@ -1222,7 +1222,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_audited(
         self,
         updated_after: Annotated[
@@ -1310,7 +1310,7 @@ class SchoolsApi:
             **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_audited_with_http_info(
         self,
         updated_after: Annotated[
@@ -1520,7 +1520,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_declined(
         self,
         per_page: Annotated[
@@ -1555,7 +1555,7 @@ class SchoolsApi:
             raise ValueError(message)
         return self.list_schools_declined_with_http_info(per_page, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def list_schools_declined_with_http_info(
         self,
         per_page: Annotated[
@@ -1669,7 +1669,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_offline(
         self,
         updated_after: Annotated[
@@ -1745,7 +1745,7 @@ class SchoolsApi:
             **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_offline_with_http_info(
         self,
         updated_after: Annotated[
@@ -1937,7 +1937,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_pending(
         self,
         updated_after: Annotated[
@@ -2025,7 +2025,7 @@ class SchoolsApi:
             **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_pending_with_http_info(
         self,
         updated_after: Annotated[
@@ -2235,7 +2235,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def list_schools_revoked(
         self,
         per_page: Annotated[
@@ -2270,7 +2270,7 @@ class SchoolsApi:
             raise ValueError(message)
         return self.list_schools_revoked_with_http_info(per_page, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def list_schools_revoked_with_http_info(
         self,
         per_page: Annotated[
@@ -2384,7 +2384,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def request_school_access(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -2426,7 +2426,7 @@ class SchoolsApi:
             school_id, request_school_access_request, **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def request_school_access_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -2554,7 +2554,7 @@ class SchoolsApi:
             _request_auth=_params.get('_request_auth'),
         )
 
-    @validate_arguments
+    @validate_call
     def revoke_school_access(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -2587,7 +2587,7 @@ class SchoolsApi:
             raise ValueError(message)
         return self.revoke_school_access_with_http_info(school_id, **kwargs)
 
-    @validate_arguments
+    @validate_call
     def revoke_school_access_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],

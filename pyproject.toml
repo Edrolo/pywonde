@@ -13,19 +13,18 @@ keywords = ["OpenAPI", "OpenAPI-Generator", "Wonde API"]
 classifiers=[
     'License :: OSI Approved :: MIT License',
     'Natural Language :: English',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
 
 urllib3 = ">= 1.25.3"
 python-dateutil = ">=2.8.2"
-pydantic = "^1.10.5, <2"
+pydantic = ">=2"
 aenum = ">=3.1.11"
 
 [tool.poetry.dev-dependencies]

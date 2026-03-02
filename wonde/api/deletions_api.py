@@ -14,7 +14,7 @@ import re  # noqa: F401
 from datetime import date
 from typing import Optional
 
-from pydantic import Field, StrictInt, StrictStr, validate_arguments
+from pydantic import Field, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
 from wonde.api_client import ApiClient
@@ -35,7 +35,7 @@ class DeletionsApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_arguments
+    @validate_call
     def list_school_deletions(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
@@ -92,7 +92,7 @@ class DeletionsApi:
             school_id, updated_after, updated_before, per_page, type, **kwargs
         )
 
-    @validate_arguments
+    @validate_call
     def list_school_deletions_with_http_info(
         self,
         school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
