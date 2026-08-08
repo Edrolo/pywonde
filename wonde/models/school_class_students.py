@@ -15,9 +15,11 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, conlist
+from pydantic import BaseModel, ConfigDict
+from pydantic_core import to_jsonable_python
+from typing_extensions import Self
 
 from wonde.models.student import Student
 
@@ -27,52 +29,67 @@ class SchoolClassStudents(BaseModel):
     SchoolClassStudents
     """
 
-    data: Optional[conlist(Student)] = None
-    __properties = ['data']
+    data: Optional[List[Student]] = None
+    __properties: ClassVar[List[str]] = ['data']
 
-    class Config:
-        """Pydantic configuration"""
-
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> SchoolClassStudents:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of SchoolClassStudents from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set()
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of each item in data (list)
         _items = []
         if self.data:
-            for _item in self.data:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_data in self.data:
+                if _item_data:
+                    _items.append(_item_data.to_dict())
             _dict['data'] = _items
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> SchoolClassStudents:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of SchoolClassStudents from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return SchoolClassStudents.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = SchoolClassStudents.parse_obj(
+        _obj = cls.model_validate(
             {
-                'data': [Student.from_dict(_item) for _item in obj.get('data')]
+                'data': [Student.from_dict(_item) for _item in obj['data']]
                 if obj.get('data') is not None
                 else None
             }

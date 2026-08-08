@@ -12,15 +12,18 @@ Method | HTTP request | Description
 
 Get deletions for a school
 
-It's recommended that you use the updated_after url parameter to efficiently sync updates  to datasets. The deletions endpoint exists to provide a record of when an item is deleted.  The deletions endpoint will have an entry for every top level item (student, contact,  employee, group...) unless the object is deleted due to a parent being removed. An example of this would be when a class is removed the associated lessons would be deleted without an entry in the deletions endpoint. A `restored_at` value will be returned for the deletions of students, student pre-admissions,  student leavers, contacts, employees, groups and classes when a record that was previously  deleted has been restored (it became available in the MIS data again with the same MIS ID). It's recommended that applications perform frequent full syncs to make sure data remains accurate. 
+It's recommended that you use the updated_after url parameter to efficiently sync updates  to datasets. The deletions endpoint exists to provide a record of when an item is deleted. 
+The deletions endpoint will have an entry for every top level item (student, contact,  employee, group...) unless the object is deleted due to a parent being removed. An example of this would be when a class is removed the associated lessons would be deleted without an entry in the deletions endpoint.
+A `restored_at` value will be returned for the deletions of students, student pre-admissions,  student leavers, contacts, employees, groups and classes when a record that was previously  deleted has been restored (it became available in the MIS data again with the same MIS ID).
+It's recommended that applications perform frequent full syncs to make sure data remains accurate.
+
 
 ### Example
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_school_deletions200_response import ListSchoolDeletions200Response
 from wonde.rest import ApiException
@@ -71,6 +74,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -93,6 +97,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | List of deletions for a specific school |  -  |

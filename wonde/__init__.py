@@ -16,72 +16,184 @@ Do not edit the class manually.
 
 __version__ = '0.1.0'
 
+# Define package exports
+__all__ = [
+    'ClassesApi',
+    'DeletionsApi',
+    'EmployeesApi',
+    'GroupsApi',
+    'LessonsApi',
+    'SchoolsApi',
+    'StudentsApi',
+    'SubjectsApi',
+    'ApiResponse',
+    'ApiClient',
+    'Configuration',
+    'OpenApiException',
+    'ApiTypeError',
+    'ApiValueError',
+    'ApiKeyError',
+    'ApiAttributeError',
+    'ApiException',
+    'ACL',
+    'ACLIdsInner',
+    'ACLIdsInnerOneOf',
+    'Contact',
+    'ContactDetails',
+    'ContactDetailsEmails',
+    'DateTimeObject',
+    'Deletion',
+    'EducationDetails',
+    'Employee',
+    'EmployeeContactDetails',
+    'EmployeeEmploymentDetails',
+    'EmploymentDetails',
+    'GetSchool200Response',
+    'GetSchoolAcl200Response',
+    'GetSchoolClass200Response',
+    'GetSchoolMeta200Response',
+    'GetSchoolPermissions200Response',
+    'Group',
+    'Lesson',
+    'ListSchoolClasses200Response',
+    'ListSchoolDeletions200Response',
+    'ListSchoolEmployees200Response',
+    'ListSchoolGroups200Response',
+    'ListSchoolLessons200Response',
+    'ListSchoolLessons200ResponseMeta',
+    'ListSchoolStudents200Response',
+    'ListSchoolSubjects200Response',
+    'ListSchools200Response',
+    'Meta',
+    'Pagination',
+    'Permission',
+    'RequestSchoolAccess200Response',
+    'RequestSchoolAccessRequest',
+    'School',
+    'SchoolAddress',
+    'SchoolAddressAddressCountry',
+    'SchoolClass',
+    'SchoolClassEmployees',
+    'SchoolClassLessons',
+    'SchoolClassStudents',
+    'SchoolClassSubject',
+    'SchoolClassSubjectOneOf',
+    'SchoolExtended',
+    'SchoolMeta',
+    'SchoolRegion',
+    'SchoolRegionIdentifiers',
+    'Student',
+    'StudentEducationDetails',
+    'Subject',
+]
+
 # import apis into sdk package
-from wonde.api.classes_api import ClassesApi
-from wonde.api.deletions_api import DeletionsApi
-from wonde.api.employees_api import EmployeesApi
-from wonde.api.lessons_api import LessonsApi
-from wonde.api.schools_api import SchoolsApi
-from wonde.api.students_api import StudentsApi
-from wonde.api.subjects_api import SubjectsApi
+from wonde.api.classes_api import ClassesApi as ClassesApi
+from wonde.api.deletions_api import DeletionsApi as DeletionsApi
+from wonde.api.employees_api import EmployeesApi as EmployeesApi
+from wonde.api.groups_api import GroupsApi as GroupsApi
+from wonde.api.lessons_api import LessonsApi as LessonsApi
+from wonde.api.schools_api import SchoolsApi as SchoolsApi
+from wonde.api.students_api import StudentsApi as StudentsApi
+from wonde.api.subjects_api import SubjectsApi as SubjectsApi
 
 # import ApiClient
-from wonde.api_response import ApiResponse
-from wonde.api_client import ApiClient
-from wonde.configuration import Configuration
-from wonde.exceptions import OpenApiException
-from wonde.exceptions import ApiTypeError
-from wonde.exceptions import ApiValueError
-from wonde.exceptions import ApiKeyError
-from wonde.exceptions import ApiAttributeError
-from wonde.exceptions import ApiException
+from wonde.api_response import ApiResponse as ApiResponse
+from wonde.api_client import ApiClient as ApiClient
+from wonde.configuration import Configuration as Configuration
+from wonde.exceptions import OpenApiException as OpenApiException
+from wonde.exceptions import ApiTypeError as ApiTypeError
+from wonde.exceptions import ApiValueError as ApiValueError
+from wonde.exceptions import ApiKeyError as ApiKeyError
+from wonde.exceptions import ApiAttributeError as ApiAttributeError
+from wonde.exceptions import ApiException as ApiException
 
 # import models into sdk package
-from wonde.models.acl import ACL
-from wonde.models.acl_ids_inner import ACLIdsInner
-from wonde.models.acl_ids_inner_one_of import ACLIdsInnerOneOf
-from wonde.models.contact import Contact
-from wonde.models.contact_details import ContactDetails
-from wonde.models.contact_details_emails import ContactDetailsEmails
-from wonde.models.date_time_object import DateTimeObject
-from wonde.models.deletion import Deletion
-from wonde.models.education_details import EducationDetails
-from wonde.models.employee import Employee
-from wonde.models.employee_contact_details import EmployeeContactDetails
-from wonde.models.employee_employment_details import EmployeeEmploymentDetails
-from wonde.models.employment_details import EmploymentDetails
-from wonde.models.get_school200_response import GetSchool200Response
-from wonde.models.get_school_acl200_response import GetSchoolAcl200Response
-from wonde.models.get_school_class200_response import GetSchoolClass200Response
-from wonde.models.get_school_meta200_response import GetSchoolMeta200Response
-from wonde.models.get_school_permissions200_response import GetSchoolPermissions200Response
-from wonde.models.lesson import Lesson
-from wonde.models.list_school_classes200_response import ListSchoolClasses200Response
-from wonde.models.list_school_deletions200_response import ListSchoolDeletions200Response
-from wonde.models.list_school_employees200_response import ListSchoolEmployees200Response
-from wonde.models.list_school_lessons200_response import ListSchoolLessons200Response
-from wonde.models.list_school_lessons200_response_meta import ListSchoolLessons200ResponseMeta
-from wonde.models.list_school_students200_response import ListSchoolStudents200Response
-from wonde.models.list_school_subjects200_response import ListSchoolSubjects200Response
-from wonde.models.list_schools200_response import ListSchools200Response
-from wonde.models.meta import Meta
-from wonde.models.pagination import Pagination
-from wonde.models.permission import Permission
-from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
-from wonde.models.request_school_access_request import RequestSchoolAccessRequest
-from wonde.models.school import School
-from wonde.models.school_address import SchoolAddress
-from wonde.models.school_address_address_country import SchoolAddressAddressCountry
-from wonde.models.school_class import SchoolClass
-from wonde.models.school_class_employees import SchoolClassEmployees
-from wonde.models.school_class_lessons import SchoolClassLessons
-from wonde.models.school_class_students import SchoolClassStudents
-from wonde.models.school_class_subject import SchoolClassSubject
-from wonde.models.school_class_subject_one_of import SchoolClassSubjectOneOf
-from wonde.models.school_extended import SchoolExtended
-from wonde.models.school_meta import SchoolMeta
-from wonde.models.school_region import SchoolRegion
-from wonde.models.school_region_identifiers import SchoolRegionIdentifiers
-from wonde.models.student import Student
-from wonde.models.student_education_details import StudentEducationDetails
-from wonde.models.subject import Subject
+from wonde.models.acl import ACL as ACL
+from wonde.models.acl_ids_inner import ACLIdsInner as ACLIdsInner
+from wonde.models.acl_ids_inner_one_of import ACLIdsInnerOneOf as ACLIdsInnerOneOf
+from wonde.models.contact import Contact as Contact
+from wonde.models.contact_details import ContactDetails as ContactDetails
+from wonde.models.contact_details_emails import ContactDetailsEmails as ContactDetailsEmails
+from wonde.models.date_time_object import DateTimeObject as DateTimeObject
+from wonde.models.deletion import Deletion as Deletion
+from wonde.models.education_details import EducationDetails as EducationDetails
+from wonde.models.employee import Employee as Employee
+from wonde.models.employee_contact_details import EmployeeContactDetails as EmployeeContactDetails
+from wonde.models.employee_employment_details import (
+    EmployeeEmploymentDetails as EmployeeEmploymentDetails,
+)
+from wonde.models.employment_details import EmploymentDetails as EmploymentDetails
+from wonde.models.get_school200_response import GetSchool200Response as GetSchool200Response
+from wonde.models.get_school_acl200_response import (
+    GetSchoolAcl200Response as GetSchoolAcl200Response,
+)
+from wonde.models.get_school_class200_response import (
+    GetSchoolClass200Response as GetSchoolClass200Response,
+)
+from wonde.models.get_school_meta200_response import (
+    GetSchoolMeta200Response as GetSchoolMeta200Response,
+)
+from wonde.models.get_school_permissions200_response import (
+    GetSchoolPermissions200Response as GetSchoolPermissions200Response,
+)
+from wonde.models.group import Group as Group
+from wonde.models.lesson import Lesson as Lesson
+from wonde.models.list_school_classes200_response import (
+    ListSchoolClasses200Response as ListSchoolClasses200Response,
+)
+from wonde.models.list_school_deletions200_response import (
+    ListSchoolDeletions200Response as ListSchoolDeletions200Response,
+)
+from wonde.models.list_school_employees200_response import (
+    ListSchoolEmployees200Response as ListSchoolEmployees200Response,
+)
+from wonde.models.list_school_groups200_response import (
+    ListSchoolGroups200Response as ListSchoolGroups200Response,
+)
+from wonde.models.list_school_lessons200_response import (
+    ListSchoolLessons200Response as ListSchoolLessons200Response,
+)
+from wonde.models.list_school_lessons200_response_meta import (
+    ListSchoolLessons200ResponseMeta as ListSchoolLessons200ResponseMeta,
+)
+from wonde.models.list_school_students200_response import (
+    ListSchoolStudents200Response as ListSchoolStudents200Response,
+)
+from wonde.models.list_school_subjects200_response import (
+    ListSchoolSubjects200Response as ListSchoolSubjects200Response,
+)
+from wonde.models.list_schools200_response import ListSchools200Response as ListSchools200Response
+from wonde.models.meta import Meta as Meta
+from wonde.models.pagination import Pagination as Pagination
+from wonde.models.permission import Permission as Permission
+from wonde.models.request_school_access200_response import (
+    RequestSchoolAccess200Response as RequestSchoolAccess200Response,
+)
+from wonde.models.request_school_access_request import (
+    RequestSchoolAccessRequest as RequestSchoolAccessRequest,
+)
+from wonde.models.school import School as School
+from wonde.models.school_address import SchoolAddress as SchoolAddress
+from wonde.models.school_address_address_country import (
+    SchoolAddressAddressCountry as SchoolAddressAddressCountry,
+)
+from wonde.models.school_class import SchoolClass as SchoolClass
+from wonde.models.school_class_employees import SchoolClassEmployees as SchoolClassEmployees
+from wonde.models.school_class_lessons import SchoolClassLessons as SchoolClassLessons
+from wonde.models.school_class_students import SchoolClassStudents as SchoolClassStudents
+from wonde.models.school_class_subject import SchoolClassSubject as SchoolClassSubject
+from wonde.models.school_class_subject_one_of import (
+    SchoolClassSubjectOneOf as SchoolClassSubjectOneOf,
+)
+from wonde.models.school_extended import SchoolExtended as SchoolExtended
+from wonde.models.school_meta import SchoolMeta as SchoolMeta
+from wonde.models.school_region import SchoolRegion as SchoolRegion
+from wonde.models.school_region_identifiers import (
+    SchoolRegionIdentifiers as SchoolRegionIdentifiers,
+)
+from wonde.models.student import Student as Student
+from wonde.models.student_education_details import (
+    StudentEducationDetails as StudentEducationDetails,
+)
+from wonde.models.subject import Subject as Subject
