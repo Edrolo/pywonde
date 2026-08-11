@@ -34,6 +34,8 @@ Subjects
 Lessons
     /schools/{school_id}/lessons
     /schools/{school_id}/lessons/{lesson_id}
+Groups
+    /schools/{school_id}/groups
 
 
 ### Not yet implemented
@@ -96,9 +98,6 @@ Extended Details
 Exclusions
     /schools/{school_id}/exclusions
     /schools/{school_id}/exclusions/{exclusion_id}
-Groups
-    /schools/{school_id}/groups
-    /schools/{school_id}/groups/{group_id}
 Medical Conditions
     /schools/{school_id}/medical-conditions
     /schools/{school_id}/medical-conditions/{medical_condition_id}

@@ -62,11 +62,5 @@ docs/_build/
 # PyBuilder
 target/
 
-#Ipython Notebook
+# Ipython Notebook
 .ipynb_checkpoints
-
-# Environment variables
-.envrc
-
-# Visual Studio Code
-.vscode/

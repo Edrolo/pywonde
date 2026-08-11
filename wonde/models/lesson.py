@@ -15,40 +15,42 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic_core import to_jsonable_python
+from typing_extensions import Self
 
 from wonde.models.date_time_object import DateTimeObject
 
 
 class Lesson(BaseModel):
     """
-    https://docs.wonde.com/docs/api/sync#lesson-object Related objects Name      Relationship ---------------------- period    one class     one employee  one room      one   # noqa: E501
+    https://docs.wonde.com/docs/api/sync#lesson-object Related objects Name      Relationship ---------------------- period    one class     one employee  one room      one
     """
 
-    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    id: Optional[StrictStr] = Field(default=None, description='The ID of the object.')
     room: Optional[StrictStr] = Field(
-        None, description='The ID of the room the lesson will be taught in.'
+        default=None, description='The ID of the room the lesson will be taught in.'
     )
     period: Optional[StrictStr] = Field(
-        None, description='The ID of the period the lesson occurs during.'
+        default=None, description='The ID of the period the lesson occurs during.'
     )
     employee_id: Optional[StrictStr] = Field(
-        None, description='The ID of the main class teacher for this lesson.'
+        default=None, description='The ID of the main class teacher for this lesson.'
     )
     period_instance_id: Optional[StrictInt] = Field(
-        None,
+        default=None,
         description='All lessons happening during the same period have the same period_instance_id.  This value can be used to match lessons and attendance as SIMS records a mark for a  period instance not a lesson instance. ',
     )
     alternative: Optional[StrictBool] = Field(
-        None, description='The lesson is an alternative to another lesson.'
+        default=None, description='The lesson is an alternative to another lesson.'
     )
     start_at: Optional[DateTimeObject] = None
     end_at: Optional[DateTimeObject] = None
     created_at: Optional[DateTimeObject] = None
     updated_at: Optional[DateTimeObject] = None
-    __properties = [
+    __properties: ClassVar[List[str]] = [
         'id',
         'room',
         'period',
@@ -61,28 +63,43 @@ class Lesson(BaseModel):
         'updated_at',
     ]
 
-    class Config:
-        """Pydantic configuration"""
-
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Lesson:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of Lesson from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set()
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of start_at
         if self.start_at:
             _dict['start_at'] = self.start_at.to_dict()
@@ -96,42 +113,42 @@ class Lesson(BaseModel):
         if self.updated_at:
             _dict['updated_at'] = self.updated_at.to_dict()
         # set to None if room (nullable) is None
-        # and __fields_set__ contains the field
-        if self.room is None and 'room' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.room is None and 'room' in self.model_fields_set:
             _dict['room'] = None
 
         # set to None if period (nullable) is None
-        # and __fields_set__ contains the field
-        if self.period is None and 'period' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.period is None and 'period' in self.model_fields_set:
             _dict['period'] = None
 
         # set to None if employee_id (nullable) is None
-        # and __fields_set__ contains the field
-        if self.employee_id is None and 'employee_id' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.employee_id is None and 'employee_id' in self.model_fields_set:
             _dict['employee_id'] = None
 
         # set to None if period_instance_id (nullable) is None
-        # and __fields_set__ contains the field
-        if self.period_instance_id is None and 'period_instance_id' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.period_instance_id is None and 'period_instance_id' in self.model_fields_set:
             _dict['period_instance_id'] = None
 
         # set to None if alternative (nullable) is None
-        # and __fields_set__ contains the field
-        if self.alternative is None and 'alternative' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.alternative is None and 'alternative' in self.model_fields_set:
             _dict['alternative'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> Lesson:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of Lesson from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return Lesson.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = Lesson.parse_obj(
+        _obj = cls.model_validate(
             {
                 'id': obj.get('id'),
                 'room': obj.get('room'),
@@ -139,16 +156,16 @@ class Lesson(BaseModel):
                 'employee_id': obj.get('employee_id'),
                 'period_instance_id': obj.get('period_instance_id'),
                 'alternative': obj.get('alternative'),
-                'start_at': DateTimeObject.from_dict(obj.get('start_at'))
+                'start_at': DateTimeObject.from_dict(obj['start_at'])
                 if obj.get('start_at') is not None
                 else None,
-                'end_at': DateTimeObject.from_dict(obj.get('end_at'))
+                'end_at': DateTimeObject.from_dict(obj['end_at'])
                 if obj.get('end_at') is not None
                 else None,
-                'created_at': DateTimeObject.from_dict(obj.get('created_at'))
+                'created_at': DateTimeObject.from_dict(obj['created_at'])
                 if obj.get('created_at') is not None
                 else None,
-                'updated_at': DateTimeObject.from_dict(obj.get('updated_at'))
+                'updated_at': DateTimeObject.from_dict(obj['updated_at'])
                 if obj.get('updated_at') is not None
                 else None,
             }

@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **var_date** | **datetime** | The date and time value, apparently with no timezone | [optional] 
@@ -18,12 +19,12 @@ json = "{}"
 # create an instance of DateTimeObject from a JSON string
 date_time_object_instance = DateTimeObject.from_json(json)
 # print the JSON string representation of the object
-print DateTimeObject.to_json()
+print(DateTimeObject.to_json())
 
 # convert the object into a dict
 date_time_object_dict = date_time_object_instance.to_dict()
 # create an instance of DateTimeObject from a dict
-date_time_object_form_dict = date_time_object.from_dict(date_time_object_dict)
+date_time_object_from_dict = DateTimeObject.from_dict(date_time_object_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -15,65 +15,92 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic_core import to_jsonable_python
+from typing_extensions import Self
 
 
 class Pagination(BaseModel):
     """
-    https://docs.wonde.com/docs/api/sync#pagination The pagination object is returned as part of the response body when pagination is enabled.  By default, 50 objects are returned per page. If the response contains 50 objects or fewer,  no pagination object will be returned. If the response contains more than 50 objects, the  first 50 will be returned along with the pagination object. You can request a different pagination limit or force pagination by appending ?per_page= to  the request with the number of items you would like per page. For instance, to show only two  results per page, you could add ?per_page=2 to the end of your query.  The maximum number of results per page is set per-endpoint.   # noqa: E501
+    https://docs.wonde.com/docs/api/sync#pagination The pagination object is returned as part of the response body when pagination is enabled.  By default, 50 objects are returned per page. If the response contains 50 objects or fewer,  no pagination object will be returned. If the response contains more than 50 objects, the  first 50 will be returned along with the pagination object. You can request a different pagination limit or force pagination by appending ?per_page= to  the request with the number of items you would like per page. For instance, to show only two  results per page, you could add ?per_page=2 to the end of your query.  The maximum number of results per page is set per-endpoint.
     """
 
-    next: Optional[StrictStr] = Field(None, description='The next page in the paginated response.')
+    next: Optional[StrictStr] = Field(
+        default=None,
+        description='The next page in the paginated response.',
+        json_schema_extra={
+            'examples': ['https://api.wonde.com/v1.0/schools/{school_id}/students/?page=2']
+        },
+    )
     previous: Optional[StrictStr] = Field(
-        None, description='The previous page in the paginated response.'
+        default=None, description='The previous page in the paginated response.'
     )
     more: Optional[StrictBool] = Field(
-        None, description='Is there another page after the current page.'
+        default=None, description='Is there another page after the current page.'
     )
     per_page: Optional[StrictInt] = Field(
-        None, description='How many rows are currently being returned per page/response.'
+        default=None,
+        description='How many rows are currently being returned per page/response.',
+        json_schema_extra={'examples': [2]},
     )
     current_page: Optional[StrictInt] = Field(
-        None, description='The current paginated page number.'
+        default=None,
+        description='The current paginated page number.',
+        json_schema_extra={'examples': [1]},
     )
-    __properties = ['next', 'previous', 'more', 'per_page', 'current_page']
+    __properties: ClassVar[List[str]] = ['next', 'previous', 'more', 'per_page', 'current_page']
 
-    class Config:
-        """Pydantic configuration"""
-
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Pagination:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of Pagination from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set()
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> Pagination:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of Pagination from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return Pagination.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = Pagination.parse_obj(
+        _obj = cls.model_validate(
             {
                 'next': obj.get('next'),
                 'previous': obj.get('previous'),

@@ -17,9 +17,8 @@ Get specific class for a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.get_school_class200_response import GetSchoolClass200Response
 from wonde.rest import ApiException
@@ -68,6 +67,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -88,6 +88,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A class for a specific school |  -  |
@@ -95,7 +96,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **list_school_classes**
-> ListSchoolClasses200Response list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
+> ListSchoolClasses200Response list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject, type=type)
 
 Get all classes for a school
 
@@ -103,9 +104,8 @@ Get all classes for a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_school_classes200_response import ListSchoolClasses200Response
 from wonde.rest import ApiException
@@ -148,10 +148,11 @@ with wonde.ApiClient(configuration) as api_client:
     has_lessons = True # bool | Only get classes that have lessons (optional)
     class_name = 'class_name_example' # str | Return results with the provided class name (optional)
     class_subject = 'class_subject_example' # str | Return results with the provided subject id (optional)
+    type = 'type_example' # str | Comma-separated list of class types to return. Australia region values: academic, duty, extra curricular, on call, roll class, rostered time off, staff meeting, study.  (optional)
 
     try:
         # Get all classes for a school
-        api_response = api_instance.list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject)
+        api_response = api_instance.list_school_classes(school_id, updated_after=updated_after, updated_before=updated_before, per_page=per_page, page=page, cursor=cursor, include=include, has_students=has_students, has_lessons=has_lessons, class_name=class_name, class_subject=class_subject, type=type)
         print("The response of ClassesApi->list_school_classes:\n")
         pprint(api_response)
     except Exception as e:
@@ -161,6 +162,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -175,6 +177,7 @@ Name | Type | Description  | Notes
  **has_lessons** | **bool**| Only get classes that have lessons | [optional] 
  **class_name** | **str**| Return results with the provided class name | [optional] 
  **class_subject** | **str**| Return results with the provided subject id | [optional] 
+ **type** | **str**| Comma-separated list of class types to return. Australia region values: academic, duty, extra curricular, on call, roll class, rostered time off, staff meeting, study.  | [optional] 
 
 ### Return type
 
@@ -190,6 +193,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | List of classes for a specific school |  -  |

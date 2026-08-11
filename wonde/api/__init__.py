@@ -4,6 +4,7 @@
 from wonde.api.classes_api import ClassesApi
 from wonde.api.deletions_api import DeletionsApi
 from wonde.api.employees_api import EmployeesApi
+from wonde.api.groups_api import GroupsApi
 from wonde.api.lessons_api import LessonsApi
 from wonde.api.schools_api import SchoolsApi
 from wonde.api.students_api import StudentsApi

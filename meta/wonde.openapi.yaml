@@ -366,6 +366,65 @@ paths:
                   message:
                     type: string
 
+  /schools/{school_id}/groups:
+    get:
+      summary: Get all groups for a school
+      operationId: listSchoolGroups
+      tags:
+        - Groups
+      parameters:
+        - in: path
+          name: school_id
+          schema:
+            type: string
+          required: true
+          description: The ID of the school
+        - $ref: '#/components/parameters/UpdatedAfter'
+        - $ref: '#/components/parameters/UpdatedBefore'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/PageOffset'
+        - $ref: '#/components/parameters/PageCursor'
+        - name: include
+          in: query
+          description: Comma separated list of objects to include
+          schema:
+            type: string
+            enum:
+              - students
+              - employees
+        - name: type
+          in: query
+          description: >
+            Only return groups with the provided type. One of REGISTRATION,
+            YEAR, HOUSE, BOARDING, COURSE, MISC, USER, CAMPUS, DIVISION,
+            DEPARTMENT.
+          schema:
+            type: string
+        - name: has_students
+          in: query
+          description: Only return groups that have students
+          schema:
+            type: boolean  # documented as any https://docs.wonde.com/docs/api/sync#get-groups
+        - name: has_employees
+          in: query
+          description: Only return groups that have employees
+          schema:
+            type: boolean  # documented as any https://docs.wonde.com/docs/api/sync#get-groups
+      responses:
+        200:
+          description: List of groups for a specific school
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Group'
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+
   /schools/{school_id}/classes:
     get:
       summary: Get all classes for a school
@@ -394,6 +453,7 @@ paths:
               - students
               - students.contact_details
               - students.education_details
+              - students.enrolments
               - students.extended_details
               - students.house
               - students.registration
@@ -427,6 +487,14 @@ paths:
           description: Return results with the provided subject id
           schema:
             type: string
+        - name: type
+          in: query
+          description: >
+            Comma-separated list of class types to return. Australia region
+            values: academic, duty, extra curricular, on call, roll class,
+            rostered time off, staff meeting, study.
+          schema:
+            type: string  # a comma-separated list, so deliberately not an enum
       responses:
         200:
           description: List of classes for a specific school
@@ -476,6 +544,7 @@ paths:
               - students
               - students.contact_details
               - students.education_details
+              - students.enrolments
               - students.extended_details
               - students.house
               - students.registration
@@ -642,6 +711,7 @@ paths:
             type: string
             enum:
               - classes
+              - classes.enrolments
               - classes.employees
               - classes.subject
               - education_details
@@ -685,7 +755,8 @@ paths:
               - results.resultset
               - exclusions
               - child_protection_plan_date_ranges
-              - upfsm_date_ranges
+              - upfsm_exception_date_ranges
+              - regional_data
         - name: aspect_id
           in: query
           schema:
@@ -1210,6 +1281,14 @@ components:
           type: string
           description: The ID in the MIS.
           example: 8925
+        type:
+          type: string
+          nullable: true
+          description: >
+            Class type. Australia region values: academic, duty,
+            extra curricular, on call, roll class, rostered time off,
+            staff meeting, study.
+          example: academic
         name:
           type: string
           description: Class name.
@@ -1234,8 +1313,28 @@ components:
 
         alternative:
           type: boolean
+          nullable: true
           description: The class is an alternative to another class.
           example: false
+        priority:
+          type: boolean
+          nullable: true
+          description: >
+            The class is a priority to another class. Supported in Edval and
+            Timetabling Solutions data sync only.
+          example: false
+        academic_year:
+          type: string
+          nullable: true
+          description: >
+            The academic year of the class. Supported in SIMS, Edumate API and
+            Synergetic data sync only.
+          example: '2023'
+        year_group:
+          type: string
+          nullable: true
+          description: The year group of the class. Supported in SIMS only.
+          example: '10'
         restored_at: # When the Wonde ID was restored from the deletion's data.
           $ref: '#/components/schemas/DateTimeObject'
         created_at: # When the record was added to Wonde.
@@ -1417,6 +1516,11 @@ components:
           type: string
           description: The student’s ID in the MIS.
           example: 9919
+        title:
+          type: string
+          nullable: true
+          description: The student’s title.
+          example: Mr
         initials:
           type: string
           nullable: true
@@ -1449,9 +1553,24 @@ components:
           example: Tom
         gender:
           type: string
-          enum: [male, female]
-          description: The student’s gender. Possible values are 'MALE' or 'FEMALE'.
-          example: MALE
+          nullable: true
+          # Deliberately not an enum. This previously enumerated (male, female),
+          # which generated an enforced validator — but the docs list six values:
+          # male, female, intersex or indeterminate, not stated/inadequately
+          # described, redacted for privacy, other. A single student with any of
+          # the other four would raise ValueError and fail the whole school's
+          # sync, so the enum is a latent landmine rather than useful validation.
+          description: >
+            The student’s gender. Documented values: male, female, intersex or
+            indeterminate, not stated/inadequately described, redacted for
+            privacy, other.
+          example: male
+        gender_identity:
+          type: string
+          nullable: true
+          description: >
+            The student’s gender identity — their inner concept of self as male,
+            female, neither or a blend of both, per DfE guidance.
         date_of_birth:
           type: string
           format: date
@@ -1481,6 +1600,75 @@ components:
             data:
               $ref: '#/components/schemas/EducationDetails'
 
+
+    Group:
+      type: object
+      description: >
+        https://docs.wonde.com/docs/api/sync#group-object
+
+        Campuses are modelled as groups with type=CAMPUS — Wonde has no
+        campuses resource, and campus is only ever available as an `include`
+        on groups, students and employees, never as a query filter.
+
+        Related objects
+
+        Name                 Relationship
+        -----------------------------------
+        students             many
+        employees            many
+      properties:
+        id:
+          type: string
+          description: The ID of the object.
+          example: A1161584171
+        mis_id:
+          type: string
+          description: The group’s ID in the MIS.
+          example: 425
+        name:
+          type: string
+          description: Group name.
+          example: 10A
+        code:
+          type: string
+          description: Group code.
+          example: 10A
+        type:
+          type: string
+          nullable: true
+          description: >
+            The group type. One of REGISTRATION, YEAR, HOUSE, BOARDING, COURSE,
+            MISC, USER, CAMPUS, DIVISION, DEPARTMENT.
+          example: REGISTRATION
+        description:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        restored_at: # When the Wonde ID was restored from the deletion's data.
+          $ref: '#/components/schemas/DateTimeObject'
+        created_at: # When the record was added to Wonde.
+          $ref: '#/components/schemas/DateTimeObject'
+        updated_at: # When the record was last updated on Wonde.
+          $ref: '#/components/schemas/DateTimeObject'
+
+        # Optional "includes"
+
+        students:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Student'
+        employees:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Employee'
 
     Subject:
       type: object

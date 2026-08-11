@@ -10,16 +10,14 @@ Do not edit the class manually.
 """
 
 
-import re  # noqa: F401
 from datetime import date
-from typing import Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_call
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
-from wonde.api_client import ApiClient
+from wonde.api_client import ApiClient, RequestSerialized
 from wonde.api_response import ApiResponse
-from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
 from wonde.models.get_school200_response import GetSchool200Response
 from wonde.models.get_school_acl200_response import GetSchoolAcl200Response
 from wonde.models.get_school_meta200_response import GetSchoolMeta200Response
@@ -27,6 +25,7 @@ from wonde.models.get_school_permissions200_response import GetSchoolPermissions
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
 from wonde.models.request_school_access_request import RequestSchoolAccessRequest
+from wonde.rest import RESTResponseType
 
 
 class SchoolsApi:
@@ -44,587 +43,916 @@ class SchoolsApi:
     @validate_call
     def get_school(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school to retrieve')],
-        **kwargs
+        school_id: Annotated[StrictStr, Field(description='The ID of the school to retrieve')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetSchool200Response:
-        """Retrieve a specific school  # noqa: E501
+        """Retrieve a specific school
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school(school_id, async_req=True)
-        >>> result = thread.get()
 
         :param school_id: The ID of the school to retrieve (required)
         :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: GetSchool200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the get_school_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.get_school_with_http_info(school_id, **kwargs)
-
-    @validate_call
-    def get_school_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school to retrieve')],
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve a specific school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_with_http_info(school_id, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school to retrieve (required)
-        :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(GetSchool200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['school_id']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._get_school_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method get_school' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        # process the query parameters
-        _query_params = []
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'GetSchool200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        return self.api_client.call_api(
-            '/schools/{school_id}',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def get_school_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school to retrieve')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetSchool200Response]:
+        """Retrieve a specific school
+
+
+        :param school_id: The ID of the school to retrieve (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchool200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def get_school_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school to retrieve')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve a specific school
+
+
+        :param school_id: The ID of the school to retrieve (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchool200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _get_school_serialize(
+        self,
+        school_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if school_id is not None:
+            _path_params['school_id'] = school_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/{school_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
     def get_school_acl(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
         with_user_type: Annotated[
             Optional[StrictBool], Field(description='Display the type of user')
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetSchoolAcl200Response:
-        """Retrieve the access control list applied to a school  # noqa: E501
+        """Retrieve the access control list applied to a school
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_acl(school_id, with_user_type, async_req=True)
-        >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
         :param with_user_type: Display the type of user
         :type with_user_type: bool
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: GetSchoolAcl200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the get_school_acl_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.get_school_acl_with_http_info(school_id, with_user_type, **kwargs)
-
-    @validate_call
-    def get_school_acl_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        with_user_type: Annotated[
-            Optional[StrictBool], Field(description='Display the type of user')
-        ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve the access control list applied to a school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_acl_with_http_info(school_id, with_user_type, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param with_user_type: Display the type of user
-        :type with_user_type: bool
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(GetSchoolAcl200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['school_id', 'with_user_type']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._get_school_acl_serialize(
+            school_id=school_id,
+            with_user_type=with_user_type,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method get_school_acl' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        # process the query parameters
-        _query_params = []
-        if _params.get('with_user_type') is not None:
-            _query_params.append(('with_user_type', _params['with_user_type']))
-
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'GetSchoolAcl200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        return self.api_client.call_api(
-            '/meta/schools/{school_id}/acl',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def get_school_acl_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        with_user_type: Annotated[
+            Optional[StrictBool], Field(description='Display the type of user')
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetSchoolAcl200Response]:
+        """Retrieve the access control list applied to a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param with_user_type: Display the type of user
+        :type with_user_type: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_acl_serialize(
+            school_id=school_id,
+            with_user_type=with_user_type,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchoolAcl200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def get_school_acl_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        with_user_type: Annotated[
+            Optional[StrictBool], Field(description='Display the type of user')
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve the access control list applied to a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param with_user_type: Display the type of user
+        :type with_user_type: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_acl_serialize(
+            school_id=school_id,
+            with_user_type=with_user_type,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchoolAcl200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _get_school_acl_serialize(
+        self,
+        school_id,
+        with_user_type,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if school_id is not None:
+            _path_params['school_id'] = school_id
+        # process the query parameters
+        if with_user_type is not None:
+
+            _query_params.append(('with_user_type', with_user_type))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/meta/schools/{school_id}/acl',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
     def get_school_meta(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        **kwargs
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetSchoolMeta200Response:
-        """Retrieve meta data for a school  # noqa: E501
+        """Retrieve meta data for a school
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_meta(school_id, async_req=True)
-        >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: GetSchoolMeta200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the get_school_meta_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.get_school_meta_with_http_info(school_id, **kwargs)
-
-    @validate_call
-    def get_school_meta_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve meta data for a school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_meta_with_http_info(school_id, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(GetSchoolMeta200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['school_id']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._get_school_meta_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method get_school_meta' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        # process the query parameters
-        _query_params = []
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'GetSchoolMeta200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        return self.api_client.call_api(
-            '/meta/schools/{school_id}',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def get_school_meta_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetSchoolMeta200Response]:
+        """Retrieve meta data for a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_meta_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchoolMeta200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def get_school_meta_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve meta data for a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_meta_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchoolMeta200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _get_school_meta_serialize(
+        self,
+        school_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if school_id is not None:
+            _path_params['school_id'] = school_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/meta/schools/{school_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
     def get_school_permissions(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        **kwargs
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> GetSchoolPermissions200Response:
-        """Retrieve the permissions applied to a school  # noqa: E501
+        """Retrieve the permissions applied to a school
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_permissions(school_id, async_req=True)
-        >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: GetSchoolPermissions200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the get_school_permissions_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.get_school_permissions_with_http_info(school_id, **kwargs)
-
-    @validate_call
-    def get_school_permissions_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve the permissions applied to a school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_permissions_with_http_info(school_id, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(GetSchoolPermissions200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['school_id']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._get_school_permissions_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method get_school_permissions' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        # process the query parameters
-        _query_params = []
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'GetSchoolPermissions200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        return self.api_client.call_api(
-            '/meta/schools/{school_id}/permissions',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def get_school_permissions_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[GetSchoolPermissions200Response]:
+        """Retrieve the permissions applied to a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_permissions_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchoolPermissions200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def get_school_permissions_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve the permissions applied to a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_permissions_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'GetSchoolPermissions200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _get_school_permissions_serialize(
+        self,
+        school_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if school_id is not None:
+            _path_params['school_id'] = school_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/meta/schools/{school_id}/permissions',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
@@ -659,15 +987,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchools200Response:
-        """Retrieve all schools  # noqa: E501
+        """Retrieve all schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -687,33 +1018,53 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchools200Response
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_schools_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_schools_with_http_info(
-            updated_after,
-            updated_before,
-            per_page,
-            page,
-            cursor,
-            postcode,
-            la_code,
-            establishment_number,
-            urn,
-            **kwargs
+
+        _param = self._list_schools_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
     @validate_call
     def list_schools_with_http_info(
@@ -747,15 +1098,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve all schools  # noqa: E501
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchools200Response]:
+        """Retrieve all schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_with_http_info(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -775,153 +1129,265 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = [
-            'updated_after',
-            'updated_before',
-            'per_page',
-            'page',
-            'cursor',
-            'postcode',
-            'la_code',
-            'establishment_number',
-            'urn',
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_schools_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'" ' to method list_schools' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
 
-        _collection_formats = {}
+    @validate_call
+    def list_schools_without_preload_content(
+        self,
+        updated_after: Annotated[
+            Optional[date], Field(description='Return rows modified after date')
+        ] = None,
+        updated_before: Annotated[
+            Optional[date], Field(description='Return rows modified before date')
+        ] = None,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
+        postcode: Annotated[
+            Optional[StrictStr], Field(description='Return results matching postcode search string')
+        ] = None,
+        la_code: Annotated[
+            Optional[StrictStr], Field(description='Return results with provided la_code')
+        ] = None,
+        establishment_number: Annotated[
+            Optional[StrictStr],
+            Field(description='Return results with provided establishment_number'),
+        ] = None,
+        urn: Annotated[
+            Optional[StrictInt],
+            Field(description='Return results with provided unique reference number'),
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve all schools
+
+
+        :param updated_after: Return rows modified after date
+        :type updated_after: date
+        :param updated_before: Return rows modified before date
+        :type updated_before: date
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
+        :param postcode: Return results matching postcode search string
+        :type postcode: str
+        :param la_code: Return results with provided la_code
+        :type la_code: str
+        :param establishment_number: Return results with provided establishment_number
+        :type establishment_number: str
+        :param urn: Return results with provided unique reference number
+        :type urn: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_schools_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_schools_serialize(
+        self,
+        updated_after,
+        updated_before,
+        per_page,
+        page,
+        cursor,
+        postcode,
+        la_code,
+        establishment_number,
+        urn,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
 
         # process the path parameters
-        _path_params = {}
-
         # process the query parameters
-        _query_params = []
-        if _params.get('updated_after') is not None:
-            if isinstance(_params['updated_after'], date):
+        if updated_after is not None:
+            if isinstance(updated_after, date):
                 _query_params.append(
                     (
                         'updated_after',
-                        _params['updated_after'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_after.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_after', _params['updated_after']))
+                _query_params.append(('updated_after', updated_after))
 
-        if _params.get('updated_before') is not None:
-            if isinstance(_params['updated_before'], date):
+        if updated_before is not None:
+            if isinstance(updated_before, date):
                 _query_params.append(
                     (
                         'updated_before',
-                        _params['updated_before'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_before.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_before', _params['updated_before']))
+                _query_params.append(('updated_before', updated_before))
 
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
+        if per_page is not None:
 
-        if _params.get('page') is not None:
-            _query_params.append(('page', _params['page']))
+            _query_params.append(('per_page', per_page))
 
-        if _params.get('cursor') is not None:
-            _query_params.append(('cursor', _params['cursor']))
+        if page is not None:
 
-        if _params.get('postcode') is not None:
-            _query_params.append(('postcode', _params['postcode']))
+            _query_params.append(('page', page))
 
-        if _params.get('la_code') is not None:
-            _query_params.append(('la_code', _params['la_code']))
+        if cursor is not None:
 
-        if _params.get('establishment_number') is not None:
-            _query_params.append(('establishment_number', _params['establishment_number']))
+            _query_params.append(('cursor', cursor))
 
-        if _params.get('urn') is not None:
-            _query_params.append(('urn', _params['urn']))
+        if postcode is not None:
+
+            _query_params.append(('postcode', postcode))
+
+        if la_code is not None:
+
+            _query_params.append(('la_code', la_code))
+
+        if establishment_number is not None:
+
+            _query_params.append(('establishment_number', establishment_number))
+
+        if urn is not None:
+
+            _query_params.append(('urn', urn))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
-        _form_params = []
-        _files = {}
         # process the body parameter
-        _body_params = None
+
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
 
         # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
 
-        _response_types_map = {
-            '200': 'ListSchools200Response',
-        }
-
-        return self.api_client.call_api(
-            '/schools/all',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/all',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
@@ -956,15 +1422,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchools200Response:
-        """Retrieve all approved schools  # noqa: E501
+        """Retrieve all approved schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_approved(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -984,33 +1453,53 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchools200Response
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_schools_approved_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_schools_approved_with_http_info(
-            updated_after,
-            updated_before,
-            per_page,
-            page,
-            cursor,
-            postcode,
-            la_code,
-            establishment_number,
-            urn,
-            **kwargs
+
+        _param = self._list_schools_approved_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
     @validate_call
     def list_schools_approved_with_http_info(
@@ -1044,15 +1533,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve all approved schools  # noqa: E501
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchools200Response]:
+        """Retrieve all approved schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_approved_with_http_info(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -1072,154 +1564,265 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = [
-            'updated_after',
-            'updated_before',
-            'per_page',
-            'page',
-            'cursor',
-            'postcode',
-            'la_code',
-            'establishment_number',
-            'urn',
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_schools_approved_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method list_schools_approved' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
 
-        _collection_formats = {}
+    @validate_call
+    def list_schools_approved_without_preload_content(
+        self,
+        updated_after: Annotated[
+            Optional[date], Field(description='Return rows modified after date')
+        ] = None,
+        updated_before: Annotated[
+            Optional[date], Field(description='Return rows modified before date')
+        ] = None,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
+        postcode: Annotated[
+            Optional[StrictStr], Field(description='Return results matching postcode search string')
+        ] = None,
+        la_code: Annotated[
+            Optional[StrictStr], Field(description='Return results with provided la_code')
+        ] = None,
+        establishment_number: Annotated[
+            Optional[StrictStr],
+            Field(description='Return results with provided establishment_number'),
+        ] = None,
+        urn: Annotated[
+            Optional[StrictInt],
+            Field(description='Return results with provided unique reference number'),
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve all approved schools
+
+
+        :param updated_after: Return rows modified after date
+        :type updated_after: date
+        :param updated_before: Return rows modified before date
+        :type updated_before: date
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
+        :param postcode: Return results matching postcode search string
+        :type postcode: str
+        :param la_code: Return results with provided la_code
+        :type la_code: str
+        :param establishment_number: Return results with provided establishment_number
+        :type establishment_number: str
+        :param urn: Return results with provided unique reference number
+        :type urn: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_schools_approved_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_schools_approved_serialize(
+        self,
+        updated_after,
+        updated_before,
+        per_page,
+        page,
+        cursor,
+        postcode,
+        la_code,
+        establishment_number,
+        urn,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
 
         # process the path parameters
-        _path_params = {}
-
         # process the query parameters
-        _query_params = []
-        if _params.get('updated_after') is not None:
-            if isinstance(_params['updated_after'], date):
+        if updated_after is not None:
+            if isinstance(updated_after, date):
                 _query_params.append(
                     (
                         'updated_after',
-                        _params['updated_after'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_after.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_after', _params['updated_after']))
+                _query_params.append(('updated_after', updated_after))
 
-        if _params.get('updated_before') is not None:
-            if isinstance(_params['updated_before'], date):
+        if updated_before is not None:
+            if isinstance(updated_before, date):
                 _query_params.append(
                     (
                         'updated_before',
-                        _params['updated_before'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_before.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_before', _params['updated_before']))
+                _query_params.append(('updated_before', updated_before))
 
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
+        if per_page is not None:
 
-        if _params.get('page') is not None:
-            _query_params.append(('page', _params['page']))
+            _query_params.append(('per_page', per_page))
 
-        if _params.get('cursor') is not None:
-            _query_params.append(('cursor', _params['cursor']))
+        if page is not None:
 
-        if _params.get('postcode') is not None:
-            _query_params.append(('postcode', _params['postcode']))
+            _query_params.append(('page', page))
 
-        if _params.get('la_code') is not None:
-            _query_params.append(('la_code', _params['la_code']))
+        if cursor is not None:
 
-        if _params.get('establishment_number') is not None:
-            _query_params.append(('establishment_number', _params['establishment_number']))
+            _query_params.append(('cursor', cursor))
 
-        if _params.get('urn') is not None:
-            _query_params.append(('urn', _params['urn']))
+        if postcode is not None:
+
+            _query_params.append(('postcode', postcode))
+
+        if la_code is not None:
+
+            _query_params.append(('la_code', la_code))
+
+        if establishment_number is not None:
+
+            _query_params.append(('establishment_number', establishment_number))
+
+        if urn is not None:
+
+            _query_params.append(('urn', urn))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
-        _form_params = []
-        _files = {}
         # process the body parameter
-        _body_params = None
+
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
 
         # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
 
-        _response_types_map = {
-            '200': 'ListSchools200Response',
-        }
-
-        return self.api_client.call_api(
-            '/schools',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
@@ -1254,15 +1857,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchools200Response:
-        """Retrieve all audited schools  # noqa: E501
+        """Retrieve all audited schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_audited(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -1282,33 +1888,53 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchools200Response
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_schools_audited_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_schools_audited_with_http_info(
-            updated_after,
-            updated_before,
-            per_page,
-            page,
-            cursor,
-            postcode,
-            la_code,
-            establishment_number,
-            urn,
-            **kwargs
+
+        _param = self._list_schools_audited_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
     @validate_call
     def list_schools_audited_with_http_info(
@@ -1342,15 +1968,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve all audited schools  # noqa: E501
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchools200Response]:
+        """Retrieve all audited schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_audited_with_http_info(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -1370,154 +1999,265 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = [
-            'updated_after',
-            'updated_before',
-            'per_page',
-            'page',
-            'cursor',
-            'postcode',
-            'la_code',
-            'establishment_number',
-            'urn',
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_schools_audited_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method list_schools_audited' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
 
-        _collection_formats = {}
+    @validate_call
+    def list_schools_audited_without_preload_content(
+        self,
+        updated_after: Annotated[
+            Optional[date], Field(description='Return rows modified after date')
+        ] = None,
+        updated_before: Annotated[
+            Optional[date], Field(description='Return rows modified before date')
+        ] = None,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
+        postcode: Annotated[
+            Optional[StrictStr], Field(description='Return results matching postcode search string')
+        ] = None,
+        la_code: Annotated[
+            Optional[StrictStr], Field(description='Return results with provided la_code')
+        ] = None,
+        establishment_number: Annotated[
+            Optional[StrictStr],
+            Field(description='Return results with provided establishment_number'),
+        ] = None,
+        urn: Annotated[
+            Optional[StrictInt],
+            Field(description='Return results with provided unique reference number'),
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve all audited schools
+
+
+        :param updated_after: Return rows modified after date
+        :type updated_after: date
+        :param updated_before: Return rows modified before date
+        :type updated_before: date
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
+        :param postcode: Return results matching postcode search string
+        :type postcode: str
+        :param la_code: Return results with provided la_code
+        :type la_code: str
+        :param establishment_number: Return results with provided establishment_number
+        :type establishment_number: str
+        :param urn: Return results with provided unique reference number
+        :type urn: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_schools_audited_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_schools_audited_serialize(
+        self,
+        updated_after,
+        updated_before,
+        per_page,
+        page,
+        cursor,
+        postcode,
+        la_code,
+        establishment_number,
+        urn,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
 
         # process the path parameters
-        _path_params = {}
-
         # process the query parameters
-        _query_params = []
-        if _params.get('updated_after') is not None:
-            if isinstance(_params['updated_after'], date):
+        if updated_after is not None:
+            if isinstance(updated_after, date):
                 _query_params.append(
                     (
                         'updated_after',
-                        _params['updated_after'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_after.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_after', _params['updated_after']))
+                _query_params.append(('updated_after', updated_after))
 
-        if _params.get('updated_before') is not None:
-            if isinstance(_params['updated_before'], date):
+        if updated_before is not None:
+            if isinstance(updated_before, date):
                 _query_params.append(
                     (
                         'updated_before',
-                        _params['updated_before'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_before.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_before', _params['updated_before']))
+                _query_params.append(('updated_before', updated_before))
 
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
+        if per_page is not None:
 
-        if _params.get('page') is not None:
-            _query_params.append(('page', _params['page']))
+            _query_params.append(('per_page', per_page))
 
-        if _params.get('cursor') is not None:
-            _query_params.append(('cursor', _params['cursor']))
+        if page is not None:
 
-        if _params.get('postcode') is not None:
-            _query_params.append(('postcode', _params['postcode']))
+            _query_params.append(('page', page))
 
-        if _params.get('la_code') is not None:
-            _query_params.append(('la_code', _params['la_code']))
+        if cursor is not None:
 
-        if _params.get('establishment_number') is not None:
-            _query_params.append(('establishment_number', _params['establishment_number']))
+            _query_params.append(('cursor', cursor))
 
-        if _params.get('urn') is not None:
-            _query_params.append(('urn', _params['urn']))
+        if postcode is not None:
+
+            _query_params.append(('postcode', postcode))
+
+        if la_code is not None:
+
+            _query_params.append(('la_code', la_code))
+
+        if establishment_number is not None:
+
+            _query_params.append(('establishment_number', establishment_number))
+
+        if urn is not None:
+
+            _query_params.append(('urn', urn))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
-        _form_params = []
-        _files = {}
         # process the body parameter
-        _body_params = None
+
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
 
         # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
 
-        _response_types_map = {
-            '200': 'ListSchools200Response',
-        }
-
-        return self.api_client.call_api(
-            '/schools/audited',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/audited',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
@@ -1526,34 +2266,60 @@ class SchoolsApi:
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchools200Response:
-        """Retrieve all schools with declined access  # noqa: E501
+        """Retrieve all schools with declined access
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_declined(per_page, async_req=True)
-        >>> result = thread.get()
 
         :param per_page: Amount of rows to return
         :type per_page: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchools200Response
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_schools_declined_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_schools_declined_with_http_info(per_page, **kwargs)
+
+        _param = self._list_schools_declined_serialize(
+            per_page=per_page,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
     @validate_call
     def list_schools_declined_with_http_info(
@@ -1561,112 +2327,168 @@ class SchoolsApi:
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve all schools with declined access  # noqa: E501
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchools200Response]:
+        """Retrieve all schools with declined access
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_declined_with_http_info(per_page, async_req=True)
-        >>> result = thread.get()
 
         :param per_page: Amount of rows to return
         :type per_page: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['per_page']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_schools_declined_serialize(
+            per_page=per_page,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method list_schools_declined' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-
-        # process the query parameters
-        _query_params = []
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
-
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'ListSchools200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
 
-        return self.api_client.call_api(
-            '/schools/declined',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def list_schools_declined_without_preload_content(
+        self,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve all schools with declined access
+
+
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_schools_declined_serialize(
+            per_page=per_page,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_schools_declined_serialize(
+        self,
+        per_page,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if per_page is not None:
+
+            _query_params.append(('per_page', per_page))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/declined',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
@@ -1695,15 +2517,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchools200Response:
-        """Retrieve all offline schools  # noqa: E501
+        """Retrieve all offline schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_offline(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -1719,31 +2544,51 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchools200Response
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_schools_offline_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_schools_offline_with_http_info(
-            updated_after,
-            updated_before,
-            per_page,
-            postcode,
-            la_code,
-            establishment_number,
-            urn,
-            **kwargs
+
+        _param = self._list_schools_offline_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
     @validate_call
     def list_schools_offline_with_http_info(
@@ -1771,15 +2616,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve all offline schools  # noqa: E501
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchools200Response]:
+        """Retrieve all offline schools
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_offline_with_http_info(updated_after, updated_before, per_page, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -1795,146 +2643,241 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = [
-            'updated_after',
-            'updated_before',
-            'per_page',
-            'postcode',
-            'la_code',
-            'establishment_number',
-            'urn',
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_schools_offline_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method list_schools_offline' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
 
-        _collection_formats = {}
+    @validate_call
+    def list_schools_offline_without_preload_content(
+        self,
+        updated_after: Annotated[
+            Optional[date], Field(description='Return rows modified after date')
+        ] = None,
+        updated_before: Annotated[
+            Optional[date], Field(description='Return rows modified before date')
+        ] = None,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        postcode: Annotated[
+            Optional[StrictStr], Field(description='Return results matching postcode search string')
+        ] = None,
+        la_code: Annotated[
+            Optional[StrictStr], Field(description='Return results with provided la_code')
+        ] = None,
+        establishment_number: Annotated[
+            Optional[StrictStr],
+            Field(description='Return results with provided establishment_number'),
+        ] = None,
+        urn: Annotated[
+            Optional[StrictInt],
+            Field(description='Return results with provided unique reference number'),
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve all offline schools
+
+
+        :param updated_after: Return rows modified after date
+        :type updated_after: date
+        :param updated_before: Return rows modified before date
+        :type updated_before: date
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param postcode: Return results matching postcode search string
+        :type postcode: str
+        :param la_code: Return results with provided la_code
+        :type la_code: str
+        :param establishment_number: Return results with provided establishment_number
+        :type establishment_number: str
+        :param urn: Return results with provided unique reference number
+        :type urn: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_schools_offline_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_schools_offline_serialize(
+        self,
+        updated_after,
+        updated_before,
+        per_page,
+        postcode,
+        la_code,
+        establishment_number,
+        urn,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
 
         # process the path parameters
-        _path_params = {}
-
         # process the query parameters
-        _query_params = []
-        if _params.get('updated_after') is not None:
-            if isinstance(_params['updated_after'], date):
+        if updated_after is not None:
+            if isinstance(updated_after, date):
                 _query_params.append(
                     (
                         'updated_after',
-                        _params['updated_after'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_after.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_after', _params['updated_after']))
+                _query_params.append(('updated_after', updated_after))
 
-        if _params.get('updated_before') is not None:
-            if isinstance(_params['updated_before'], date):
+        if updated_before is not None:
+            if isinstance(updated_before, date):
                 _query_params.append(
                     (
                         'updated_before',
-                        _params['updated_before'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_before.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_before', _params['updated_before']))
+                _query_params.append(('updated_before', updated_before))
 
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
+        if per_page is not None:
 
-        if _params.get('postcode') is not None:
-            _query_params.append(('postcode', _params['postcode']))
+            _query_params.append(('per_page', per_page))
 
-        if _params.get('la_code') is not None:
-            _query_params.append(('la_code', _params['la_code']))
+        if postcode is not None:
 
-        if _params.get('establishment_number') is not None:
-            _query_params.append(('establishment_number', _params['establishment_number']))
+            _query_params.append(('postcode', postcode))
 
-        if _params.get('urn') is not None:
-            _query_params.append(('urn', _params['urn']))
+        if la_code is not None:
+
+            _query_params.append(('la_code', la_code))
+
+        if establishment_number is not None:
+
+            _query_params.append(('establishment_number', establishment_number))
+
+        if urn is not None:
+
+            _query_params.append(('urn', urn))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
-        _form_params = []
-        _files = {}
         # process the body parameter
-        _body_params = None
+
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
 
         # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
 
-        _response_types_map = {
-            '200': 'ListSchools200Response',
-        }
-
-        return self.api_client.call_api(
-            '/schools/offline',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/offline',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
@@ -1969,15 +2912,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchools200Response:
-        """Retrieve all schools with pending access request  # noqa: E501
+        """Retrieve all schools with pending access request
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_pending(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -1997,33 +2943,53 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchools200Response
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_schools_pending_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_schools_pending_with_http_info(
-            updated_after,
-            updated_before,
-            per_page,
-            page,
-            cursor,
-            postcode,
-            la_code,
-            establishment_number,
-            urn,
-            **kwargs
+
+        _param = self._list_schools_pending_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
     @validate_call
     def list_schools_pending_with_http_info(
@@ -2057,15 +3023,18 @@ class SchoolsApi:
             Optional[StrictInt],
             Field(description='Return results with provided unique reference number'),
         ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve all schools with pending access request  # noqa: E501
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchools200Response]:
+        """Retrieve all schools with pending access request
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_pending_with_http_info(updated_after, updated_before, per_page, page, cursor, postcode, la_code, establishment_number, urn, async_req=True)
-        >>> result = thread.get()
 
         :param updated_after: Return rows modified after date
         :type updated_after: date
@@ -2085,154 +3054,265 @@ class SchoolsApi:
         :type establishment_number: str
         :param urn: Return results with provided unique reference number
         :type urn: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = [
-            'updated_after',
-            'updated_before',
-            'per_page',
-            'page',
-            'cursor',
-            'postcode',
-            'la_code',
-            'establishment_number',
-            'urn',
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_schools_pending_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method list_schools_pending' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
 
-        _collection_formats = {}
+    @validate_call
+    def list_schools_pending_without_preload_content(
+        self,
+        updated_after: Annotated[
+            Optional[date], Field(description='Return rows modified after date')
+        ] = None,
+        updated_before: Annotated[
+            Optional[date], Field(description='Return rows modified before date')
+        ] = None,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
+        postcode: Annotated[
+            Optional[StrictStr], Field(description='Return results matching postcode search string')
+        ] = None,
+        la_code: Annotated[
+            Optional[StrictStr], Field(description='Return results with provided la_code')
+        ] = None,
+        establishment_number: Annotated[
+            Optional[StrictStr],
+            Field(description='Return results with provided establishment_number'),
+        ] = None,
+        urn: Annotated[
+            Optional[StrictInt],
+            Field(description='Return results with provided unique reference number'),
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve all schools with pending access request
+
+
+        :param updated_after: Return rows modified after date
+        :type updated_after: date
+        :param updated_before: Return rows modified before date
+        :type updated_before: date
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
+        :param postcode: Return results matching postcode search string
+        :type postcode: str
+        :param la_code: Return results with provided la_code
+        :type la_code: str
+        :param establishment_number: Return results with provided establishment_number
+        :type establishment_number: str
+        :param urn: Return results with provided unique reference number
+        :type urn: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_schools_pending_serialize(
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            postcode=postcode,
+            la_code=la_code,
+            establishment_number=establishment_number,
+            urn=urn,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_schools_pending_serialize(
+        self,
+        updated_after,
+        updated_before,
+        per_page,
+        page,
+        cursor,
+        postcode,
+        la_code,
+        establishment_number,
+        urn,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
 
         # process the path parameters
-        _path_params = {}
-
         # process the query parameters
-        _query_params = []
-        if _params.get('updated_after') is not None:
-            if isinstance(_params['updated_after'], date):
+        if updated_after is not None:
+            if isinstance(updated_after, date):
                 _query_params.append(
                     (
                         'updated_after',
-                        _params['updated_after'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_after.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_after', _params['updated_after']))
+                _query_params.append(('updated_after', updated_after))
 
-        if _params.get('updated_before') is not None:
-            if isinstance(_params['updated_before'], date):
+        if updated_before is not None:
+            if isinstance(updated_before, date):
                 _query_params.append(
                     (
                         'updated_before',
-                        _params['updated_before'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_before.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_before', _params['updated_before']))
+                _query_params.append(('updated_before', updated_before))
 
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
+        if per_page is not None:
 
-        if _params.get('page') is not None:
-            _query_params.append(('page', _params['page']))
+            _query_params.append(('per_page', per_page))
 
-        if _params.get('cursor') is not None:
-            _query_params.append(('cursor', _params['cursor']))
+        if page is not None:
 
-        if _params.get('postcode') is not None:
-            _query_params.append(('postcode', _params['postcode']))
+            _query_params.append(('page', page))
 
-        if _params.get('la_code') is not None:
-            _query_params.append(('la_code', _params['la_code']))
+        if cursor is not None:
 
-        if _params.get('establishment_number') is not None:
-            _query_params.append(('establishment_number', _params['establishment_number']))
+            _query_params.append(('cursor', cursor))
 
-        if _params.get('urn') is not None:
-            _query_params.append(('urn', _params['urn']))
+        if postcode is not None:
+
+            _query_params.append(('postcode', postcode))
+
+        if la_code is not None:
+
+            _query_params.append(('la_code', la_code))
+
+        if establishment_number is not None:
+
+            _query_params.append(('establishment_number', establishment_number))
+
+        if urn is not None:
+
+            _query_params.append(('urn', urn))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
-        _form_params = []
-        _files = {}
         # process the body parameter
-        _body_params = None
+
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
 
         # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
 
-        _response_types_map = {
-            '200': 'ListSchools200Response',
-        }
-
-        return self.api_client.call_api(
-            '/schools/pending',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/pending',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
@@ -2241,34 +3321,60 @@ class SchoolsApi:
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchools200Response:
-        """Retrieve all schools with revoked access  # noqa: E501
+        """Retrieve all schools with revoked access
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_revoked(per_page, async_req=True)
-        >>> result = thread.get()
 
         :param per_page: Amount of rows to return
         :type per_page: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchools200Response
         """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_schools_revoked_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_schools_revoked_with_http_info(per_page, **kwargs)
+
+        _param = self._list_schools_revoked_serialize(
+            per_page=per_page,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
     @validate_call
     def list_schools_revoked_with_http_info(
@@ -2276,424 +3382,647 @@ class SchoolsApi:
         per_page: Annotated[
             Optional[StrictInt], Field(description='Amount of rows to return')
         ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Retrieve all schools with revoked access  # noqa: E501
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchools200Response]:
+        """Retrieve all schools with revoked access
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_schools_revoked_with_http_info(per_page, async_req=True)
-        >>> result = thread.get()
 
         :param per_page: Amount of rows to return
         :type per_page: int
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchools200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['per_page']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_schools_revoked_serialize(
+            per_page=per_page,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method list_schools_revoked' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-
-        # process the query parameters
-        _query_params = []
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
-
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'ListSchools200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
 
-        return self.api_client.call_api(
-            '/schools/revoked',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def list_schools_revoked_without_preload_content(
+        self,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Retrieve all schools with revoked access
+
+
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_schools_revoked_serialize(
+            per_page=per_page,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchools200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_schools_revoked_serialize(
+        self,
+        per_page,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if per_page is not None:
+
+            _query_params.append(('per_page', per_page))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/revoked',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
     def request_school_access(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
         request_school_access_request: Annotated[
             Optional[RequestSchoolAccessRequest],
             Field(description='Contacts to add for the request'),
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RequestSchoolAccess200Response:
-        """Request access to a school  # noqa: E501
+        """Request access to a school
 
-        When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided.   # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.request_school_access(school_id, request_school_access_request, async_req=True)
-        >>> result = thread.get()
+        When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided.
 
         :param school_id: The ID of the school (required)
         :type school_id: str
         :param request_school_access_request: Contacts to add for the request
         :type request_school_access_request: RequestSchoolAccessRequest
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: RequestSchoolAccess200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the request_school_access_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.request_school_access_with_http_info(
-            school_id, request_school_access_request, **kwargs
-        )
-
-    @validate_call
-    def request_school_access_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        request_school_access_request: Annotated[
-            Optional[RequestSchoolAccessRequest],
-            Field(description='Contacts to add for the request'),
-        ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Request access to a school  # noqa: E501
-
-        When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided.   # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.request_school_access_with_http_info(school_id, request_school_access_request, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param request_school_access_request: Contacts to add for the request
-        :type request_school_access_request: RequestSchoolAccessRequest
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(RequestSchoolAccess200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['school_id', 'request_school_access_request']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._request_school_access_serialize(
+            school_id=school_id,
+            request_school_access_request=request_school_access_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method request_school_access' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        # process the query parameters
-        _query_params = []
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        if _params['request_school_access_request'] is not None:
-            _body_params = _params['request_school_access_request']
-
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # set the HTTP header `Content-Type`
-        _content_types_list = _params.get(
-            '_content_type', self.api_client.select_header_content_type(['application/json'])
-        )
-        if _content_types_list:
-            _header_params['Content-Type'] = _content_types_list
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'RequestSchoolAccess200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        return self.api_client.call_api(
-            '/schools/{school_id}/request-access',
-            'POST',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def request_school_access_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        request_school_access_request: Annotated[
+            Optional[RequestSchoolAccessRequest],
+            Field(description='Contacts to add for the request'),
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[RequestSchoolAccess200Response]:
+        """Request access to a school
+
+        When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided.
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param request_school_access_request: Contacts to add for the request
+        :type request_school_access_request: RequestSchoolAccessRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._request_school_access_serialize(
+            school_id=school_id,
+            request_school_access_request=request_school_access_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'RequestSchoolAccess200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def request_school_access_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        request_school_access_request: Annotated[
+            Optional[RequestSchoolAccessRequest],
+            Field(description='Contacts to add for the request'),
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Request access to a school
+
+        When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided.
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param request_school_access_request: Contacts to add for the request
+        :type request_school_access_request: RequestSchoolAccessRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._request_school_access_serialize(
+            school_id=school_id,
+            request_school_access_request=request_school_access_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'RequestSchoolAccess200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _request_school_access_serialize(
+        self,
+        school_id,
+        request_school_access_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if school_id is not None:
+            _path_params['school_id'] = school_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if request_school_access_request is not None:
+            _body_params = request_school_access_request
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params['Content-Type'] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(['application/json'])
+            if _default_content_type is not None:
+                _header_params['Content-Type'] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='POST',
+            resource_path='/schools/{school_id}/request-access',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
     def revoke_school_access(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        **kwargs
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RequestSchoolAccess200Response:
-        """Revoke access to a school  # noqa: E501
+        """Revoke access to a school
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.revoke_school_access(school_id, async_req=True)
-        >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: RequestSchoolAccess200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the revoke_school_access_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.revoke_school_access_with_http_info(school_id, **kwargs)
-
-    @validate_call
-    def revoke_school_access_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        **kwargs
-    ) -> ApiResponse:
-        """Revoke access to a school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.revoke_school_access_with_http_info(school_id, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(RequestSchoolAccess200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['school_id']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._revoke_school_access_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method revoke_school_access' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        # process the query parameters
-        _query_params = []
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'RequestSchoolAccess200Response',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        return self.api_client.call_api(
-            '/schools/{school_id}/revoke-access',
-            'DELETE',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def revoke_school_access_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[RequestSchoolAccess200Response]:
+        """Revoke access to a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._revoke_school_access_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'RequestSchoolAccess200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def revoke_school_access_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Revoke access to a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._revoke_school_access_serialize(
+            school_id=school_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'RequestSchoolAccess200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _revoke_school_access_serialize(
+        self,
+        school_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if school_id is not None:
+            _path_params['school_id'] = school_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='DELETE',
+            resource_path='/schools/{school_id}/revoke-access',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )

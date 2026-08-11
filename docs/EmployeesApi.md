@@ -13,15 +13,15 @@ Method | HTTP request | Description
 
 Get specific employee for a school
 
-You need the employees read permission to view this object. To retrieve the secondary and tertiary ids please add extra_ids=true to the url. 
+You need the employees read permission to view this object. To retrieve the secondary and tertiary ids please add extra_ids=true to the url.
+
 
 ### Example
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.employee import Employee
 from wonde.rest import ApiException
@@ -69,6 +69,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -88,6 +89,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | An employee for a specific school |  -  |
@@ -103,9 +105,8 @@ Get all employees for a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_school_employees200_response import ListSchoolEmployees200Response
 from wonde.rest import ApiException
@@ -167,6 +168,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -200,6 +202,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | List of employees for a specific school |  -  |

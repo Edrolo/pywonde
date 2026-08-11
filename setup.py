@@ -20,8 +20,13 @@ from setuptools import find_packages, setup
 # http://pypi.python.org/pypi/setuptools
 NAME = 'pywonde'
 VERSION = '0.1.0'
-PYTHON_REQUIRES = '>=3.9'
-REQUIRES = ['urllib3 >= 1.25.3, < 2.1.0', 'python-dateutil', 'pydantic >= 2', 'aenum']
+PYTHON_REQUIRES = '>= 3.10'
+REQUIRES = [
+    'urllib3 >= 2.6.3, < 3.0.0',
+    'python-dateutil >= 2.8.2',
+    'pydantic >= 2.11',
+    'typing-extensions >= 4.7.1',
+]
 
 setup(
     name=NAME,

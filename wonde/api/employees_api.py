@@ -10,18 +10,17 @@ Do not edit the class manually.
 """
 
 
-import re  # noqa: F401
 from datetime import date
-from typing import Optional
+from typing import Any, Dict, List, Optional, Tuple, Union
 
-from pydantic import Field, StrictBool, StrictInt, StrictStr, validate_call
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
-from wonde.api_client import ApiClient
+from wonde.api_client import ApiClient, RequestSerialized
 from wonde.api_response import ApiResponse
-from wonde.exceptions import ApiTypeError, ApiValueError  # noqa: F401
 from wonde.models.employee import Employee
 from wonde.models.list_school_employees200_response import ListSchoolEmployees200Response
+from wonde.rest import RESTResponseType
 
 
 class EmployeesApi:
@@ -39,162 +38,248 @@ class EmployeesApi:
     @validate_call
     def get_school_employee(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        employee_id: Annotated[StrictStr, Field(..., description='The ID of the employee')],
-        **kwargs
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        employee_id: Annotated[StrictStr, Field(description='The ID of the employee')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> Employee:
-        """Get specific employee for a school  # noqa: E501
+        """Get specific employee for a school
 
-        You need the employees read permission to view this object. To retrieve the secondary and tertiary ids please add extra_ids=true to the url.   # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_employee(school_id, employee_id, async_req=True)
-        >>> result = thread.get()
+        You need the employees read permission to view this object. To retrieve the secondary and tertiary ids please add extra_ids=true to the url.
 
         :param school_id: The ID of the school (required)
         :type school_id: str
         :param employee_id: The ID of the employee (required)
         :type employee_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: Employee
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the get_school_employee_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.get_school_employee_with_http_info(school_id, employee_id, **kwargs)
-
-    @validate_call
-    def get_school_employee_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        employee_id: Annotated[StrictStr, Field(..., description='The ID of the employee')],
-        **kwargs
-    ) -> ApiResponse:
-        """Get specific employee for a school  # noqa: E501
-
-        You need the employees read permission to view this object. To retrieve the secondary and tertiary ids please add extra_ids=true to the url.   # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.get_school_employee_with_http_info(school_id, employee_id, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param employee_id: The ID of the employee (required)
-        :type employee_id: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(Employee, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = ['school_id', 'employee_id']
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._get_school_employee_serialize(
+            school_id=school_id,
+            employee_id=employee_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method get_school_employee' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
-
-        _collection_formats = {}
-
-        # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
-        if _params['employee_id']:
-            _path_params['employee_id'] = _params['employee_id']
-
-        # process the query parameters
-        _query_params = []
-        # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
-        # process the form parameters
-        _form_params = []
-        _files = {}
-        # process the body parameter
-        _body_params = None
-        # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
-
-        # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
-
-        _response_types_map = {
+        _response_types_map: Dict[str, Optional[str]] = {
             '200': 'Employee',
         }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        return self.api_client.call_api(
-            '/schools/{school_id}/employees/{employee_id}',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+    @validate_call
+    def get_school_employee_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        employee_id: Annotated[StrictStr, Field(description='The ID of the employee')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Employee]:
+        """Get specific employee for a school
+
+        You need the employees read permission to view this object. To retrieve the secondary and tertiary ids please add extra_ids=true to the url.
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param employee_id: The ID of the employee (required)
+        :type employee_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_employee_serialize(
+            school_id=school_id,
+            employee_id=employee_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'Employee',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def get_school_employee_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        employee_id: Annotated[StrictStr, Field(description='The ID of the employee')],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get specific employee for a school
+
+        You need the employees read permission to view this object. To retrieve the secondary and tertiary ids please add extra_ids=true to the url.
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param employee_id: The ID of the employee (required)
+        :type employee_id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._get_school_employee_serialize(
+            school_id=school_id,
+            employee_id=employee_id,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'Employee',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _get_school_employee_serialize(
+        self,
+        school_id,
+        employee_id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if school_id is not None:
+            _path_params['school_id'] = school_id
+        if employee_id is not None:
+            _path_params['employee_id'] = employee_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+
+        # authentication setting
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/{school_id}/employees/{employee_id}',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )
 
     @validate_call
     def list_school_employees(
         self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
         updated_after: Annotated[
             Optional[date], Field(description='Return rows modified after date')
         ] = None,
@@ -243,15 +328,18 @@ class EmployeesApi:
         only_mis_ids: Annotated[
             Optional[StrictStr], Field(description='Filter MIS ids by comma separated list')
         ] = None,
-        **kwargs
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ListSchoolEmployees200Response:
-        """Get all employees for a school  # noqa: E501
+        """Get all employees for a school
 
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_school_employees(school_id, updated_after, updated_before, per_page, page, cursor, include, employment_start_before, employment_start_after, has_role, has_contract, has_class, has_group, user_defined_field, only_user_defined_fields, only_mis_ids, async_req=True)
-        >>> result = thread.get()
 
         :param school_id: The ID of the school (required)
         :type school_id: str
@@ -285,330 +373,510 @@ class EmployeesApi:
         :type only_user_defined_fields: str
         :param only_mis_ids: Filter MIS ids by comma separated list
         :type only_mis_ids: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _request_timeout: timeout setting for this request.
-               If one number provided, it will be total request
-               timeout. It can also be a pair (tuple) of
-               (connection, read) timeouts.
-        :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: ListSchoolEmployees200Response
-        """
-        kwargs['_return_http_data_only'] = True
-        if '_preload_content' in kwargs:
-            message = 'Error! Please call the list_school_employees_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data'
-            raise ValueError(message)
-        return self.list_school_employees_with_http_info(
-            school_id,
-            updated_after,
-            updated_before,
-            per_page,
-            page,
-            cursor,
-            include,
-            employment_start_before,
-            employment_start_after,
-            has_role,
-            has_contract,
-            has_class,
-            has_group,
-            user_defined_field,
-            only_user_defined_fields,
-            only_mis_ids,
-            **kwargs
-        )
-
-    @validate_call
-    def list_school_employees_with_http_info(
-        self,
-        school_id: Annotated[StrictStr, Field(..., description='The ID of the school')],
-        updated_after: Annotated[
-            Optional[date], Field(description='Return rows modified after date')
-        ] = None,
-        updated_before: Annotated[
-            Optional[date], Field(description='Return rows modified before date')
-        ] = None,
-        per_page: Annotated[
-            Optional[StrictInt], Field(description='Amount of rows to return')
-        ] = None,
-        page: Annotated[
-            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
-        ] = None,
-        cursor: Annotated[
-            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
-        ] = None,
-        include: Annotated[
-            Optional[StrictStr], Field(description='Comma separated list of objects to include')
-        ] = None,
-        employment_start_before: Annotated[
-            Optional[date], Field(description='Get employees who have started before a date')
-        ] = None,
-        employment_start_after: Annotated[
-            Optional[date], Field(description='Get employees who have started after a date')
-        ] = None,
-        has_role: Annotated[
-            Optional[StrictBool], Field(description='Only return employees that have a role')
-        ] = None,
-        has_contract: Annotated[
-            Optional[StrictBool], Field(description='Only return employees that have a contract')
-        ] = None,
-        has_class: Annotated[
-            Optional[StrictBool],
-            Field(description='Only return employees that have one or more classes'),
-        ] = None,
-        has_group: Annotated[
-            Optional[StrictBool],
-            Field(description='Only return employees that have one or more groups'),
-        ] = None,
-        user_defined_field: Annotated[
-            Optional[StrictStr], Field(description='Filter employees by user defined field key')
-        ] = None,
-        only_user_defined_fields: Annotated[
-            Optional[StrictStr],
-            Field(description='Filter user defined fields by comma separated list'),
-        ] = None,
-        only_mis_ids: Annotated[
-            Optional[StrictStr], Field(description='Filter MIS ids by comma separated list')
-        ] = None,
-        **kwargs
-    ) -> ApiResponse:
-        """Get all employees for a school  # noqa: E501
-
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-
-        >>> thread = api.list_school_employees_with_http_info(school_id, updated_after, updated_before, per_page, page, cursor, include, employment_start_before, employment_start_after, has_role, has_contract, has_class, has_group, user_defined_field, only_user_defined_fields, only_mis_ids, async_req=True)
-        >>> result = thread.get()
-
-        :param school_id: The ID of the school (required)
-        :type school_id: str
-        :param updated_after: Return rows modified after date
-        :type updated_after: date
-        :param updated_before: Return rows modified before date
-        :type updated_before: date
-        :param per_page: Amount of rows to return
-        :type per_page: int
-        :param page: Page offset for offset-paginated results.
-        :type page: int
-        :param cursor: Page cursor for cursor-paginated results.
-        :type cursor: str
-        :param include: Comma separated list of objects to include
-        :type include: str
-        :param employment_start_before: Get employees who have started before a date
-        :type employment_start_before: date
-        :param employment_start_after: Get employees who have started after a date
-        :type employment_start_after: date
-        :param has_role: Only return employees that have a role
-        :type has_role: bool
-        :param has_contract: Only return employees that have a contract
-        :type has_contract: bool
-        :param has_class: Only return employees that have one or more classes
-        :type has_class: bool
-        :param has_group: Only return employees that have one or more groups
-        :type has_group: bool
-        :param user_defined_field: Filter employees by user defined field key
-        :type user_defined_field: str
-        :param only_user_defined_fields: Filter user defined fields by comma separated list
-        :type only_user_defined_fields: str
-        :param only_mis_ids: Filter MIS ids by comma separated list
-        :type only_mis_ids: str
-        :param async_req: Whether to execute the request asynchronously.
-        :type async_req: bool, optional
-        :param _preload_content: if False, the ApiResponse.data will
-                                 be set to none and raw_data will store the
-                                 HTTP response body without reading/decoding.
-                                 Default is True.
-        :type _preload_content: bool, optional
-        :param _return_http_data_only: response data instead of ApiResponse
-                                       object with status code, headers, etc
-        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the authentication
-                              in the spec for a single request.
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
         :type _request_auth: dict, optional
-        :type _content_type: string, optional: force content-type for the request
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
         :return: Returns the result object.
-                 If the method is called asynchronously,
-                 returns the request thread.
-        :rtype: tuple(ListSchoolEmployees200Response, status_code(int), headers(HTTPHeaderDict))
         """
 
-        _params = locals()
-
-        _all_params = [
-            'school_id',
-            'updated_after',
-            'updated_before',
-            'per_page',
-            'page',
-            'cursor',
-            'include',
-            'employment_start_before',
-            'employment_start_after',
-            'has_role',
-            'has_contract',
-            'has_class',
-            'has_group',
-            'user_defined_field',
-            'only_user_defined_fields',
-            'only_mis_ids',
-        ]
-        _all_params.extend(
-            [
-                'async_req',
-                '_return_http_data_only',
-                '_preload_content',
-                '_request_timeout',
-                '_request_auth',
-                '_content_type',
-                '_headers',
-            ]
+        _param = self._list_school_employees_serialize(
+            school_id=school_id,
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            include=include,
+            employment_start_before=employment_start_before,
+            employment_start_after=employment_start_after,
+            has_role=has_role,
+            has_contract=has_contract,
+            has_class=has_class,
+            has_group=has_group,
+            user_defined_field=user_defined_field,
+            only_user_defined_fields=only_user_defined_fields,
+            only_mis_ids=only_mis_ids,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
-        # validate the arguments
-        for _key, _val in _params['kwargs'].items():
-            if _key not in _all_params:
-                raise ApiTypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    ' to method list_school_employees' % _key
-                )
-            _params[_key] = _val
-        del _params['kwargs']
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchoolEmployees200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
 
-        _collection_formats = {}
+    @validate_call
+    def list_school_employees_with_http_info(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        updated_after: Annotated[
+            Optional[date], Field(description='Return rows modified after date')
+        ] = None,
+        updated_before: Annotated[
+            Optional[date], Field(description='Return rows modified before date')
+        ] = None,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
+        include: Annotated[
+            Optional[StrictStr], Field(description='Comma separated list of objects to include')
+        ] = None,
+        employment_start_before: Annotated[
+            Optional[date], Field(description='Get employees who have started before a date')
+        ] = None,
+        employment_start_after: Annotated[
+            Optional[date], Field(description='Get employees who have started after a date')
+        ] = None,
+        has_role: Annotated[
+            Optional[StrictBool], Field(description='Only return employees that have a role')
+        ] = None,
+        has_contract: Annotated[
+            Optional[StrictBool], Field(description='Only return employees that have a contract')
+        ] = None,
+        has_class: Annotated[
+            Optional[StrictBool],
+            Field(description='Only return employees that have one or more classes'),
+        ] = None,
+        has_group: Annotated[
+            Optional[StrictBool],
+            Field(description='Only return employees that have one or more groups'),
+        ] = None,
+        user_defined_field: Annotated[
+            Optional[StrictStr], Field(description='Filter employees by user defined field key')
+        ] = None,
+        only_user_defined_fields: Annotated[
+            Optional[StrictStr],
+            Field(description='Filter user defined fields by comma separated list'),
+        ] = None,
+        only_mis_ids: Annotated[
+            Optional[StrictStr], Field(description='Filter MIS ids by comma separated list')
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[ListSchoolEmployees200Response]:
+        """Get all employees for a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param updated_after: Return rows modified after date
+        :type updated_after: date
+        :param updated_before: Return rows modified before date
+        :type updated_before: date
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
+        :param include: Comma separated list of objects to include
+        :type include: str
+        :param employment_start_before: Get employees who have started before a date
+        :type employment_start_before: date
+        :param employment_start_after: Get employees who have started after a date
+        :type employment_start_after: date
+        :param has_role: Only return employees that have a role
+        :type has_role: bool
+        :param has_contract: Only return employees that have a contract
+        :type has_contract: bool
+        :param has_class: Only return employees that have one or more classes
+        :type has_class: bool
+        :param has_group: Only return employees that have one or more groups
+        :type has_group: bool
+        :param user_defined_field: Filter employees by user defined field key
+        :type user_defined_field: str
+        :param only_user_defined_fields: Filter user defined fields by comma separated list
+        :type only_user_defined_fields: str
+        :param only_mis_ids: Filter MIS ids by comma separated list
+        :type only_mis_ids: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_school_employees_serialize(
+            school_id=school_id,
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            include=include,
+            employment_start_before=employment_start_before,
+            employment_start_after=employment_start_after,
+            has_role=has_role,
+            has_contract=has_contract,
+            has_class=has_class,
+            has_group=has_group,
+            user_defined_field=user_defined_field,
+            only_user_defined_fields=only_user_defined_fields,
+            only_mis_ids=only_mis_ids,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchoolEmployees200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def list_school_employees_without_preload_content(
+        self,
+        school_id: Annotated[StrictStr, Field(description='The ID of the school')],
+        updated_after: Annotated[
+            Optional[date], Field(description='Return rows modified after date')
+        ] = None,
+        updated_before: Annotated[
+            Optional[date], Field(description='Return rows modified before date')
+        ] = None,
+        per_page: Annotated[
+            Optional[StrictInt], Field(description='Amount of rows to return')
+        ] = None,
+        page: Annotated[
+            Optional[StrictInt], Field(description='Page offset for offset-paginated results.')
+        ] = None,
+        cursor: Annotated[
+            Optional[StrictStr], Field(description='Page cursor for cursor-paginated results.')
+        ] = None,
+        include: Annotated[
+            Optional[StrictStr], Field(description='Comma separated list of objects to include')
+        ] = None,
+        employment_start_before: Annotated[
+            Optional[date], Field(description='Get employees who have started before a date')
+        ] = None,
+        employment_start_after: Annotated[
+            Optional[date], Field(description='Get employees who have started after a date')
+        ] = None,
+        has_role: Annotated[
+            Optional[StrictBool], Field(description='Only return employees that have a role')
+        ] = None,
+        has_contract: Annotated[
+            Optional[StrictBool], Field(description='Only return employees that have a contract')
+        ] = None,
+        has_class: Annotated[
+            Optional[StrictBool],
+            Field(description='Only return employees that have one or more classes'),
+        ] = None,
+        has_group: Annotated[
+            Optional[StrictBool],
+            Field(description='Only return employees that have one or more groups'),
+        ] = None,
+        user_defined_field: Annotated[
+            Optional[StrictStr], Field(description='Filter employees by user defined field key')
+        ] = None,
+        only_user_defined_fields: Annotated[
+            Optional[StrictStr],
+            Field(description='Filter user defined fields by comma separated list'),
+        ] = None,
+        only_mis_ids: Annotated[
+            Optional[StrictStr], Field(description='Filter MIS ids by comma separated list')
+        ] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Get all employees for a school
+
+
+        :param school_id: The ID of the school (required)
+        :type school_id: str
+        :param updated_after: Return rows modified after date
+        :type updated_after: date
+        :param updated_before: Return rows modified before date
+        :type updated_before: date
+        :param per_page: Amount of rows to return
+        :type per_page: int
+        :param page: Page offset for offset-paginated results.
+        :type page: int
+        :param cursor: Page cursor for cursor-paginated results.
+        :type cursor: str
+        :param include: Comma separated list of objects to include
+        :type include: str
+        :param employment_start_before: Get employees who have started before a date
+        :type employment_start_before: date
+        :param employment_start_after: Get employees who have started after a date
+        :type employment_start_after: date
+        :param has_role: Only return employees that have a role
+        :type has_role: bool
+        :param has_contract: Only return employees that have a contract
+        :type has_contract: bool
+        :param has_class: Only return employees that have one or more classes
+        :type has_class: bool
+        :param has_group: Only return employees that have one or more groups
+        :type has_group: bool
+        :param user_defined_field: Filter employees by user defined field key
+        :type user_defined_field: str
+        :param only_user_defined_fields: Filter user defined fields by comma separated list
+        :type only_user_defined_fields: str
+        :param only_mis_ids: Filter MIS ids by comma separated list
+        :type only_mis_ids: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """
+
+        _param = self._list_school_employees_serialize(
+            school_id=school_id,
+            updated_after=updated_after,
+            updated_before=updated_before,
+            per_page=per_page,
+            page=page,
+            cursor=cursor,
+            include=include,
+            employment_start_before=employment_start_before,
+            employment_start_after=employment_start_after,
+            has_role=has_role,
+            has_contract=has_contract,
+            has_class=has_class,
+            has_group=has_group,
+            user_defined_field=user_defined_field,
+            only_user_defined_fields=only_user_defined_fields,
+            only_mis_ids=only_mis_ids,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': 'ListSchoolEmployees200Response',
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _list_school_employees_serialize(
+        self,
+        school_id,
+        updated_after,
+        updated_before,
+        per_page,
+        page,
+        cursor,
+        include,
+        employment_start_before,
+        employment_start_after,
+        has_role,
+        has_contract,
+        has_class,
+        has_group,
+        user_defined_field,
+        only_user_defined_fields,
+        only_mis_ids,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]] = {}
+        _body_params: Optional[bytes] = None
 
         # process the path parameters
-        _path_params = {}
-        if _params['school_id']:
-            _path_params['school_id'] = _params['school_id']
-
+        if school_id is not None:
+            _path_params['school_id'] = school_id
         # process the query parameters
-        _query_params = []
-        if _params.get('updated_after') is not None:
-            if isinstance(_params['updated_after'], date):
+        if updated_after is not None:
+            if isinstance(updated_after, date):
                 _query_params.append(
                     (
                         'updated_after',
-                        _params['updated_after'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_after.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_after', _params['updated_after']))
+                _query_params.append(('updated_after', updated_after))
 
-        if _params.get('updated_before') is not None:
-            if isinstance(_params['updated_before'], date):
+        if updated_before is not None:
+            if isinstance(updated_before, date):
                 _query_params.append(
                     (
                         'updated_before',
-                        _params['updated_before'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        updated_before.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('updated_before', _params['updated_before']))
+                _query_params.append(('updated_before', updated_before))
 
-        if _params.get('per_page') is not None:
-            _query_params.append(('per_page', _params['per_page']))
+        if per_page is not None:
 
-        if _params.get('page') is not None:
-            _query_params.append(('page', _params['page']))
+            _query_params.append(('per_page', per_page))
 
-        if _params.get('cursor') is not None:
-            _query_params.append(('cursor', _params['cursor']))
+        if page is not None:
 
-        if _params.get('include') is not None:
-            _query_params.append(('include', _params['include']))
+            _query_params.append(('page', page))
 
-        if _params.get('employment_start_before') is not None:
-            if isinstance(_params['employment_start_before'], date):
+        if cursor is not None:
+
+            _query_params.append(('cursor', cursor))
+
+        if include is not None:
+
+            _query_params.append(('include', include))
+
+        if employment_start_before is not None:
+            if isinstance(employment_start_before, date):
                 _query_params.append(
                     (
                         'employment_start_before',
-                        _params['employment_start_before'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        employment_start_before.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(
-                    ('employment_start_before', _params['employment_start_before'])
-                )
+                _query_params.append(('employment_start_before', employment_start_before))
 
-        if _params.get('employment_start_after') is not None:
-            if isinstance(_params['employment_start_after'], date):
+        if employment_start_after is not None:
+            if isinstance(employment_start_after, date):
                 _query_params.append(
                     (
                         'employment_start_after',
-                        _params['employment_start_after'].strftime(
-                            self.api_client.configuration.date_format
-                        ),
+                        employment_start_after.strftime(self.api_client.configuration.date_format),
                     )
                 )
             else:
-                _query_params.append(('employment_start_after', _params['employment_start_after']))
+                _query_params.append(('employment_start_after', employment_start_after))
 
-        if _params.get('has_role') is not None:
-            _query_params.append(('has_role', _params['has_role']))
+        if has_role is not None:
 
-        if _params.get('has_contract') is not None:
-            _query_params.append(('has_contract', _params['has_contract']))
+            _query_params.append(('has_role', has_role))
 
-        if _params.get('has_class') is not None:
-            _query_params.append(('has_class', _params['has_class']))
+        if has_contract is not None:
 
-        if _params.get('has_group') is not None:
-            _query_params.append(('has_group', _params['has_group']))
+            _query_params.append(('has_contract', has_contract))
 
-        if _params.get('user_defined_field') is not None:
-            _query_params.append(('user_defined_field', _params['user_defined_field']))
+        if has_class is not None:
 
-        if _params.get('only_user_defined_fields') is not None:
-            _query_params.append(('only_user_defined_fields', _params['only_user_defined_fields']))
+            _query_params.append(('has_class', has_class))
 
-        if _params.get('only_mis_ids') is not None:
-            _query_params.append(('only_mis_ids', _params['only_mis_ids']))
+        if has_group is not None:
+
+            _query_params.append(('has_group', has_group))
+
+        if user_defined_field is not None:
+
+            _query_params.append(('user_defined_field', user_defined_field))
+
+        if only_user_defined_fields is not None:
+
+            _query_params.append(('only_user_defined_fields', only_user_defined_fields))
+
+        if only_mis_ids is not None:
+
+            _query_params.append(('only_mis_ids', only_mis_ids))
 
         # process the header parameters
-        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
-        _form_params = []
-        _files = {}
         # process the body parameter
-        _body_params = None
+
         # set the HTTP header `Accept`
-        _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(['application/json'])
 
         # authentication setting
-        _auth_settings = ['BasicAuth', 'BearerAuth']
+        _auth_settings: List[str] = ['BasicAuth', 'BearerAuth']
 
-        _response_types_map = {
-            '200': 'ListSchoolEmployees200Response',
-        }
-
-        return self.api_client.call_api(
-            '/schools/{school_id}/employees',
-            'GET',
-            _path_params,
-            _query_params,
-            _header_params,
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/schools/{school_id}/employees',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
-            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
-            async_req=_params.get('async_req'),
-            _return_http_data_only=_params.get('_return_http_data_only'),
-            _preload_content=_params.get('_preload_content', True),
-            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _request_auth=_params.get('_request_auth'),
+            _host=_host,
+            _request_auth=_request_auth,
         )

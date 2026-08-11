@@ -17,9 +17,8 @@ Retrieve a specific subject for a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.subject import Subject
 from wonde.rest import ApiException
@@ -68,6 +67,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| ID of the school to retrieve the subject from | 
@@ -88,6 +88,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful operation |  -  |
@@ -103,9 +104,8 @@ Retrieve subjects for a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_school_subjects200_response import ListSchoolSubjects200Response
 from wonde.rest import ApiException
@@ -160,6 +160,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| ID of the school to retrieve subjects for | 
@@ -186,6 +187,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful operation |  -  |

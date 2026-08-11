@@ -15,9 +15,11 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from pydantic_core import to_jsonable_python
+from typing_extensions import Self
 
 from wonde.models.school_address import SchoolAddress
 from wonde.models.school_extended import SchoolExtended
@@ -40,7 +42,7 @@ class School(BaseModel):
     address: Optional[SchoolAddress] = None
     extended: Optional[SchoolExtended] = None
     region: Optional[SchoolRegion] = None
-    __properties = [
+    __properties: ClassVar[List[str]] = [
         'id',
         'name',
         'establishment_number',
@@ -54,28 +56,43 @@ class School(BaseModel):
         'region',
     ]
 
-    class Config:
-        """Pydantic configuration"""
-
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> School:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of School from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set()
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of address
         if self.address:
             _dict['address'] = self.address.to_dict()
@@ -88,15 +105,15 @@ class School(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> School:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of School from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return School.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = School.parse_obj(
+        _obj = cls.model_validate(
             {
                 'id': obj.get('id'),
                 'name': obj.get('name'),
@@ -106,13 +123,13 @@ class School(BaseModel):
                 'la_code': obj.get('la_code'),
                 'timezone': obj.get('timezone'),
                 'mis': obj.get('mis'),
-                'address': SchoolAddress.from_dict(obj.get('address'))
+                'address': SchoolAddress.from_dict(obj['address'])
                 if obj.get('address') is not None
                 else None,
-                'extended': SchoolExtended.from_dict(obj.get('extended'))
+                'extended': SchoolExtended.from_dict(obj['extended'])
                 if obj.get('extended') is not None
                 else None,
-                'region': SchoolRegion.from_dict(obj.get('region'))
+                'region': SchoolRegion.from_dict(obj['region'])
                 if obj.get('region') is not None
                 else None,
             }

@@ -15,9 +15,11 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic_core import to_jsonable_python
+from typing_extensions import Self
 
 from wonde.models.school_address_address_country import SchoolAddressAddressCountry
 
@@ -27,12 +29,20 @@ class SchoolAddress(BaseModel):
     SchoolAddress
     """
 
-    address_line_1: Optional[StrictStr] = None
-    address_line_2: Optional[StrictStr] = None
-    address_town: Optional[StrictStr] = None
-    address_postcode: Optional[StrictStr] = None
+    address_line_1: Optional[StrictStr] = Field(
+        default=None, json_schema_extra={'examples': ["St James's Passage"]}
+    )
+    address_line_2: Optional[StrictStr] = Field(
+        default=None, json_schema_extra={'examples': ["Duke's Place"]}
+    )
+    address_town: Optional[StrictStr] = Field(
+        default=None, json_schema_extra={'examples': ['London']}
+    )
+    address_postcode: Optional[StrictStr] = Field(
+        default=None, json_schema_extra={'examples': ['EC3A 5DE']}
+    )
     address_country: Optional[SchoolAddressAddressCountry] = None
-    __properties = [
+    __properties: ClassVar[List[str]] = [
         'address_line_1',
         'address_line_2',
         'address_town',
@@ -40,49 +50,64 @@ class SchoolAddress(BaseModel):
         'address_country',
     ]
 
-    class Config:
-        """Pydantic configuration"""
-
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> SchoolAddress:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of SchoolAddress from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set()
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of address_country
         if self.address_country:
             _dict['address_country'] = self.address_country.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> SchoolAddress:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of SchoolAddress from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return SchoolAddress.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = SchoolAddress.parse_obj(
+        _obj = cls.model_validate(
             {
                 'address_line_1': obj.get('address_line_1'),
                 'address_line_2': obj.get('address_line_2'),
                 'address_town': obj.get('address_town'),
                 'address_postcode': obj.get('address_postcode'),
-                'address_country': SchoolAddressAddressCountry.from_dict(obj.get('address_country'))
+                'address_country': SchoolAddressAddressCountry.from_dict(obj['address_country'])
                 if obj.get('address_country') is not None
                 else None,
             }

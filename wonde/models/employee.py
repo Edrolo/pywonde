@@ -16,9 +16,11 @@ import json
 import pprint
 import re  # noqa: F401
 from datetime import date
-from typing import Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic_core import to_jsonable_python
+from typing_extensions import Self
 
 from wonde.models.date_time_object import DateTimeObject
 from wonde.models.employee_contact_details import EmployeeContactDetails
@@ -30,29 +32,64 @@ class Employee(BaseModel):
     Employee
     """
 
-    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    id: Optional[StrictStr] = Field(
+        default=None,
+        description='The ID of the object.',
+        json_schema_extra={'examples': ['A1329183376']},
+    )
     upi: Optional[StrictStr] = Field(
-        None,
+        default=None,
         description='Unique Person Identifier - If a person is a contact and an employee they will have the same UPI but different ids.',
+        json_schema_extra={'examples': ['5cc4ab015f8f7870b581e30e0ef474fa']},
     )
     mis_id: Optional[StrictStr] = Field(
-        None, description='The ID in the Management Information System (MIS).'
+        default=None,
+        description='The ID in the Management Information System (MIS).',
+        json_schema_extra={'examples': ['26']},
     )
-    title: Optional[StrictStr] = Field(None, description="Employee's title.")
-    initials: Optional[StrictStr] = Field(None, description="Employee's initials.")
-    surname: Optional[StrictStr] = Field(None, description="Employee's surname.")
-    forename: Optional[StrictStr] = Field(None, description="Employee's forename.")
-    middle_names: Optional[StrictStr] = Field(None, description="Employee's middle names.")
-    legal_surname: Optional[StrictStr] = Field(None, description="Employee's legal surname.")
-    legal_forename: Optional[StrictStr] = Field(None, description="Employee's legal forename.")
-    gender: Optional[StrictStr] = Field(None, description="Employee's gender. (male|female)")
-    date_of_birth: Optional[date] = Field(None, description="Employee's date of birth.")
+    title: Optional[StrictStr] = Field(
+        default=None, description="Employee's title.", json_schema_extra={'examples': ['Mrs']}
+    )
+    initials: Optional[StrictStr] = Field(
+        default=None, description="Employee's initials.", json_schema_extra={'examples': ['SS']}
+    )
+    surname: Optional[StrictStr] = Field(
+        default=None, description="Employee's surname.", json_schema_extra={'examples': ['Smith']}
+    )
+    forename: Optional[StrictStr] = Field(
+        default=None, description="Employee's forename.", json_schema_extra={'examples': ['Sally']}
+    )
+    middle_names: Optional[StrictStr] = Field(
+        default=None,
+        description="Employee's middle names.",
+        json_schema_extra={'examples': ['Victoria']},
+    )
+    legal_surname: Optional[StrictStr] = Field(
+        default=None,
+        description="Employee's legal surname.",
+        json_schema_extra={'examples': ['Smith']},
+    )
+    legal_forename: Optional[StrictStr] = Field(
+        default=None,
+        description="Employee's legal forename.",
+        json_schema_extra={'examples': ['Sally']},
+    )
+    gender: Optional[StrictStr] = Field(
+        default=None,
+        description="Employee's gender. (male|female)",
+        json_schema_extra={'examples': ['female']},
+    )
+    date_of_birth: Optional[date] = Field(
+        default=None,
+        description="Employee's date of birth.",
+        json_schema_extra={'examples': ['1963-02-11']},
+    )
     restored_at: Optional[DateTimeObject] = None
     created_at: Optional[DateTimeObject] = None
     updated_at: Optional[DateTimeObject] = None
     contact_details: Optional[EmployeeContactDetails] = None
     employment_details: Optional[EmployeeEmploymentDetails] = None
-    __properties = [
+    __properties: ClassVar[List[str]] = [
         'id',
         'upi',
         'mis_id',
@@ -72,28 +109,43 @@ class Employee(BaseModel):
         'employment_details',
     ]
 
-    class Config:
-        """Pydantic configuration"""
-
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Employee:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of Employee from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set()
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of restored_at
         if self.restored_at:
             _dict['restored_at'] = self.restored_at.to_dict()
@@ -112,15 +164,15 @@ class Employee(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> Employee:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of Employee from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return Employee.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = Employee.parse_obj(
+        _obj = cls.model_validate(
             {
                 'id': obj.get('id'),
                 'upi': obj.get('upi'),
@@ -134,21 +186,19 @@ class Employee(BaseModel):
                 'legal_forename': obj.get('legal_forename'),
                 'gender': obj.get('gender'),
                 'date_of_birth': obj.get('date_of_birth'),
-                'restored_at': DateTimeObject.from_dict(obj.get('restored_at'))
+                'restored_at': DateTimeObject.from_dict(obj['restored_at'])
                 if obj.get('restored_at') is not None
                 else None,
-                'created_at': DateTimeObject.from_dict(obj.get('created_at'))
+                'created_at': DateTimeObject.from_dict(obj['created_at'])
                 if obj.get('created_at') is not None
                 else None,
-                'updated_at': DateTimeObject.from_dict(obj.get('updated_at'))
+                'updated_at': DateTimeObject.from_dict(obj['updated_at'])
                 if obj.get('updated_at') is not None
                 else None,
-                'contact_details': EmployeeContactDetails.from_dict(obj.get('contact_details'))
+                'contact_details': EmployeeContactDetails.from_dict(obj['contact_details'])
                 if obj.get('contact_details') is not None
                 else None,
-                'employment_details': EmployeeEmploymentDetails.from_dict(
-                    obj.get('employment_details')
-                )
+                'employment_details': EmployeeEmploymentDetails.from_dict(obj['employment_details'])
                 if obj.get('employment_details') is not None
                 else None,
             }

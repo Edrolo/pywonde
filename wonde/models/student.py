@@ -16,9 +16,11 @@ import json
 import pprint
 import re  # noqa: F401
 from datetime import date
-from typing import Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, Field, StrictStr, validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic_core import to_jsonable_python
+from typing_extensions import Self
 
 from wonde.models.date_time_object import DateTimeObject
 from wonde.models.employee_contact_details import EmployeeContactDetails
@@ -27,34 +29,77 @@ from wonde.models.student_education_details import StudentEducationDetails
 
 class Student(BaseModel):
     """
-    https://docs.wonde.com/docs/api/sync#student-object You need the students read permission to view this object. Related objects Name                                Relationship ------------------------------------------------ classes                             many classes.employees                   many classes.subject                     many > one education_details                   one contact_details                     one attendance_summary                  one extended_details                    one contacts                            many contacts.contact_details            many > one year                                one (nullable) year.employees                      one (nullable) > many house                               one (nullable) house.employees                     one (nullable) > many registration                        one (nullable) registration.employees              one (nullable) > many boarding                            one (nullable) boarding.employees                  one (nullable) > many groups                              many groups.employees                    many > many campus                              one (nullable) permissions                         one identifiers                         one behaviours                          many behaviours.employees                many > many achievements                        many achievements.employees              many > many photo                               one sen_needs                           many siblings                            many medical_conditions                  many medical_conditions.notes            many > many medical_events                      many medical_events.notes                many > many medical_notes                       many doctors                             many in_care_date_ranges                 many sen_date_ranges                     many fsm_date_ranges                     many user_defined_fields                 many results                             many results.aspect                      many > one results.resultset                   many > one exclusions                          many child_protection_plan_date_ranges   many upfsm_date_ranges                   many   # noqa: E501
+    https://docs.wonde.com/docs/api/sync#student-object You need the students read permission to view this object. Related objects Name                                Relationship ------------------------------------------------ classes                             many classes.employees                   many classes.subject                     many > one education_details                   one contact_details                     one attendance_summary                  one extended_details                    one contacts                            many contacts.contact_details            many > one year                                one (nullable) year.employees                      one (nullable) > many house                               one (nullable) house.employees                     one (nullable) > many registration                        one (nullable) registration.employees              one (nullable) > many boarding                            one (nullable) boarding.employees                  one (nullable) > many groups                              many groups.employees                    many > many campus                              one (nullable) permissions                         one identifiers                         one behaviours                          many behaviours.employees                many > many achievements                        many achievements.employees              many > many photo                               one sen_needs                           many siblings                            many medical_conditions                  many medical_conditions.notes            many > many medical_events                      many medical_events.notes                many > many medical_notes                       many doctors                             many in_care_date_ranges                 many sen_date_ranges                     many fsm_date_ranges                     many user_defined_fields                 many results                             many results.aspect                      many > one results.resultset                   many > one exclusions                          many child_protection_plan_date_ranges   many upfsm_date_ranges                   many
     """
 
-    id: Optional[StrictStr] = Field(None, description='The ID of the object.')
+    id: Optional[StrictStr] = Field(
+        default=None,
+        description='The ID of the object.',
+        json_schema_extra={'examples': ['A1749191433']},
+    )
     upi: Optional[StrictStr] = Field(
-        None,
+        default=None,
         description='Unique Person Identifier - This field is the mis_id and school_id combined to create a unique hash. There are benefits of using the UPI when matching users, for example, when a student is dis-enrolled the student will be removed from Wonde. If that student is then re-enrolled the Wonde ID will change but the UPI will remain  the same.  Make sure to not mistake this field with UPN. ',
+        json_schema_extra={'examples': ['8d444684b7aa79bc97f8594a4aab7ce3']},
     )
-    mis_id: Optional[StrictStr] = Field(None, description='The student`s ID in the MIS.')
-    initials: Optional[StrictStr] = Field(None, description='The student`s initials.')
-    surname: Optional[StrictStr] = Field(None, description='The student`s last name.')
-    forename: Optional[StrictStr] = Field(None, description='The student`s first name.')
-    middle_names: Optional[StrictStr] = Field(None, description='The student`s middle names.')
-    legal_surname: Optional[StrictStr] = Field(None, description='The student`s legal last name.')
-    legal_forename: Optional[StrictStr] = Field(None, description='The student`s legal first name.')
+    mis_id: Optional[StrictStr] = Field(
+        default=None,
+        description='The student`s ID in the MIS.',
+        json_schema_extra={'examples': ['9919']},
+    )
+    title: Optional[StrictStr] = Field(
+        default=None, description='The student`s title.', json_schema_extra={'examples': ['Mr']}
+    )
+    initials: Optional[StrictStr] = Field(
+        default=None, description='The student`s initials.', json_schema_extra={'examples': ['TS']}
+    )
+    surname: Optional[StrictStr] = Field(
+        default=None,
+        description='The student`s last name.',
+        json_schema_extra={'examples': ['Smith']},
+    )
+    forename: Optional[StrictStr] = Field(
+        default=None,
+        description='The student`s first name.',
+        json_schema_extra={'examples': ['Tom']},
+    )
+    middle_names: Optional[StrictStr] = Field(
+        default=None, description='The student`s middle names.'
+    )
+    legal_surname: Optional[StrictStr] = Field(
+        default=None,
+        description='The student`s legal last name.',
+        json_schema_extra={'examples': ['Smith']},
+    )
+    legal_forename: Optional[StrictStr] = Field(
+        default=None,
+        description='The student`s legal first name.',
+        json_schema_extra={'examples': ['Tom']},
+    )
     gender: Optional[StrictStr] = Field(
-        None, description="The student`s gender. Possible values are 'MALE' or 'FEMALE'."
+        default=None,
+        description='The student`s gender. Documented values: male, female, intersex or indeterminate, not stated/inadequately described, redacted for privacy, other. ',
+        json_schema_extra={'examples': ['male']},
     )
-    date_of_birth: Optional[date] = Field(None, description="Student's date of birth.")
+    gender_identity: Optional[StrictStr] = Field(
+        default=None,
+        description='The student`s gender identity — their inner concept of self as male, female, neither or a blend of both, per DfE guidance. ',
+    )
+    date_of_birth: Optional[date] = Field(
+        default=None,
+        description="Student's date of birth.",
+        json_schema_extra={'examples': ['2010-02-11']},
+    )
     restored_at: Optional[DateTimeObject] = None
     created_at: Optional[DateTimeObject] = None
     updated_at: Optional[DateTimeObject] = None
     contact_details: Optional[EmployeeContactDetails] = None
     education_details: Optional[StudentEducationDetails] = None
-    __properties = [
+    __properties: ClassVar[List[str]] = [
         'id',
         'upi',
         'mis_id',
+        'title',
         'initials',
         'surname',
         'forename',
@@ -62,6 +107,7 @@ class Student(BaseModel):
         'legal_surname',
         'legal_forename',
         'gender',
+        'gender_identity',
         'date_of_birth',
         'restored_at',
         'created_at',
@@ -70,38 +116,43 @@ class Student(BaseModel):
         'education_details',
     ]
 
-    @validator('gender')
-    def gender_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in ('male', 'female'):
-            raise ValueError("must be one of enum values ('male', 'female')")
-        return value
-
-    class Config:
-        """Pydantic configuration"""
-
-        allow_population_by_field_name = True
-        validate_assignment = True
+    model_config = ConfigDict(
+        validate_by_name=True,
+        validate_by_alias=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.dict(by_alias=True))
+        return pprint.pformat(self.model_dump(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        return json.dumps(self.to_dict())
+        return json.dumps(to_jsonable_python(self.to_dict()))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Student:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of Student from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self):
-        """Returns the dictionary representation of the model using alias"""
-        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
+    def to_dict(self) -> Dict[str, Any]:
+        """Return the dictionary representation of the model using alias.
+
+        This has the following differences from calling pydantic's
+        `self.model_dump(by_alias=True)`:
+
+        * `None` is only added to the output dict for nullable fields that
+          were set at model initialization. Other fields with value `None`
+          are ignored.
+        """
+        excluded_fields: Set[str] = set()
+
+        _dict = self.model_dump(
+            by_alias=True,
+            exclude=excluded_fields,
+            exclude_none=True,
+        )
         # override the default output from pydantic by calling `to_dict()` of restored_at
         if self.restored_at:
             _dict['restored_at'] = self.restored_at.to_dict()
@@ -117,52 +168,68 @@ class Student(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of education_details
         if self.education_details:
             _dict['education_details'] = self.education_details.to_dict()
+        # set to None if title (nullable) is None
+        # and model_fields_set contains the field
+        if self.title is None and 'title' in self.model_fields_set:
+            _dict['title'] = None
+
         # set to None if initials (nullable) is None
-        # and __fields_set__ contains the field
-        if self.initials is None and 'initials' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.initials is None and 'initials' in self.model_fields_set:
             _dict['initials'] = None
 
         # set to None if surname (nullable) is None
-        # and __fields_set__ contains the field
-        if self.surname is None and 'surname' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.surname is None and 'surname' in self.model_fields_set:
             _dict['surname'] = None
 
         # set to None if forename (nullable) is None
-        # and __fields_set__ contains the field
-        if self.forename is None and 'forename' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.forename is None and 'forename' in self.model_fields_set:
             _dict['forename'] = None
 
         # set to None if middle_names (nullable) is None
-        # and __fields_set__ contains the field
-        if self.middle_names is None and 'middle_names' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.middle_names is None and 'middle_names' in self.model_fields_set:
             _dict['middle_names'] = None
 
         # set to None if legal_surname (nullable) is None
-        # and __fields_set__ contains the field
-        if self.legal_surname is None and 'legal_surname' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.legal_surname is None and 'legal_surname' in self.model_fields_set:
             _dict['legal_surname'] = None
 
         # set to None if legal_forename (nullable) is None
-        # and __fields_set__ contains the field
-        if self.legal_forename is None and 'legal_forename' in self.__fields_set__:
+        # and model_fields_set contains the field
+        if self.legal_forename is None and 'legal_forename' in self.model_fields_set:
             _dict['legal_forename'] = None
+
+        # set to None if gender (nullable) is None
+        # and model_fields_set contains the field
+        if self.gender is None and 'gender' in self.model_fields_set:
+            _dict['gender'] = None
+
+        # set to None if gender_identity (nullable) is None
+        # and model_fields_set contains the field
+        if self.gender_identity is None and 'gender_identity' in self.model_fields_set:
+            _dict['gender_identity'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: dict) -> Student:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of Student from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return Student.parse_obj(obj)
+            return cls.model_validate(obj)
 
-        _obj = Student.parse_obj(
+        _obj = cls.model_validate(
             {
                 'id': obj.get('id'),
                 'upi': obj.get('upi'),
                 'mis_id': obj.get('mis_id'),
+                'title': obj.get('title'),
                 'initials': obj.get('initials'),
                 'surname': obj.get('surname'),
                 'forename': obj.get('forename'),
@@ -170,20 +237,21 @@ class Student(BaseModel):
                 'legal_surname': obj.get('legal_surname'),
                 'legal_forename': obj.get('legal_forename'),
                 'gender': obj.get('gender'),
+                'gender_identity': obj.get('gender_identity'),
                 'date_of_birth': obj.get('date_of_birth'),
-                'restored_at': DateTimeObject.from_dict(obj.get('restored_at'))
+                'restored_at': DateTimeObject.from_dict(obj['restored_at'])
                 if obj.get('restored_at') is not None
                 else None,
-                'created_at': DateTimeObject.from_dict(obj.get('created_at'))
+                'created_at': DateTimeObject.from_dict(obj['created_at'])
                 if obj.get('created_at') is not None
                 else None,
-                'updated_at': DateTimeObject.from_dict(obj.get('updated_at'))
+                'updated_at': DateTimeObject.from_dict(obj['updated_at'])
                 if obj.get('updated_at') is not None
                 else None,
-                'contact_details': EmployeeContactDetails.from_dict(obj.get('contact_details'))
+                'contact_details': EmployeeContactDetails.from_dict(obj['contact_details'])
                 if obj.get('contact_details') is not None
                 else None,
-                'education_details': StudentEducationDetails.from_dict(obj.get('education_details'))
+                'education_details': StudentEducationDetails.from_dict(obj['education_details'])
                 if obj.get('education_details') is not None
                 else None,
             }

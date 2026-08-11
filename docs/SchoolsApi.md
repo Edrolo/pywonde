@@ -28,9 +28,8 @@ Retrieve a specific school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.get_school200_response import GetSchool200Response
 from wonde.rest import ApiException
@@ -77,6 +76,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school to retrieve | 
@@ -95,6 +95,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A school |  -  |
@@ -110,9 +111,8 @@ Retrieve the access control list applied to a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.get_school_acl200_response import GetSchoolAcl200Response
 from wonde.rest import ApiException
@@ -160,6 +160,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -179,6 +180,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Access control list for a specific school |  -  |
@@ -194,9 +196,8 @@ Retrieve meta data for a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.get_school_meta200_response import GetSchoolMeta200Response
 from wonde.rest import ApiException
@@ -243,6 +244,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -261,6 +263,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Meta data for a specific school |  -  |
@@ -276,9 +279,8 @@ Retrieve the permissions applied to a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.get_school_permissions200_response import GetSchoolPermissions200Response
 from wonde.rest import ApiException
@@ -325,6 +327,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -343,6 +346,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Permissions applied to a specific school |  -  |
@@ -358,9 +362,8 @@ Retrieve all schools
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
@@ -415,6 +418,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **updated_after** | **date**| Return rows modified after date | [optional] 
@@ -441,6 +445,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of schools |  -  |
@@ -456,9 +461,8 @@ Retrieve all approved schools
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
@@ -513,6 +517,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **updated_after** | **date**| Return rows modified after date | [optional] 
@@ -539,6 +544,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of schools |  -  |
@@ -554,9 +560,8 @@ Retrieve all audited schools
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
@@ -611,6 +616,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **updated_after** | **date**| Return rows modified after date | [optional] 
@@ -637,6 +643,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of schools |  -  |
@@ -652,9 +659,8 @@ Retrieve all schools with declined access
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
@@ -701,6 +707,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **per_page** | **int**| Amount of rows to return | [optional] 
@@ -719,6 +726,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of schools |  -  |
@@ -734,9 +742,8 @@ Retrieve all offline schools
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
@@ -789,6 +796,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **updated_after** | **date**| Return rows modified after date | [optional] 
@@ -813,6 +821,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of schools |  -  |
@@ -828,9 +837,8 @@ Retrieve all schools with pending access request
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
@@ -885,6 +893,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **updated_after** | **date**| Return rows modified after date | [optional] 
@@ -911,6 +920,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of schools |  -  |
@@ -926,9 +936,8 @@ Retrieve all schools with revoked access
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_schools200_response import ListSchools200Response
 from wonde.rest import ApiException
@@ -975,6 +984,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **per_page** | **int**| Amount of rows to return | [optional] 
@@ -993,6 +1003,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | A list of schools |  -  |
@@ -1004,15 +1015,15 @@ Name | Type | Description  | Notes
 
 Request access to a school
 
-When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided. 
+When requesting access to a school it is recommended that you provide details of available  contacts at the school.  This can speed up the approval process considerably but it is not required.  The contact should be provided within an array.  More than one contact can be provided.
+
 
 ### Example
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
 from wonde.models.request_school_access_request import RequestSchoolAccessRequest
@@ -1061,6 +1072,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -1080,6 +1092,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Response to the access request |  -  |
@@ -1095,9 +1108,8 @@ Revoke access to a school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.request_school_access200_response import RequestSchoolAccess200Response
 from wonde.rest import ApiException
@@ -1144,6 +1156,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school | 
@@ -1162,6 +1175,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Response to the revoke access request |  -  |

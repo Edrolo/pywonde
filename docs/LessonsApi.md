@@ -17,9 +17,8 @@ Returns a specific lesson for a specific school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.lesson import Lesson
 from wonde.rest import ApiException
@@ -67,6 +66,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school. | 
@@ -86,6 +86,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful operation |  -  |
@@ -101,9 +102,8 @@ Returns a list of lessons for a specific school
 
 * Basic Authentication (BasicAuth):
 * Bearer Authentication (BearerAuth):
+
 ```python
-import time
-import os
 import wonde
 from wonde.models.list_school_lessons200_response import ListSchoolLessons200Response
 from wonde.rest import ApiException
@@ -156,6 +156,7 @@ with wonde.ApiClient(configuration) as api_client:
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **school_id** | **str**| The ID of the school. | 
@@ -180,6 +181,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Successful operation |  -  |

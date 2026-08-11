@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **str** |  | [optional] 
@@ -26,12 +27,12 @@ json = "{}"
 # create an instance of School from a JSON string
 school_instance = School.from_json(json)
 # print the JSON string representation of the object
-print School.to_json()
+print(School.to_json())
 
 # convert the object into a dict
 school_dict = school_instance.to_dict()
 # create an instance of School from a dict
-school_form_dict = school.from_dict(school_dict)
+school_from_dict = School.from_dict(school_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
